@@ -1,5 +1,4 @@
 import React from 'react';
-import { Page } from '../types';
 import {
   FaHome,
   FaHistory,
@@ -11,43 +10,42 @@ import {
   FaBook,
   FaUserShield,
 } from 'react-icons/fa';
+import { Link, useLocation } from 'react-router-dom';
 
 interface SidebarProps {
-  currentPage: Page;
-  setCurrentPage: (page: Page) => void;
   isSidebarOpen: boolean;
   toggleSidebar: () => void;
   userRole: 'user' | 'admin';
+  handleLogout: () => void;
 }
 
-const NavItem: React.FC<{
+interface NavItemProps {
   icon: React.ElementType;
   label: string;
-  page: Page;
-  currentPage: Page;
-  setCurrentPage: (page: Page) => void;
-}> = ({ icon: Icon, label, page, currentPage, setCurrentPage }) => {
-  const isActive = currentPage === page;
+  to: string;
+  onClick?: () => void;
+}
+
+const NavItem: React.FC<NavItemProps> = ({ icon: Icon, label, to, onClick }) => {
+  const location = useLocation();
+  const isActive = location.pathname === to;
   return (
     <li>
-      <a
-        href="#"
-        onClick={(e) => {
-          e.preventDefault();
-          setCurrentPage(page);
-        }}
+      <Link
+        to={to}
+        onClick={onClick}
         className={`flex items-center p-3 rounded-lg text-gray-200 hover:bg-white/10 transition-colors duration-200 ${
           isActive ? 'bg-white/20 text-white' : ''
         }`}
       >
         <Icon className="w-6 h-6 mr-3" />
         <span className="font-medium">{label}</span>
-      </a>
+      </Link>
     </li>
   );
 };
 
-const Sidebar: React.FC<SidebarProps> = ({ currentPage, setCurrentPage, isSidebarOpen, toggleSidebar, userRole }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, toggleSidebar, userRole, handleLogout }) => {
   return (
     <>
       <aside
@@ -63,21 +61,21 @@ const Sidebar: React.FC<SidebarProps> = ({ currentPage, setCurrentPage, isSideba
 
         <nav className="mt-4 flex-1">
           <ul className="space-y-2">
-            <NavItem icon={FaHome} label="Início" page={Page.Dashboard} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-            <NavItem icon={FaUserCircle} label="Meu Perfil" page={Page.Profile} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-            <NavItem icon={FaHistory} label="Histórico de Consultas" page={Page.ConsultationHistory} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-            <NavItem icon={FaFolderOpen} label="Pedidos CRLV-E" page={Page.CRLVOrders} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-            <NavItem icon={FaDollarSign} label="Financeiro" page={Page.Financial} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-            <NavItem icon={FaCreditCard} label="Recarga de Crédito" page={Page.CreditRecharge} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-            <NavItem icon={FaBook} label="Termos de Uso" page={Page.TermsOfUse} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+            <NavItem icon={FaHome} label="Início" to="/dashboard" onClick={toggleSidebar} />
+            <NavItem icon={FaUserCircle} label="Meu Perfil" to="/profile" onClick={toggleSidebar} />
+            <NavItem icon={FaHistory} label="Histórico de Consultas" to="/consultation-history" onClick={toggleSidebar} />
+            <NavItem icon={FaFolderOpen} label="Pedidos CRLV-E" to="/my-orders" onClick={toggleSidebar} />
+            <NavItem icon={FaDollarSign} label="Financeiro" to="/financial-history" onClick={toggleSidebar} />
+            <NavItem icon={FaCreditCard} label="Recarga de Crédito" to="/credit-recharge" onClick={toggleSidebar} />
+            <NavItem icon={FaBook} label="Termos de Uso" to="/terms-of-use" onClick={toggleSidebar} />
           </ul>
         </nav>
         <div className="mt-auto">
           <ul className="space-y-2">
             {userRole === 'admin' && (
-                <NavItem icon={FaUserShield} label="Painel Admin" page={Page.AdminPanel} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+                <NavItem icon={FaUserShield} label="Painel Admin" to="/admin" onClick={toggleSidebar} />
             )}
-            <NavItem icon={FaSignOutAlt} label="Sair" page={Page.Logout} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+            <NavItem icon={FaSignOutAlt} label="Sair" to="/login" onClick={() => { handleLogout(); toggleSidebar(); }} />
           </ul>
         </div>
       </aside>

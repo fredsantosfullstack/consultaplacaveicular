@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Page } from '../types';
 import { FaArrowLeft, FaFileAlt, FaRegCopy, FaCheck, FaExclamationTriangle } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 
 interface ApiDocsProps {
-  setCurrentPage: (page: Page) => void;
+  // setCurrentPage: (page: Page) => void; // Removed
 }
 
 const CodeBlock: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -13,8 +13,9 @@ const CodeBlock: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     </pre>
 );
 
-const ApiDocs: React.FC<ApiDocsProps> = ({ setCurrentPage }) => {
+const ApiDocs: React.FC<ApiDocsProps> = () => { // Removed setCurrentPage from props
   const [requestExample, setRequestExample] = useState('');
+  const navigate = useNavigate();
   
   const handleShowExample = () => {
       setRequestExample(
@@ -28,7 +29,7 @@ const ApiDocs: React.FC<ApiDocsProps> = ({ setCurrentPage }) => {
   
   return (
     <div className="p-8 space-y-6">
-      <button onClick={() => setCurrentPage(Page.Dashboard)} className="flex items-center space-x-2 text-blue-600 hover:underline">
+      <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-600 hover:underline">
         <FaArrowLeft className="w-4 h-4" />
         <span>Voltar</span>
       </button>

@@ -1,15 +1,13 @@
 import React from 'react';
-import { Page } from '../types';
 import { FaBars } from 'react-icons/fa';
 
 interface HeaderProps {
   username: string;
   balance: number;
-  setCurrentPage: (page: Page) => void;
   toggleSidebar: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ username, balance, setCurrentPage, toggleSidebar }) => {
+const Header: React.FC<HeaderProps> = ({ username, balance, toggleSidebar }) => {
   const isZeroBalance = balance === 0;
   const balanceColor = isZeroBalance ? 'text-gray-500' : 'text-green-600';
 

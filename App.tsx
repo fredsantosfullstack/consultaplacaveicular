@@ -1,6 +1,5 @@
-// Fix: Implemented the main App component to manage state and navigation.
 import React, { useState, useEffect } from 'react';
-import { Page, Notification, User } from './types';
+import { Notification, User } from './types';
 import Login from './pages/Login';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
@@ -14,6 +13,7 @@ import ApiDocs from './pages/ApiDocs';
 import Admin from './pages/Admin';
 import TermsOfUse from './pages/TermsOfUse';
 import { FaBell, FaTimes } from 'react-icons/fa';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 
 const NotificationModal: React.FC<{ notification: Notification; onClose: () => void }> = ({ notification, onClose }) => (
     <div className="fixed top-5 right-5 bg-white w-full max-w-sm rounded-xl shadow-2xl p-5 border border-gray-200 animate-fade-in z-50">
@@ -34,7 +34,7 @@ const NotificationModal: React.FC<{ notification: Notification; onClose: () => v
 
 // Mock user data
 const initialUsers: User[] = [
-    { id: '1', name: 'Admin User', email: 'admin@portaldospachantes.com.br', role: 'admin', status: 'active', avatarUrl: 'https://i.pravatar.cc/150?u=admin@portaldospachantes.com.br' },
+    { id: '1', name: 'Admin User', email: 'admin@portaldospachantes.com.br', role: 'admin', status: 'active', avatarUrl: 'https://i.pravatar.cc/150?u=admin@example.com' },
     { id: '2', name: 'Fredson Luz', email: 'fredson@example.com', role: 'user', status: 'active', avatarUrl: 'https://i.pravatar.cc/150?u=fredson@example.com' },
     { id: '3', name: 'Maria Souza', email: 'maria.s@example.com', role: 'user', status: 'inactive', avatarUrl: 'https://i.pravatar.cc/150?u=maria.s@example.com' },
     { id: '4', name: 'Carlos Pereira', email: 'carlos.p@example.com', role: 'user', status: 'active', avatarUrl: 'https://i.pravatar.cc/150?u=carlos.p@example.com' },
@@ -45,9 +45,9 @@ const App: React.FC = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [username, setUsername] = useState('');
     const [userRole, setUserRole] = useState<'user' | 'admin'>('user'); // Default to 'user'
-    const [currentPage, setCurrentPage] = useState<Page>(Page.Dashboard);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [balance, setBalance] = useState(123.45); // Dummy balance
+    const navigate = useNavigate();
     
     const [notifications, setNotifications] = useState<Notification[]>(() => {
         try {
@@ -101,7 +101,7 @@ const App: React.FC = () => {
             // If user is admin, never show notifications
             setVisibleNotification(null);
         }
-    }, [notifications, currentPage, userRole]);
+    }, [notifications, userRole]); // Removed currentPage from dependencies
 
     const handleLogin = (name: string) => {
         setIsLoggedIn(true);
@@ -112,34 +112,18 @@ const App: React.FC = () => {
         } else {
             setUserRole('user');
         }
-        setCurrentPage(Page.Dashboard);
+        navigate('/dashboard');
     };
 
     const handleLogout = () => {
         setIsLoggedIn(false);
         setUsername('');
-        setCurrentPage(Page.Login);
+        setUserRole('user');
+        navigate('/login');
     };
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
-    };
-
-    const handleSetCurrentPage = (page: Page) => {
-        if (page === Page.Logout) {
-            handleLogout();
-        } else {
-            setCurrentPage(page);
-        }
-        if (window.innerWidth < 768) { // md breakpoint in tailwind
-          setIsSidebarOpen(false);
-        }
-    };
-
-    const handleSelectConsultation = (type: string) => {
-        console.log('Selected consultation type:', type);
-        // For demonstration, some consultations could navigate to ApiDocs
-        setCurrentPage(Page.ApiDocs);
     };
 
     const handleCloseNotification = () => {
@@ -151,32 +135,6 @@ const App: React.FC = () => {
         }
     };
 
-
-    const renderPage = () => {
-        switch (currentPage) {
-            case Page.Dashboard:
-                return <Dashboard setCurrentPage={handleSetCurrentPage} onSelectConsultation={handleSelectConsultation} />;
-            case Page.Profile:
-                return <UserProfile setCurrentPage={handleSetCurrentPage} />;
-            case Page.ConsultationHistory:
-                return <ConsultationHistory setCurrentPage={handleSetCurrentPage} />;
-            case Page.CRLVOrders:
-                return <MyOrders setCurrentPage={handleSetCurrentPage} />;
-            case Page.Financial:
-                return <FinancialHistory setCurrentPage={handleSetCurrentPage} />;
-            case Page.CreditRecharge:
-                return <CreditRecharge setCurrentPage={handleSetCurrentPage} />;
-            case Page.TermsOfUse:
-                return <TermsOfUse setCurrentPage={handleSetCurrentPage} />;
-            case Page.AdminPanel:
-                return userRole === 'admin' ? <Admin setCurrentPage={handleSetCurrentPage} notifications={notifications} setNotifications={setNotifications} users={users} setUsers={setUsers} /> : <Dashboard setCurrentPage={handleSetCurrentPage} onSelectConsultation={handleSelectConsultation} />;
-            case Page.ApiDocs:
-                return <ApiDocs setCurrentPage={handleSetCurrentPage} />;
-            default:
-                return <Dashboard setCurrentPage={handleSetCurrentPage} onSelectConsultation={handleSelectConsultation} />;
-        }
-    };
-
     if (!isLoggedIn) {
         return <Login onLogin={handleLogin} />;
     }
@@ -184,22 +142,36 @@ const App: React.FC = () => {
     return (
         <div className="flex h-screen bg-gray-100 font-sans">
             <Sidebar 
-                currentPage={currentPage} 
-                setCurrentPage={handleSetCurrentPage}
                 isSidebarOpen={isSidebarOpen}
                 toggleSidebar={toggleSidebar}
                 userRole={userRole}
+                handleLogout={handleLogout}
             />
             <div className="flex-1 flex flex-col overflow-hidden">
                 <Header 
                     username={username}
                     balance={balance}
-                    setCurrentPage={handleSetCurrentPage}
                     toggleSidebar={toggleSidebar}
                 />
                 <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
                     {visibleNotification && <NotificationModal notification={visibleNotification} onClose={handleCloseNotification} />}
-                    {renderPage()}
+                    <Routes>
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/profile" element={<UserProfile />} />
+                        <Route path="/consultation-history" element={<ConsultationHistory />} />
+                        <Route path="/my-orders" element={<MyOrders />} />
+                        <Route path="/financial-history" element={<FinancialHistory />} />
+                        <Route path="/credit-recharge" element={<CreditRecharge />} />
+                        <Route path="/terms-of-use" element={<TermsOfUse />} />
+                        {userRole === 'admin' && (
+                            <Route 
+                                path="/admin" 
+                                element={<Admin notifications={notifications} setNotifications={setNotifications} users={users} setUsers={setUsers} />} 
+                            />
+                        )}
+                        <Route path="/api-docs" element={<ApiDocs />} />
+                        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+                    </Routes>
                 </main>
             </div>
         </div>
