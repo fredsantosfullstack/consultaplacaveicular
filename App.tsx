@@ -12,11 +12,12 @@ import CreditRecharge from './pages/CreditRecharge';
 import ApiDocs from './pages/ApiDocs';
 import Admin from './pages/Admin';
 import TermsOfUse from './pages/TermsOfUse';
+import Footer from './src/components/Footer'; // Importando o Footer
 import { FaBell, FaTimes } from 'react-icons/fa';
 import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
-import toast from 'react-hot-toast'; // Import toast
-import ToastProvider from './src/components/ToastProvider'; // Import ToastProvider
-import NotificationToast from './src/components/NotificationToast'; // Import NotificationToast
+import toast from 'react-hot-toast';
+import ToastProvider from './src/components/ToastProvider';
+import NotificationToast from './src/components/NotificationToast';
 
 // Mock user data
 const initialUsers: User[] = [
@@ -30,9 +31,9 @@ const initialUsers: User[] = [
 const App: React.FC = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [username, setUsername] = useState('');
-    const [userRole, setUserRole] = useState<'user' | 'admin'>('user'); // Default to 'user'
+    const [userRole, setUserRole] = useState<'user' | 'admin'>('user');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [balance, setBalance] = useState(123.45); // Dummy balance
+    const [balance, setBalance] = useState(123.45);
     const navigate = useNavigate();
     
     const [notifications, setNotifications] = useState<Notification[]>(() => {
@@ -45,8 +46,7 @@ const App: React.FC = () => {
         }
     });
 
-    // State to keep track of currently displayed notification toasts by their ID
-    const [activeNotificationToasts, setActiveNotificationToasts] = useState<Record<string, string>>({}); // { notificationId: toastId }
+    const [activeNotificationToasts, setActiveNotificationToasts] = useState<Record<string, string>>({});
 
     const [users, setUsers] = useState<User[]>(initialUsers);
 
@@ -72,7 +72,7 @@ const App: React.FC = () => {
             
             notifications.forEach(n => {
                 if (n.status !== 'active' || activeNotificationToasts[n.id]) {
-                    return; // Not active, or already shown
+                    return;
                 }
                 
                 const lastDismissedTime = dismissedNotifications[n.id];
@@ -80,9 +80,8 @@ const App: React.FC = () => {
                 let shouldShow = false;
 
                 if (!lastDismissedTime) {
-                    shouldShow = true; // Never dismissed, show it
+                    shouldShow = true;
                 } else {
-                    // If dismissed, check frequency
                     switch (n.frequency) {
                         case 'hourly':
                             shouldShow = now - lastDismissedTime > 3600000;
@@ -92,7 +91,7 @@ const App: React.FC = () => {
                             break;
                         case 'once':
                         default:
-                            shouldShow = false; // Dismissed once, never show again
+                            shouldShow = false;
                             break;
                     }
                 }
@@ -105,14 +104,13 @@ const App: React.FC = () => {
                             onClose={() => handleDismissNotification(n.id, t.id)}
                         />
                     ), {
-                        id: n.id, // Use notification ID as toast ID for easier management
-                        duration: Infinity, // Keep open until dismissed
+                        id: n.id,
+                        duration: Infinity,
                     });
                     setActiveNotificationToasts(prev => ({ ...prev, [n.id]: newToastId }));
                 }
             });
         } else {
-            // If user is admin, dismiss all active notification toasts
             Object.values(activeNotificationToasts).forEach(toastId => toast.dismiss(toastId));
             setActiveNotificationToasts({});
         }
@@ -120,8 +118,7 @@ const App: React.FC = () => {
 
     const handleLogin = (name: string) => {
         setIsLoggedIn(true);
-        setUsername(name.split('@')[0]); // Use part of email as name
-        // Simple logic to set admin role for demonstration
+        setUsername(name.split('@')[0]);
         if (name.toLowerCase() === 'admin@portaldospachantes.com.br') {
             setUserRole('admin');
         } else {
@@ -160,7 +157,7 @@ const App: React.FC = () => {
                     toggleSidebar={toggleSidebar}
                 />
                 <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
-                    <ToastProvider /> {/* Add ToastProvider here */}
+                    <ToastProvider />
                     <Routes>
                         <Route path="/dashboard" element={<Dashboard onSelectConsultation={() => {}} />} />
                         <Route path="/profile" element={<UserProfile />} />
@@ -179,6 +176,7 @@ const App: React.FC = () => {
                         <Route path="*" element={<Navigate to="/dashboard" replace />} />
                     </Routes>
                 </main>
+                <Footer />
             </div>
         </div>
     );
