@@ -1,5 +1,4 @@
 import React from 'react';
-import { Page } from '../types';
 import { 
     FaWhatsapp,
     FaShieldAlt,
@@ -22,7 +21,6 @@ import {
 } from 'react-icons/fa';
 
 interface DashboardProps {
-  setCurrentPage: (page: Page) => void;
   onSelectConsultation: (type: string) => void;
 }
 
@@ -82,7 +80,7 @@ const ConsultationCard: React.FC<{
 );
 
 
-const Dashboard: React.FC<DashboardProps> = ({ setCurrentPage, onSelectConsultation }) => {
+const Dashboard: React.FC<DashboardProps> = ({ onSelectConsultation }) => {
   return (
     <div className="p-4 sm:p-6 md:p-8 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

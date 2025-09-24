@@ -1,10 +1,6 @@
 import React from 'react';
-import { Page } from '../types';
+import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaBook } from 'react-icons/fa';
-
-interface TermsOfUseProps {
-  setCurrentPage: (page: Page) => void;
-}
 
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <section className="space-y-2">
@@ -13,7 +9,8 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title
   </section>
 );
 
-const TermsOfUse: React.FC<TermsOfUseProps> = ({ setCurrentPage }) => {
+const TermsOfUse: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <div className="p-4 sm:p-6 md:p-8 space-y-6">
       <div className="flex justify-between items-center">
@@ -21,7 +18,7 @@ const TermsOfUse: React.FC<TermsOfUseProps> = ({ setCurrentPage }) => {
           <FaBook className="w-8 h-8 text-blue-500" />
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Termos de Uso e Política de Privacidade</h1>
         </div>
-        <button onClick={() => setCurrentPage(Page.Dashboard)} className="flex items-center space-x-2 text-blue-600 hover:underline">
+        <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-600 hover:underline">
           <FaArrowLeft className="w-4 h-4" />
           <span>Voltar</span>
         </button>

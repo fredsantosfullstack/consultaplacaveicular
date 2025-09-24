@@ -1,13 +1,10 @@
 import React from 'react';
-import { Page } from '../types';
+import { useNavigate } from 'react-router-dom';
 import { FaTruck, FaPlus, FaComments, FaArrowLeft } from 'react-icons/fa';
 
 
-interface MyOrdersProps {
-  setCurrentPage: (page: Page) => void;
-}
-
-const MyOrders: React.FC<MyOrdersProps> = ({ setCurrentPage }) => {
+const MyOrders: React.FC = () => {
+    const navigate = useNavigate();
     return (
         <div className="p-4 sm:p-6 md:p-8 space-y-8">
             <div className="flex justify-center items-center space-x-4">
@@ -26,7 +23,7 @@ const MyOrders: React.FC<MyOrdersProps> = ({ setCurrentPage }) => {
             </div>
 
             <div className="flex justify-center items-center flex-wrap gap-2 sm:gap-4">
-                 <button onClick={() => setCurrentPage(Page.Dashboard)} className="flex items-center space-x-2 bg-[#007BFF] text-white font-semibold py-2 px-4 rounded-lg hover:opacity-90 transition-opacity">
+                 <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 bg-[#007BFF] text-white font-semibold py-2 px-4 rounded-lg hover:opacity-90 transition-opacity">
                     <FaArrowLeft className="w-5 h-5"/>
                     <span>Voltar ao Menu</span>
                 </button>
