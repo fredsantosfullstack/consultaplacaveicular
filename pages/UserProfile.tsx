@@ -13,7 +13,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ setCurrentPage }) => {
     name: 'João da Silva',
     email: 'joao.silva@example.com',
     phone: '(11) 99999-8888',
-    company: 'PortalDespachantes',
+    company: 'Golden Veicular',
     document: '123.456.789-00'
   });
 

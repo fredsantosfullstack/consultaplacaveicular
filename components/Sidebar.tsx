@@ -54,7 +54,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, toggleSidebar, userRol
         } md:relative md:translate-x-0 transition-transform duration-300 ease-in-out z-30 flex flex-col`}
       >
         <div className="flex items-center justify-center h-20">
-            <span className="text-2xl font-bold text-white">PortalDespachantes</span>
+            <span className="text-2xl font-bold text-white">Golden Veicular</span>
         </div>
         
         <hr className="border-t border-white/20 my-2" />

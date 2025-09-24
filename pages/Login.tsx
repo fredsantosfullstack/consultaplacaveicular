@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PortalDespachantesLogo } from '../components/Icons';
+import { GoldenVeicularLogo } from '../components/Icons';
 import { FaUser, FaLock, FaArrowRight } from 'react-icons/fa';
 
 interface LoginProps {
@@ -50,7 +50,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
       <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-gray-200/50 p-8 sm:p-10 space-y-6">
         <div className="text-center">
             <div className="flex justify-center">
-                <PortalDespachantesLogo className="h-16 w-auto" />
+                <GoldenVeicularLogo className="h-16 w-auto" />
             </div>
         </div>
         
