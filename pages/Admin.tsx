@@ -2,16 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { Notification, User } from '../types';
 import { 
     FaArrowLeft, FaUsers, FaChartBar, FaBell, FaPlus, FaTrash, FaPauseCircle, FaPlayCircle, 
-    FaEdit, FaUserPlus, FaSearchDollar, FaMoneyBillWave, FaTimes, FaSave, FaFilter, FaCalendarAlt
+    FaEdit, FaUserPlus, FaSearchDollar, FaMoneyBillWave, FaTimes, FaSave, FaFilter, FaTags
 } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { showSuccess, showError } from '../src/utils/toast'; // Import toast utilities
+import { showSuccess, showError } from '../src/utils/toast';
+
+interface PriceItem {
+  id: string;
+  name: string;
+  price: number;
+}
 
 interface AdminProps {
   notifications: Notification[];
   setNotifications: React.Dispatch<React.SetStateAction<Notification[]>>;
   users: User[];
   setUsers: React.Dispatch<React.SetStateAction<User[]>>;
+  priceList: PriceItem[];
+  setPriceList: React.Dispatch<React.SetStateAction<PriceItem[]>>;
 }
 
 const AdminCard: React.FC<{ icon: React.ElementType; title: string; description: string; onClick: () => void }> = ({ icon: Icon, title, description, onClick }) => (
@@ -103,16 +111,15 @@ const UserModal: React.FC<{
     );
 };
 
-
 const UserManagement: React.FC<{ users: User[], setUsers: React.Dispatch<React.SetStateAction<User[]>>, goBack: () => void }> = ({ users, setUsers, goBack }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingUser, setEditingUser] = useState<User | null>(null);
 
     const handleSaveUser = (user: User) => {
-        if(editingUser) { // update
+        if(editingUser) {
             setUsers(prev => prev.map(u => u.id === user.id ? user : u));
             showSuccess("Usuário atualizado com sucesso!");
-        } else { // create
+        } else {
             setUsers(prev => [user, ...prev]);
             showSuccess("Usuário adicionado com sucesso!");
         }
@@ -187,51 +194,19 @@ const ReportDashboard: React.FC<{ goBack: () => void, userCount: number }> = ({ 
             <h2 className="text-2xl font-bold text-gray-800">Relatórios</h2>
             <button onClick={goBack} className="flex items-center space-x-2 text-blue-600 hover:underline"><FaArrowLeft /><span>Voltar</span></button>
         </div>
-        
-        <div className="bg-white p-4 rounded-xl shadow-lg flex flex-wrap items-end gap-4">
-            <div className="flex-grow">
-                <label className="block text-sm font-medium text-gray-600 mb-1">Data Inicial</label>
-                <input type="date" className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-blue-500"/>
-            </div>
-            <div className="flex-grow">
-                <label className="block text-sm font-medium text-gray-600 mb-1">Data Final</label>
-                <input type="date" className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-blue-500"/>
-            </div>
-            <div className="flex-grow">
-                <label className="block text-sm font-medium text-gray-600 mb-1">Tipo de Relatório</label>
-                <select className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-blue-500">
-                    <option>Consultas</option>
-                    <option>Receita</option>
-                    <option>Usuários</option>
-                </select>
-            </div>
-            <button className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center space-x-2">
-                <FaFilter />
-                <span>Filtrar</span>
-            </button>
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <StatCard icon={FaUsers} title="Total de Usuários" value={userCount.toString()} color="border-blue-500" />
             <StatCard icon={FaSearchDollar} title="Consultas (Hoje)" value="1,204" color="border-green-500" />
             <StatCard icon={FaMoneyBillWave} title="Receita Total" value="R$ 45.890,50" color="border-yellow-500" />
         </div>
-        <div className="bg-white p-6 rounded-xl shadow-lg">
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">Consultas por Período</h3>
-            <div className="h-64 bg-gray-100 flex items-center justify-center text-gray-500 rounded">
-                Gráfico de exemplo em breve...
-            </div>
-        </div>
     </div>
 );
-
 
 const NotificationManagement: React.FC<{
     notifications: Notification[];
     setNotifications: React.Dispatch<React.SetStateAction<Notification[]>>;
     goBack: () => void;
 }> = ({ notifications, setNotifications, goBack }) => {
-
     const [title, setTitle] = useState('');
     const [message, setMessage] = useState('');
     const [frequency, setFrequency] = useState<'once' | 'hourly' | 'daily'>('once');
@@ -242,30 +217,14 @@ const NotificationManagement: React.FC<{
             showError("Título e Mensagem são obrigatórios.");
             return;
         }
-
-        const newNotification: Notification = {
-            id: new Date().toISOString(),
-            title,
-            message,
-            status: 'active',
-            frequency,
-        };
+        const newNotification: Notification = { id: new Date().toISOString(), title, message, status: 'active', frequency };
         setNotifications(prev => [newNotification, ...prev]);
-        setTitle('');
-        setMessage('');
-        setFrequency('once');
+        setTitle(''); setMessage(''); setFrequency('once');
         showSuccess("Aviso adicionado com sucesso!");
     };
 
     const handleToggleStatus = (id: string) => {
-        setNotifications(prev => prev.map(n => {
-            if (n.id === id) {
-                const newStatus = n.status === 'active' ? 'paused' : 'active';
-                showSuccess(`Aviso ${newStatus === 'active' ? 'reativado' : 'pausado'} com sucesso!`);
-                return { ...n, status: newStatus };
-            }
-            return n;
-        }));
+        setNotifications(prev => prev.map(n => n.id === id ? { ...n, status: n.status === 'active' ? 'paused' : 'active' } : n));
     };
 
     const handleDelete = (id: string) => {
@@ -275,97 +234,163 @@ const NotificationManagement: React.FC<{
         }
     };
 
-
     return (
          <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-gray-800">Gerenciar Notificações</h2>
-                <button onClick={goBack} className="flex items-center space-x-2 text-blue-600 hover:underline">
-                    <FaArrowLeft className="w-4 h-4" />
-                    <span>Voltar</span>
-                </button>
+                <button onClick={goBack} className="flex items-center space-x-2 text-blue-600 hover:underline"><FaArrowLeft /><span>Voltar</span></button>
             </div>
-            
             <form onSubmit={handleAddNotification} className="bg-white p-6 rounded-xl shadow-lg space-y-4">
                  <h3 className="text-lg font-semibold text-gray-700">Criar Novo Aviso</h3>
-                 <div>
-                    <label htmlFor="notif-title" className="block text-sm font-medium text-gray-600 mb-1">Título</label>
-                    <input id="notif-title" type="text" value={title} onChange={e => setTitle(e.target.value)} placeholder="Ex: Manutenção Programada" className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-blue-500"/>
-                 </div>
-                 <div>
-                    <label htmlFor="notif-message" className="block text-sm font-medium text-gray-600 mb-1">Mensagem</label>
-                    <textarea id="notif-message" value={message} onChange={e => setMessage(e.target.value)} placeholder="Descreva o aviso para os usuários..." rows={3} className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-blue-500"></textarea>
-                 </div>
-                 <div>
-                    <label htmlFor="notif-freq" className="block text-sm font-medium text-gray-600 mb-1">Reaparecer para quem fechar</label>
-                    <select id="notif-freq" value={frequency} onChange={e => setFrequency(e.target.value as any)} className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-blue-500">
-                        <option value="once">Apenas uma vez</option>
-                        <option value="hourly">A cada hora</option>
-                        <option value="daily">A cada 24 horas</option>
-                    </select>
-                 </div>
-                 <div className="text-right">
-                    <button type="submit" className="inline-flex items-center space-x-2 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700">
-                        <FaPlus />
-                        <span>Adicionar Aviso</span>
-                    </button>
-                 </div>
+                 <input type="text" value={title} onChange={e => setTitle(e.target.value)} placeholder="Título" className="w-full p-2 border rounded"/>
+                 <textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="Mensagem" className="w-full p-2 border rounded"></textarea>
+                 <select value={frequency} onChange={e => setFrequency(e.target.value as any)} className="w-full p-2 border rounded">
+                    <option value="once">Apenas uma vez</option>
+                    <option value="hourly">A cada hora</option>
+                    <option value="daily">A cada 24 horas</option>
+                 </select>
+                 <button type="submit" className="bg-blue-600 text-white p-2 rounded">Adicionar Aviso</button>
             </form>
-
-            <div className="bg-white p-6 rounded-xl shadow-lg space-y-4">
-                 <h3 className="text-lg font-semibold text-gray-700">Avisos Atuais</h3>
-                 <div className="space-y-3">
-                    {notifications.length === 0 ? (
-                        <p className="text-gray-500 text-center py-4">Nenhum aviso criado.</p>
-                    ) : (
-                        notifications.map(n => (
-                             <div key={n.id} className={`p-4 rounded-lg flex justify-between items-center ${n.status === 'active' ? 'bg-green-50 border-l-4 border-green-500' : 'bg-yellow-50 border-l-4 border-yellow-500'}`}>
-                                <div>
-                                    <p className="font-bold text-gray-800">{n.title}</p>
-                                    <p className="text-sm text-gray-600">{n.message}</p>
-                                    <p className="text-xs text-gray-500 mt-1">Status: <span className="font-semibold">{n.status === 'active' ? 'Ativo' : 'Pausado'}</span></p>
-                                </div>
-                                <div className="flex items-center space-x-2">
-                                    <button onClick={() => handleToggleStatus(n.id)} title={n.status === 'active' ? 'Pausar' : 'Reativar'} className="p-2 text-gray-600 hover:text-blue-600">
-                                        {n.status === 'active' ? <FaPauseCircle /> : <FaPlayCircle />}
-                                    </button>
-                                    <button onClick={() => handleDelete(n.id)} title="Excluir" className="p-2 text-gray-600 hover:text-red-600">
-                                        <FaTrash />
-                                    </button>
-                                </div>
-                             </div>
-                        ))
-                    )}
-                 </div>
+            <div className="bg-white p-6 rounded-xl shadow-lg space-y-3">
+                {notifications.map(n => (
+                     <div key={n.id} className="p-4 rounded-lg flex justify-between items-center border">
+                        <div>
+                            <p className="font-bold">{n.title}</p>
+                            <p>{n.message}</p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <button onClick={() => handleToggleStatus(n.id)}>{n.status === 'active' ? <FaPauseCircle /> : <FaPlayCircle />}</button>
+                            <button onClick={() => handleDelete(n.id)}><FaTrash /></button>
+                        </div>
+                     </div>
+                ))}
             </div>
-
          </div>
     );
 };
 
+const PriceModal: React.FC<{
+    item: PriceItem | null;
+    onClose: () => void;
+    onSave: (item: PriceItem) => void;
+}> = ({ item, onClose, onSave }) => {
+    const [formData, setFormData] = useState<PriceItem>(item || { id: '', name: '', price: 0 });
 
-const Admin: React.FC<AdminProps> = ({ notifications, setNotifications, users, setUsers }) => {
+    useEffect(() => {
+        setFormData(item || { id: new Date().toISOString(), name: '', price: 0 });
+    }, [item]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({...prev, [name]: name === 'price' ? parseFloat(value) || 0 : value}));
+    }
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if(formData.name) {
+            onSave(formData);
+        } else {
+            showError("O nome do serviço é obrigatório.");
+        }
+    }
+
+    return (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-2xl p-6 w-full max-w-lg space-y-4">
+                <h2 className="text-xl font-bold">{item ? 'Editar Item' : 'Adicionar Novo Item'}</h2>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Nome do Serviço</label>
+                        <input type="text" name="name" value={formData.name} onChange={handleChange} className="mt-1 w-full p-2 border rounded" required />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Preço (R$)</label>
+                        <input type="number" step="0.01" name="price" value={formData.price} onChange={handleChange} className="mt-1 w-full p-2 border rounded" required />
+                    </div>
+                    <div className="flex justify-end space-x-3">
+                        <button type="button" onClick={onClose} className="bg-gray-200 p-2 rounded">Cancelar</button>
+                        <button type="submit" className="bg-blue-600 text-white p-2 rounded">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+};
+
+const PriceManagement: React.FC<{ priceList: PriceItem[], setPriceList: React.Dispatch<React.SetStateAction<PriceItem[]>>, goBack: () => void }> = ({ priceList, setPriceList, goBack }) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingItem, setEditingItem] = useState<PriceItem | null>(null);
+
+    const handleSaveItem = (item: PriceItem) => {
+        if(editingItem) {
+            setPriceList(prev => prev.map(i => i.id === item.id ? item : i));
+            showSuccess("Item atualizado com sucesso!");
+        } else {
+            setPriceList(prev => [item, ...prev]);
+            showSuccess("Item adicionado com sucesso!");
+        }
+        setIsModalOpen(false);
+        setEditingItem(null);
+    }
+
+    const openEditModal = (item: PriceItem) => {
+        setEditingItem(item);
+        setIsModalOpen(true);
+    }
+    
+    const openAddModal = () => {
+        setEditingItem(null);
+        setIsModalOpen(true);
+    }
+
+    const handleDeleteItem = (id: string) => {
+        if(window.confirm('Tem certeza que deseja excluir este item?')) {
+            setPriceList(prev => prev.filter(i => i.id !== id));
+            showSuccess("Item excluído com sucesso!");
+        }
+    }
+    
+    return (
+        <div className="space-y-6">
+            <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold text-gray-800">Gerenciar Tabela de Preços</h2>
+                <button onClick={goBack} className="flex items-center space-x-2 text-blue-600 hover:underline"><FaArrowLeft /><span>Voltar</span></button>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow-lg">
+                <div className="flex justify-end mb-4">
+                    <button onClick={openAddModal} className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center space-x-2"><FaPlus /><span>Adicionar Item</span></button>
+                </div>
+                <div className="space-y-2">
+                    {priceList.map(item => (
+                        <div key={item.id} className="flex items-center p-3 border-b last:border-b-0 hover:bg-gray-50">
+                            <span className="font-medium text-gray-800">{item.name}</span>
+                            <div className="flex-grow"></div>
+                            <span className="text-gray-600 mr-6">R$ {item.price.toFixed(2).replace('.', ',')}</span>
+                            <div className="flex items-center space-x-2">
+                                <button onClick={() => openEditModal(item)} className="text-blue-600 p-2 rounded-full hover:bg-blue-100"><FaEdit /></button>
+                                <button onClick={() => handleDeleteItem(item.id)} className="text-red-600 p-2 rounded-full hover:bg-red-100"><FaTrash /></button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            {isModalOpen && <PriceModal item={editingItem} onClose={() => setIsModalOpen(false)} onSave={handleSaveItem} />}
+        </div>
+    );
+};
+
+const Admin: React.FC<AdminProps> = ({ notifications, setNotifications, users, setUsers, priceList, setPriceList }) => {
     const [activeSection, setActiveSection] = useState('dashboard');
     const navigate = useNavigate();
 
     const renderDashboard = () => (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Painel do Administrador</h1>
-                <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-600 hover:underline">
-                    <FaArrowLeft className="w-4 h-4" />
-                    <span>Voltar ao Início</span>
-                </button>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-lg">
-                <p className="text-gray-700">
-                Bem-vindo ao painel de administração. Aqui você pode gerenciar usuários, visualizar relatórios e configurar o sistema.
-                </p>
-            </div>
+            <h1 className="text-3xl font-bold text-gray-800">Painel do Administrador</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <AdminCard icon={FaUsers} title="Gerenciar Usuários" description="Adicionar, editar e remover usuários." onClick={() => setActiveSection('users')} />
-                <AdminCard icon={FaChartBar} title="Visualizar Relatórios" description="Acompanhe as métricas e o uso do sistema." onClick={() => setActiveSection('reports')} />
+                <AdminCard icon={FaChartBar} title="Visualizar Relatórios" description="Acompanhe as métricas do sistema." onClick={() => setActiveSection('reports')} />
                 <AdminCard icon={FaBell} title="Gerenciar Notificações" description="Crie e gerencie avisos para os usuários." onClick={() => setActiveSection('notifications')} />
+                <AdminCard icon={FaTags} title="Gerenciar Tabela de Preços" description="Edite os serviços e valores." onClick={() => setActiveSection('prices')} />
             </div>
         </div>
     );
@@ -379,13 +404,19 @@ const Admin: React.FC<AdminProps> = ({ notifications, setNotifications, users, s
                 return <UserManagement users={users} setUsers={setUsers} goBack={goBackToDashboard} />;
             case 'reports':
                 return <ReportDashboard goBack={goBackToDashboard} userCount={users.length} />;
+            case 'prices':
+                return <PriceManagement priceList={priceList} setPriceList={setPriceList} goBack={goBackToDashboard} />;
             default:
                 return renderDashboard();
         }
     }
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 space-y-6">
+    <div className="p-8 space-y-6">
+      <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-600 hover:underline mb-4">
+          <FaArrowLeft />
+          <span>Voltar ao Início</span>
+      </button>
       {renderSection()}
     </div>
   );

@@ -12,8 +12,7 @@ import CreditRecharge from './pages/CreditRecharge';
 import ApiDocs from './pages/ApiDocs';
 import Admin from './pages/Admin';
 import TermsOfUse from './pages/TermsOfUse';
-import Footer from './src/components/Footer'; // Importando o Footer
-import { FaBell, FaTimes } from 'react-icons/fa';
+import Footer from './src/components/Footer';
 import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import ToastProvider from './src/components/ToastProvider';
@@ -26,6 +25,39 @@ const initialUsers: User[] = [
     { id: '2', name: 'Fredson Luz', email: 'fredson@example.com', role: 'user', status: 'active', avatarUrl: 'https://i.pravatar.cc/150?u=fredson@example.com' },
     { id: '3', name: 'Maria Souza', email: 'maria.s@example.com', role: 'user', status: 'inactive', avatarUrl: 'https://i.pravatar.cc/150?u=maria.s@example.com' },
     { id: '4', name: 'Carlos Pereira', email: 'carlos.p@example.com', role: 'user', status: 'active', avatarUrl: 'https://i.pravatar.cc/150?u=carlos.p@example.com' },
+];
+
+// Mock price data
+const initialPriceData = [
+  { id: '1', name: 'Base Estadual', price: 5.00 },
+  { id: '2', name: 'Base Nacional', price: 5.00 },
+  { id: '3', name: 'Consulta ATPV-E', price: 30.00 },
+  { id: '4', name: 'Consulta Cautelar', price: 29.90 },
+  { id: '5', name: 'Consulta Comunicado de Venda', price: 5.00 },
+  { id: '6', name: 'Consulta Gravame', price: 5.00 },
+  { id: '7', name: 'Consulta Leilão Simples', price: 9.99 },
+  { id: '8', name: 'Consulta Rápida por Chassi', price: 3.00 },
+  { id: '9', name: 'Consulta Rápida por Placa', price: 3.00 },
+  { id: '10', name: 'Consulta Renajud', price: 7.00 },
+  { id: '11', name: 'CRLV-E AC', price: 24.90 },
+  { id: '12', name: 'CRLV-E AP', price: 7.00 },
+  { id: '13', name: 'CRLV-E BA', price: 25.00 },
+  { id: '14', name: 'CRLV-E GO', price: 14.90 },
+  { id: '15', name: 'CRLV-E MA', price: 7.00 },
+  { id: '16', name: 'CRLV-E MG', price: 10.00 },
+  { id: '17', name: 'CRLV-E MT', price: 7.00 },
+  { id: '18', name: 'CRLV-E PE', price: 24.90 },
+  { id: '19', name: 'CRLV-E PI', price: 25.00 },
+  { id: '20', name: 'CRLV-E PR', price: 10.00 },
+  { id: '21', name: 'CRLV-E RO', price: 19.90 },
+  { id: '22', name: 'CRLV-E RR', price: 20.00 },
+  { id: '23', name: 'CRLV-E SE', price: 20.00 },
+  { id: '24', name: 'CRLV-E SP', price: 10.00 },
+  { id: '25', name: 'CRLV-E TO', price: 7.00 },
+  { id: '26', name: 'CRV Digital (PDF)', price: 9.99 },
+  { id: '27', name: 'Licenciamento + BIN Nacional', price: 5.00 },
+  { id: '28', name: 'N° CRV + Código de segurança', price: 9.99 },
+  { id: '29', name: 'Validação CRV', price: 0.00 },
 ];
 
 
@@ -50,6 +82,7 @@ const App: React.FC = () => {
     const [activeNotificationToasts, setActiveNotificationToasts] = useState<Record<string, string>>({});
 
     const [users, setUsers] = useState<User[]>(initialUsers);
+    const [priceList, setPriceList] = useState(initialPriceData);
 
     useEffect(() => {
         localStorage.setItem('appNotifications', JSON.stringify(notifications));
@@ -166,12 +199,12 @@ const App: React.FC = () => {
                         <Route path="/my-orders" element={<MyOrders />} />
                         <Route path="/financial-history" element={<FinancialHistory />} />
                         <Route path="/credit-recharge" element={<CreditRecharge />} />
-                        <Route path="/price-table" element={<PriceTable />} />
+                        <Route path="/price-table" element={<PriceTable priceData={priceList} />} />
                         <Route path="/terms-of-use" element={<TermsOfUse />} />
                         {userRole === 'admin' && (
                             <Route 
                                 path="/admin" 
-                                element={<Admin notifications={notifications} setNotifications={setNotifications} users={users} setUsers={setUsers} />} 
+                                element={<Admin notifications={notifications} setNotifications={setNotifications} users={users} setUsers={setUsers} priceList={priceList} setPriceList={setPriceList} />} 
                             />
                         )}
                         <Route path="/api-docs" element={<ApiDocs />} />
