@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Notification, User } from '../types';
 import { 
-    FaArrowLeft, FaUsers, FaChartBar, FaBell, FaPlus, FaTrash, FaPauseCircle, FaPlayCircle, 
-    FaEdit, FaUserPlus, FaSearchDollar, FaMoneyBillWave, FaTimes, FaSave, FaFilter, FaTags
-} from 'react-icons/fa';
+    ArrowLeft, Users, BarChart, Bell, Plus, Trash2, PauseCircle, PlayCircle, 
+    Pencil, UserPlus, Search, Landmark, X, Save, Filter, Tags
+} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { showSuccess, showError } from '../src/utils/toast';
 
@@ -72,7 +72,7 @@ const UserModal: React.FC<{
             <div className="bg-white rounded-lg shadow-2xl p-6 w-full max-w-lg space-y-4 animate-scale-in">
                 <div className="flex justify-between items-center">
                     <h2 className="text-xl font-bold">{user ? 'Editar Usuário' : 'Adicionar Novo Usuário'}</h2>
-                    <button onClick={onClose}><FaTimes className="text-gray-500 hover:text-gray-800"/></button>
+                    <button onClick={onClose}><X className="text-gray-500 hover:text-gray-800"/></button>
                 </div>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
@@ -103,7 +103,7 @@ const UserModal: React.FC<{
                     </div>
                     <div className="flex justify-end space-x-3">
                         <button type="button" onClick={onClose} className="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Cancelar</button>
-                        <button type="submit" className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center space-x-2"><FaSave /><span>Salvar</span></button>
+                        <button type="submit" className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center space-x-2"><Save /><span>Salvar</span></button>
                     </div>
                 </form>
             </div>
@@ -148,11 +148,11 @@ const UserManagement: React.FC<{ users: User[], setUsers: React.Dispatch<React.S
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-gray-800">Gerenciar Usuários</h2>
-                <button onClick={goBack} className="flex items-center space-x-2 text-blue-600 hover:underline"><FaArrowLeft /><span>Voltar</span></button>
+                <button onClick={goBack} className="flex items-center space-x-2 text-blue-600 hover:underline"><ArrowLeft /><span>Voltar</span></button>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-lg">
                 <div className="flex justify-end mb-4">
-                    <button onClick={openAddModal} className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center space-x-2"><FaUserPlus /><span>Adicionar Usuário</span></button>
+                    <button onClick={openAddModal} className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center space-x-2"><UserPlus /><span>Adicionar Usuário</span></button>
                 </div>
                 <div className="space-y-1">
                     {users.map(user => (
@@ -173,10 +173,10 @@ const UserManagement: React.FC<{ users: User[], setUsers: React.Dispatch<React.S
                             </div>
                             <div className="flex items-center space-x-2">
                                 <button onClick={() => openEditModal(user)} className="text-blue-600 hover:text-blue-800 p-2 rounded-full hover:bg-blue-100 transition-colors">
-                                    <FaEdit className="w-5 h-5" />
+                                    <Pencil className="w-5 h-5" />
                                 </button>
                                 <button onClick={() => handleDeleteUser(user.id)} className="text-red-600 hover:text-red-800 p-2 rounded-full hover:bg-red-100 transition-colors">
-                                    <FaTrash className="w-5 h-5" />
+                                    <Trash2 className="w-5 h-5" />
                                 </button>
                             </div>
                         </div>
@@ -192,12 +192,12 @@ const ReportDashboard: React.FC<{ goBack: () => void, userCount: number }> = ({ 
     <div className="space-y-6">
         <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold text-gray-800">Relatórios</h2>
-            <button onClick={goBack} className="flex items-center space-x-2 text-blue-600 hover:underline"><FaArrowLeft /><span>Voltar</span></button>
+            <button onClick={goBack} className="flex items-center space-x-2 text-blue-600 hover:underline"><ArrowLeft /><span>Voltar</span></button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <StatCard icon={FaUsers} title="Total de Usuários" value={userCount.toString()} color="border-blue-500" />
-            <StatCard icon={FaSearchDollar} title="Consultas (Hoje)" value="1,204" color="border-green-500" />
-            <StatCard icon={FaMoneyBillWave} title="Receita Total" value="R$ 45.890,50" color="border-yellow-500" />
+            <StatCard icon={Users} title="Total de Usuários" value={userCount.toString()} color="border-blue-500" />
+            <StatCard icon={Search} title="Consultas (Hoje)" value="1,204" color="border-green-500" />
+            <StatCard icon={Landmark} title="Receita Total" value="R$ 45.890,50" color="border-yellow-500" />
         </div>
     </div>
 );
@@ -238,7 +238,7 @@ const NotificationManagement: React.FC<{
          <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-gray-800">Gerenciar Notificações</h2>
-                <button onClick={goBack} className="flex items-center space-x-2 text-blue-600 hover:underline"><FaArrowLeft /><span>Voltar</span></button>
+                <button onClick={goBack} className="flex items-center space-x-2 text-blue-600 hover:underline"><ArrowLeft /><span>Voltar</span></button>
             </div>
             <form onSubmit={handleAddNotification} className="bg-white p-6 rounded-xl shadow-lg space-y-4">
                  <h3 className="text-lg font-semibold text-gray-700">Criar Novo Aviso</h3>
@@ -259,8 +259,8 @@ const NotificationManagement: React.FC<{
                             <p>{n.message}</p>
                         </div>
                         <div className="flex items-center space-x-2">
-                            <button onClick={() => handleToggleStatus(n.id)}>{n.status === 'active' ? <FaPauseCircle /> : <FaPlayCircle />}</button>
-                            <button onClick={() => handleDelete(n.id)}><FaTrash /></button>
+                            <button onClick={() => handleToggleStatus(n.id)}>{n.status === 'active' ? <PauseCircle /> : <PlayCircle />}</button>
+                            <button onClick={() => handleDelete(n.id)}><Trash2 /></button>
                         </div>
                      </div>
                 ))}
@@ -354,11 +354,11 @@ const PriceManagement: React.FC<{ priceList: PriceItem[], setPriceList: React.Di
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-gray-800">Gerenciar Tabela de Preços</h2>
-                <button onClick={goBack} className="flex items-center space-x-2 text-blue-600 hover:underline"><FaArrowLeft /><span>Voltar</span></button>
+                <button onClick={goBack} className="flex items-center space-x-2 text-blue-600 hover:underline"><ArrowLeft /><span>Voltar</span></button>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-lg">
                 <div className="flex justify-end mb-4">
-                    <button onClick={openAddModal} className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center space-x-2"><FaPlus /><span>Adicionar Item</span></button>
+                    <button onClick={openAddModal} className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center space-x-2"><Plus /><span>Adicionar Item</span></button>
                 </div>
                 <div className="space-y-2">
                     {priceList.map(item => (
@@ -367,8 +367,8 @@ const PriceManagement: React.FC<{ priceList: PriceItem[], setPriceList: React.Di
                             <div className="flex-grow"></div>
                             <span className="text-gray-600 mr-6">R$ {item.price.toFixed(2).replace('.', ',')}</span>
                             <div className="flex items-center space-x-2">
-                                <button onClick={() => openEditModal(item)} className="text-blue-600 p-2 rounded-full hover:bg-blue-100"><FaEdit /></button>
-                                <button onClick={() => handleDeleteItem(item.id)} className="text-red-600 p-2 rounded-full hover:bg-red-100"><FaTrash /></button>
+                                <button onClick={() => openEditModal(item)} className="text-blue-600 p-2 rounded-full hover:bg-blue-100"><Pencil /></button>
+                                <button onClick={() => handleDeleteItem(item.id)} className="text-red-600 p-2 rounded-full hover:bg-red-100"><Trash2 /></button>
                             </div>
                         </div>
                     ))}
@@ -387,10 +387,10 @@ const Admin: React.FC<AdminProps> = ({ notifications, setNotifications, users, s
         <div className="space-y-6">
             <h1 className="text-3xl font-bold text-gray-800">Painel do Administrador</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <AdminCard icon={FaUsers} title="Gerenciar Usuários" description="Adicionar, editar e remover usuários." onClick={() => setActiveSection('users')} />
-                <AdminCard icon={FaChartBar} title="Visualizar Relatórios" description="Acompanhe as métricas do sistema." onClick={() => setActiveSection('reports')} />
-                <AdminCard icon={FaBell} title="Gerenciar Notificações" description="Crie e gerencie avisos para os usuários." onClick={() => setActiveSection('notifications')} />
-                <AdminCard icon={FaTags} title="Gerenciar Tabela de Preços" description="Edite os serviços e valores." onClick={() => setActiveSection('prices')} />
+                <AdminCard icon={Users} title="Gerenciar Usuários" description="Adicionar, editar e remover usuários." onClick={() => setActiveSection('users')} />
+                <AdminCard icon={BarChart} title="Visualizar Relatórios" description="Acompanhe as métricas do sistema." onClick={() => setActiveSection('reports')} />
+                <AdminCard icon={Bell} title="Gerenciar Notificações" description="Crie e gerencie avisos para os usuários." onClick={() => setActiveSection('notifications')} />
+                <AdminCard icon={Tags} title="Gerenciar Tabela de Preços" description="Edite os serviços e valores." onClick={() => setActiveSection('prices')} />
             </div>
         </div>
     );
@@ -414,7 +414,7 @@ const Admin: React.FC<AdminProps> = ({ notifications, setNotifications, users, s
   return (
     <div className="p-8 space-y-6">
       <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-600 hover:underline mb-4">
-          <FaArrowLeft />
+          <ArrowLeft />
           <span>Voltar ao Início</span>
       </button>
       {renderSection()}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaArrowLeft, FaBook } from 'react-icons/fa';
+import { ArrowLeft, Book } from 'lucide-react';
 
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <section className="space-y-2">
@@ -15,11 +15,11 @@ const TermsOfUse: React.FC = () => {
     <div className="p-4 sm:p-6 md:p-8 space-y-6">
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-3">
-          <FaBook className="w-8 h-8 text-blue-500" />
+          <Book className="w-8 h-8 text-blue-500" />
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Termos de Uso e Política de Privacidade</h1>
         </div>
         <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-600 hover:underline">
-          <FaArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-4 h-4" />
           <span>Voltar</span>
         </button>
       </div>

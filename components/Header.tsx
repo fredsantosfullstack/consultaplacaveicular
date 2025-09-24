@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaBars } from 'react-icons/fa';
+import { Menu } from 'lucide-react';
 
 interface HeaderProps {
   username: string;
@@ -12,10 +12,10 @@ const Header: React.FC<HeaderProps> = ({ username, balance, toggleSidebar }) => 
   const balanceColor = isZeroBalance ? 'text-gray-500' : 'text-green-600';
 
   return (
-    <header className="bg-white shadow-md p-4 flex justify-between items-center sticky top-0 z-10">
+    <header className="bg-white border-b border-gray-200 p-4 flex justify-between items-center sticky top-0 z-10">
       <div className="flex items-center">
         <button onClick={toggleSidebar} className="md:hidden mr-4 text-gray-600">
-          <FaBars className="w-6 h-6" />
+          <Menu className="w-6 h-6" />
         </button>
         <h1 className="text-xl font-semibold text-gray-800 hidden md:block">Bem-vindo(a), <span className="font-bold">{username}</span></h1>
       </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaArrowLeft, FaFileAlt, FaRegCopy, FaCheck, FaExclamationTriangle } from 'react-icons/fa';
+import { ArrowLeft, FileText, Copy, Check, TriangleAlert } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -30,19 +30,19 @@ const ApiDocs: React.FC<ApiDocsProps> = () => { // Removed setCurrentPage from p
   return (
     <div className="p-8 space-y-6">
       <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-600 hover:underline">
-        <FaArrowLeft className="w-4 h-4" />
+        <ArrowLeft className="w-4 h-4" />
         <span>Voltar</span>
       </button>
 
       <div className="flex items-center space-x-3 text-2xl font-bold text-gray-800">
-          <FaFileAlt className="w-8 h-8 text-blue-500" />
+          <FileText className="w-8 h-8 text-blue-500" />
           <h1>Documentação das APIs - CRV / CRLV</h1>
       </div>
       <p className="text-gray-600">Solicite sua chave de acesso no menu inicial, via WhatsApp do suporte.</p>
       
       <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
           <div className="flex items-center space-x-3">
-            <FaRegCopy className="w-6 h-6 text-yellow-500" />
+            <Copy className="w-6 h-6 text-yellow-500" />
             <h2 className="text-xl font-semibold text-gray-700">Autenticação</h2>
           </div>
           <p className="text-gray-600">Para todas as requisições, você deve incluir o seguinte cabeçalho:</p>
@@ -56,7 +56,7 @@ const ApiDocs: React.FC<ApiDocsProps> = () => { // Removed setCurrentPage from p
 
        <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
           <div className="flex items-center space-x-3">
-            <FaFileAlt className="w-6 h-6 text-blue-500" />
+            <FileText className="w-6 h-6 text-blue-500" />
             <h2 className="text-xl font-semibold text-gray-700">Endpoints disponíveis</h2>
           </div>
           <p className="text-gray-600">Use o menu abaixo para escolher o tipo de consulta que deseja Integrar.</p>
@@ -64,7 +64,7 @@ const ApiDocs: React.FC<ApiDocsProps> = () => { // Removed setCurrentPage from p
       
        <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
           <div className="flex items-center space-x-3">
-            <FaFileAlt className="w-6 h-6 text-blue-500" />
+            <FileText className="w-6 h-6 text-blue-500" />
             <h2 className="text-xl font-semibold text-gray-700">Guia de Requisições API</h2>
           </div>
           <div className="space-y-4">
@@ -83,7 +83,7 @@ const ApiDocs: React.FC<ApiDocsProps> = () => { // Removed setCurrentPage from p
 
        <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
           <div className="flex items-center space-x-3">
-            <FaCheck className="w-6 h-6 text-green-500" />
+            <Check className="w-6 h-6 text-green-500" />
             <h2 className="text-xl font-semibold text-gray-700">Respostas comuns</h2>
           </div>
           <ul className="list-disc list-inside text-gray-600 space-y-1">
@@ -93,7 +93,7 @@ const ApiDocs: React.FC<ApiDocsProps> = () => { // Removed setCurrentPage from p
 
        <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
           <div className="flex items-center space-x-3">
-            <FaExclamationTriangle className="w-6 h-6 text-red-500" />
+            <TriangleAlert className="w-6 h-6 text-red-500" />
             <h2 className="text-xl font-semibold text-gray-700">Erros comuns</h2>
           </div>
           <ul className="list-disc list-inside text-gray-600 space-y-1">

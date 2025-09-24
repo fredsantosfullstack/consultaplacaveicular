@@ -190,7 +190,7 @@ const App: React.FC = () => {
                     balance={balance}
                     toggleSidebar={toggleSidebar}
                 />
-                <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
+                <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50">
                     <ToastProvider />
                     <Routes>
                         <Route path="/dashboard" element={<Dashboard onSelectConsultation={() => {}} />} />

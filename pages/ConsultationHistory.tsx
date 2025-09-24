@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaCalendarAlt } from 'react-icons/fa';
+import { Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface ConsultationHistoryProps {
@@ -17,7 +17,7 @@ const ConsultationHistory: React.FC<ConsultationHistoryProps> = () => { // Remov
     const navigate = useNavigate();
     return (
         <div className="p-4 sm:p-6 md:p-8 space-y-6">
-            <h1 className="text-center text-3xl font-bold text-[#007BFF]">Histórico de Consultas</h1>
+            <h1 className="text-center text-3xl font-bold text-gray-800">Histórico de Consultas</h1>
             
             <div className="bg-white p-6 rounded-xl shadow-lg flex items-center justify-center flex-wrap gap-4">
                 <FilterInput label="Tipo de Consulta">
@@ -34,7 +34,7 @@ const ConsultationHistory: React.FC<ConsultationHistoryProps> = () => { // Remov
                           onBlur={(e) => (e.target.type = 'text')}
                           className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 placeholder:text-gray-500 focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors duration-200" 
                         />
-                         <FaCalendarAlt className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400" />
+                         <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 w-5 h-5" />
                     </div>
                 </FilterInput>
                  <FilterInput label="Data Final">
@@ -46,7 +46,7 @@ const ConsultationHistory: React.FC<ConsultationHistoryProps> = () => { // Remov
                           onBlur={(e) => (e.target.type = 'text')}
                           className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 placeholder:text-gray-500 focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors duration-200" 
                         />
-                        <FaCalendarAlt className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400" />
+                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 w-5 h-5" />
                     </div>
                 </FilterInput>
                  <FilterInput label="Mostrar">
@@ -59,7 +59,7 @@ const ConsultationHistory: React.FC<ConsultationHistoryProps> = () => { // Remov
             </div>
 
             <div className="rounded-xl shadow-lg overflow-hidden">
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 text-sm font-semibold text-white bg-[#007BFF]">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 text-sm font-semibold text-white bg-gray-800">
                     <div className="p-3">Placa</div>
                     <div className="p-3">Tipo de Consulta</div>
                     <div className="p-3">Data da Consulta</div>
@@ -73,7 +73,7 @@ const ConsultationHistory: React.FC<ConsultationHistoryProps> = () => { // Remov
             </div>
 
              <div className="text-center pt-4">
-                <button onClick={() => navigate('/dashboard')} className="bg-[#007BFF] text-white font-bold py-2 px-8 rounded-lg hover:opacity-90 transition-opacity">
+                <button onClick={() => navigate('/dashboard')} className="bg-gray-800 text-white font-bold py-2 px-8 rounded-lg hover:bg-gray-700 transition-opacity">
                     Voltar
                 </button>
              </div>

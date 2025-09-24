@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaTruck, FaPlus, FaComments, FaArrowLeft } from 'react-icons/fa';
+import { Truck, Plus, MessageSquare, ArrowLeft } from 'lucide-react';
 
 
 const MyOrders: React.FC = () => {
@@ -8,7 +8,7 @@ const MyOrders: React.FC = () => {
     return (
         <div className="p-4 sm:p-6 md:p-8 space-y-8">
             <div className="flex justify-center items-center space-x-4">
-                <FaTruck className="w-10 h-10 text-[#007BFF]"/>
+                <Truck className="w-10 h-10 text-blue-600"/>
                 <h1 className="text-3xl font-bold text-gray-800">Meus Pedidos</h1>
             </div>
 
@@ -23,23 +23,23 @@ const MyOrders: React.FC = () => {
             </div>
 
             <div className="flex justify-center items-center flex-wrap gap-2 sm:gap-4">
-                 <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 bg-[#007BFF] text-white font-semibold py-2 px-4 rounded-lg hover:opacity-90 transition-opacity">
-                    <FaArrowLeft className="w-5 h-5"/>
+                 <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-700 transition-opacity">
+                    <ArrowLeft className="w-5 h-5"/>
                     <span>Voltar ao Menu</span>
                 </button>
-                <button className="flex items-center space-x-2 bg-[#007BFF] text-white font-semibold py-2 px-4 rounded-lg hover:opacity-90 transition-opacity">
-                    <FaPlus className="w-5 h-5"/>
+                <button className="flex items-center space-x-2 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-opacity">
+                    <Plus className="w-5 h-5"/>
                     <span>Novo Pedido</span>
                 </button>
-                 <button className="flex items-center space-x-2 bg-[#007BFF] text-white font-semibold py-2 px-4 rounded-lg hover:opacity-90 transition-opacity">
-                    <FaComments className="w-5 h-5"/>
+                 <button className="flex items-center space-x-2 bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition-opacity">
+                    <MessageSquare className="w-5 h-5"/>
                     <span>Solicitar Suporte</span>
                 </button>
             </div>
 
             <div className="bg-white rounded-xl shadow-lg overflow-x-auto">
                 <table className="w-full text-sm text-left">
-                    <thead className="bg-[#007BFF] text-white">
+                    <thead className="bg-gray-800 text-white">
                         <tr>
                             <th scope="col" className="px-6 py-4 font-semibold">Email Cliente</th>
                             <th scope="col" className="px-6 py-4 font-semibold">Placa</th>

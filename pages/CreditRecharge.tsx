@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaArrowLeft, FaQrcode } from 'react-icons/fa';
+import { ArrowLeft, QrCode } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface CreditRechargeProps {
@@ -73,11 +73,11 @@ const CreditRecharge: React.FC<CreditRechargeProps> = () => { // Removed setCurr
 
                 <div className="space-y-4 pt-4">
                     <button className="w-full flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-600 text-white text-lg font-bold p-4 rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        <FaQrcode className="w-6 h-6 mr-3" />
+                        <QrCode className="w-6 h-6 mr-3" />
                         Gerar QR Code
                     </button>
                      <button onClick={() => navigate('/dashboard')} className="w-full flex items-center justify-center space-x-2 text-gray-600 font-semibold py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors">
-                        <FaArrowLeft className="w-4 h-4" />
+                        <ArrowLeft className="w-4 h-4" />
                         <span>Voltar ao Início</span>
                     </button>
                 </div>
