@@ -72,7 +72,7 @@ const CreditRecharge: React.FC<CreditRechargeProps> = () => { // Removed setCurr
                 </div>
 
                 <div className="space-y-4 pt-4">
-                    <button className="w-full flex items-center justify-center bg-gradient-to-r from-[#003399] to-[#002672] text-white text-lg font-bold p-4 rounded-xl hover:from-[#002672] hover:to-[#001a4d] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    <button className="w-full flex items-center justify-center bg-[#002672] text-white text-lg font-bold p-4 rounded-xl hover:bg-[#001a4d] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                         <QrCode className="w-6 h-6 mr-3" />
                         Gerar QR Code
                     </button>

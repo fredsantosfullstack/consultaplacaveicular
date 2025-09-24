@@ -21,7 +21,7 @@ const PriceTable: React.FC<PriceTableProps> = ({ priceData }) => {
         <h1 className="text-2xl font-bold text-gray-800 mb-6">Tabela de Preços Padrão</h1>
         <div className="overflow-hidden border border-gray-200 rounded-lg">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-700">
+            <thead className="bg-[#002672]">
               <tr>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                   Nome Exibição
@@ -44,7 +44,7 @@ const PriceTable: React.FC<PriceTableProps> = ({ priceData }) => {
         <div className="mt-6">
           <button
             onClick={() => navigate('/dashboard')}
-            className="flex items-center space-x-2 bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors"
+            className="flex items-center space-x-2 bg-[#002672] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#001a4d] transition-colors"
           >
             <FaArrowLeft />
             <span>Voltar</span>
