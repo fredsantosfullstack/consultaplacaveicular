@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { GoldenVeicularLogo } from '../components/Icons';
 import { Mail, Lock, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface LoginProps {
   onLogin: (username: string) => void;
@@ -130,15 +131,28 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           </fieldset>
         </form>
 
-        <div className="text-center text-sm text-gray-600 pt-4 border-t border-gray-200 space-y-1">
-          <p>
-            Não tem uma conta?{' '}
-            <a href="#" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
-              Cadastre-se
-            </a>
-          </p>
+        <div className="text-center text-sm text-gray-600 pt-4 border-t border-gray-200 space-y-4">
+          <div className="space-y-1">
+            <p>
+              Não tem uma conta?{' '}
+              <a href="#" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
+                Cadastre-se
+              </a>
+            </p>
+            <p className="text-xs text-gray-500">
+              Entre em contato com o suporte para criar seu acesso.
+            </p>
+          </div>
           <p className="text-xs text-gray-500">
-            Entre em contato com o suporte para criar seu acesso.
+            Ao clicar em Entrar você concorda com os{' '}
+            <Link to="/terms-of-use" target="_blank" className="font-medium text-blue-600 hover:text-blue-500">
+              Termos de Uso
+            </Link>{' '}
+            e{' '}
+            <Link to="/terms-of-use" target="_blank" className="font-medium text-blue-600 hover:text-blue-500">
+              Política de Proteção de Dados
+            </Link>{' '}
+            da Golden Veicular.
           </p>
         </div>
       </div>

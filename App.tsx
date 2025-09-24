@@ -21,7 +21,7 @@ import PriceTable from './pages/PriceTable';
 
 // Mock user data
 const initialUsers: User[] = [
-    { id: '1', name: 'Admin User', email: 'admin@portaldospachantes.com.br', role: 'admin', status: 'active', avatarUrl: 'https://i.pravatar.cc/150?u=admin@example.com' },
+    { id: '1', name: 'Admin User', email: 'admin@goldenveicular.com.br', role: 'admin', status: 'active', avatarUrl: 'https://i.pravatar.cc/150?u=admin@example.com' },
     { id: '2', name: 'Fredson Luz', email: 'fredson@example.com', role: 'user', status: 'active', avatarUrl: 'https://i.pravatar.cc/150?u=fredson@example.com' },
     { id: '3', name: 'Maria Souza', email: 'maria.s@example.com', role: 'user', status: 'inactive', avatarUrl: 'https://i.pravatar.cc/150?u=maria.s@example.com' },
     { id: '4', name: 'Carlos Pereira', email: 'carlos.p@example.com', role: 'user', status: 'active', avatarUrl: 'https://i.pravatar.cc/150?u=carlos.p@example.com' },
@@ -153,7 +153,7 @@ const App: React.FC = () => {
     const handleLogin = (name: string) => {
         setIsLoggedIn(true);
         setUsername(name.split('@')[0]);
-        if (name.toLowerCase() === 'admin@portaldospachantes.com.br') {
+        if (name.toLowerCase() === 'admin@goldenveicular.com.br') {
             setUserRole('admin');
         } else {
             setUserRole('user');
