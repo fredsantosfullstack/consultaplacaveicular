@@ -162,7 +162,7 @@ const App: React.FC = () => {
                 <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
                     <ToastProvider /> {/* Add ToastProvider here */}
                     <Routes>
-                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/dashboard" element={<Dashboard onSelectConsultation={() => {}} />} />
                         <Route path="/profile" element={<UserProfile />} />
                         <Route path="/consultation-history" element={<ConsultationHistory />} />
                         <Route path="/my-orders" element={<MyOrders />} />

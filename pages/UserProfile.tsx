@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { Page } from '../types';
+import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaUserCircle, FaPencilAlt } from 'react-icons/fa';
 
-interface UserProfileProps {
-  setCurrentPage: (page: Page) => void;
-}
-
-const UserProfile: React.FC<UserProfileProps> = ({ setCurrentPage }) => {
+const UserProfile: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
+  const navigate = useNavigate();
+  
   // Dummy user data
   const [userData, setUserData] = useState({
     name: 'João da Silva',
@@ -33,7 +31,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ setCurrentPage }) => {
     <div className="p-4 sm:p-6 md:p-8 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Meu Perfil</h1>
-        <button onClick={() => setCurrentPage(Page.Dashboard)} className="flex items-center space-x-2 text-blue-600 hover:underline">
+        <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-600 hover:underline">
           <FaArrowLeft className="w-4 h-4" />
           <span>Voltar</span>
         </button>
