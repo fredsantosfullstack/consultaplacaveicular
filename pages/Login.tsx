@@ -127,6 +127,26 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             </div>
           </fieldset>
         </form>
+
+        <div className="text-center text-sm text-gray-600">
+          <p className="mb-4">
+            Não tem uma conta?{' '}
+            <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
+              Cadastre-se
+            </a>
+          </p>
+          <p className="text-xs">
+            Ao clicar em "Entrar", você concorda com os{' '}
+            <a href="#" className="text-blue-600 hover:text-blue-500">
+              Termos de Uso
+            </a>{' '}
+            e{' '}
+            <a href="#" className="text-blue-600 hover:text-blue-500">
+              Política de Proteção de Dados
+            </a>{' '}
+            da Golden Veicular.
+          </p>
+        </div>
       </div>
     </div>
     {showSuccess && <SuccessModal />}
