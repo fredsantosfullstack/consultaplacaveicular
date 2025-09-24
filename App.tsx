@@ -83,8 +83,33 @@ const App: React.FC = () => {
 
     const [activeNotificationToasts, setActiveNotificationToasts] = useState<Record<string, string>>({});
 
-    const [users, setUsers] = useState<User[]>(initialUsers);
-    const [priceList, setPriceList] = useState(initialPriceData);
+    const [users, setUsers] = useState<User[]>(() => {
+        try {
+            const saved = localStorage.getItem('appUsers');
+            return saved ? JSON.parse(saved) : initialUsers;
+        } catch (error) {
+            console.error("Failed to parse users from localStorage", error);
+            return initialUsers;
+        }
+    });
+
+    const [priceList, setPriceList] = useState(() => {
+        try {
+            const saved = localStorage.getItem('appPriceList');
+            return saved ? JSON.parse(saved) : initialPriceData;
+        } catch (error) {
+            console.error("Failed to parse price list from localStorage", error);
+            return initialPriceData;
+        }
+    });
+
+    useEffect(() => {
+        localStorage.setItem('appUsers', JSON.stringify(users));
+    }, [users]);
+
+    useEffect(() => {
+        localStorage.setItem('appPriceList', JSON.stringify(priceList));
+    }, [priceList]);
 
     useEffect(() => {
         const savedLogo = localStorage.getItem('customLogo');
