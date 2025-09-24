@@ -15,8 +15,8 @@ import TermsOfUse from './pages/TermsOfUse';
 import { FaBell, FaTimes } from 'react-icons/fa';
 import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import toast from 'react-hot-toast'; // Import toast
-import ToastProvider from './components/ToastProvider'; // Import ToastProvider
-import NotificationToast from './components/NotificationToast'; // Import NotificationToast
+import ToastProvider from './src/components/ToastProvider'; // Import ToastProvider
+import NotificationToast from './src/components/NotificationToast'; // Import NotificationToast
 
 // Mock user data
 const initialUsers: User[] = [
