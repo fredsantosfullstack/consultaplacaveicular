@@ -1,17 +1,18 @@
 import React from 'react';
-import { Page } from '../types';
 import { FaArrowLeft } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 interface FinancialHistoryProps {
-  setCurrentPage: (page: Page) => void;
+  // setCurrentPage: (page: Page) => void; // Removed
 }
 
-const FinancialHistory: React.FC<FinancialHistoryProps> = ({ setCurrentPage }) => {
+const FinancialHistory: React.FC<FinancialHistoryProps> = () => { // Removed setCurrentPage from props
   const recharges: { client: string, value: string, status: string, date: string }[] = [];
+  const navigate = useNavigate();
 
   return (
     <div className="p-8 space-y-6">
-      <button onClick={() => setCurrentPage(Page.Dashboard)} className="flex items-center space-x-2 text-blue-600 hover:underline">
+      <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-600 hover:underline">
         <FaArrowLeft className="w-4 h-4" />
         <span>Voltar</span>
       </button>

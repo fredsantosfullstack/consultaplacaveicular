@@ -1,9 +1,9 @@
 import React from 'react';
-import { Page } from '../types';
 import { FaCalendarAlt } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 interface ConsultationHistoryProps {
-  setCurrentPage: (page: Page) => void;
+  // setCurrentPage: (page: Page) => void; // Removed
 }
 
 const FilterInput: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
@@ -13,7 +13,8 @@ const FilterInput: React.FC<{ label: string; children: React.ReactNode }> = ({ l
     </div>
 );
 
-const ConsultationHistory: React.FC<ConsultationHistoryProps> = ({ setCurrentPage }) => {
+const ConsultationHistory: React.FC<ConsultationHistoryProps> = () => { // Removed setCurrentPage from props
+    const navigate = useNavigate();
     return (
         <div className="p-4 sm:p-6 md:p-8 space-y-6">
             <h1 className="text-center text-3xl font-bold text-[#007BFF]">Histórico de Consultas</h1>
@@ -72,7 +73,7 @@ const ConsultationHistory: React.FC<ConsultationHistoryProps> = ({ setCurrentPag
             </div>
 
              <div className="text-center pt-4">
-                <button onClick={() => setCurrentPage(Page.Dashboard)} className="bg-[#007BFF] text-white font-bold py-2 px-8 rounded-lg hover:opacity-90 transition-opacity">
+                <button onClick={() => navigate('/dashboard')} className="bg-[#007BFF] text-white font-bold py-2 px-8 rounded-lg hover:opacity-90 transition-opacity">
                     Voltar
                 </button>
              </div>

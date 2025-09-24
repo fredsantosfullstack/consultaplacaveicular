@@ -14,23 +14,9 @@ import Admin from './pages/Admin';
 import TermsOfUse from './pages/TermsOfUse';
 import { FaBell, FaTimes } from 'react-icons/fa';
 import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
-
-const NotificationModal: React.FC<{ notification: Notification; onClose: () => void }> = ({ notification, onClose }) => (
-    <div className="fixed top-5 right-5 bg-white w-full max-w-sm rounded-xl shadow-2xl p-5 border border-gray-200 animate-fade-in z-50">
-        <div className="flex items-start space-x-4">
-            <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-                 <FaBell className="w-5 h-5 text-red-500" />
-            </div>
-            <div className="flex-1">
-                <h3 className="font-bold text-gray-800">{notification.title}</h3>
-                <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
-            </div>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
-                <FaTimes />
-            </button>
-        </div>
-    </div>
-);
+import toast from 'react-hot-toast'; // Import toast
+import ToastProvider from './components/ToastProvider'; // Import ToastProvider
+import NotificationToast from './components/NotificationToast'; // Import NotificationToast
 
 // Mock user data
 const initialUsers: User[] = [
@@ -59,49 +45,78 @@ const App: React.FC = () => {
         }
     });
 
-    const [visibleNotification, setVisibleNotification] = useState<Notification | null>(null);
+    // State to keep track of currently displayed notification toasts by their ID
+    const [activeNotificationToasts, setActiveNotificationToasts] = useState<Record<string, string>>({}); // { notificationId: toastId }
+
     const [users, setUsers] = useState<User[]>(initialUsers);
 
     useEffect(() => {
         localStorage.setItem('appNotifications', JSON.stringify(notifications));
     }, [notifications]);
 
+    const handleDismissNotification = (notificationId: string, toastId: string) => {
+        const dismissedNotifications = JSON.parse(localStorage.getItem('dismissedNotifications') || '{}');
+        dismissedNotifications[notificationId] = new Date().getTime();
+        localStorage.setItem('dismissedNotifications', JSON.stringify(dismissedNotifications));
+        toast.dismiss(toastId);
+        setActiveNotificationToasts(prev => {
+            const newState = { ...prev };
+            delete newState[notificationId];
+            return newState;
+        });
+    };
+
     useEffect(() => {
         if (userRole === 'user') {
             const dismissedNotifications = JSON.parse(localStorage.getItem('dismissedNotifications') || '{}');
             
-            // Find the first active notification that should be displayed
-            const notificationToShow = notifications.find(n => {
-                if (n.status !== 'active') {
-                    return false; // Not active, don't show
+            notifications.forEach(n => {
+                if (n.status !== 'active' || activeNotificationToasts[n.id]) {
+                    return; // Not active, or already shown
                 }
                 
                 const lastDismissedTime = dismissedNotifications[n.id];
-
-                // If never dismissed, show it
-                if (!lastDismissedTime) {
-                    return true;
-                }
-                
-                // If dismissed, check frequency
                 const now = new Date().getTime();
-                switch (n.frequency) {
-                    case 'hourly':
-                        return now - lastDismissedTime > 3600000;
-                    case 'daily':
-                        return now - lastDismissedTime > 86400000;
-                    case 'once':
-                    default:
-                        return false; // Dismissed once, never show again
+                let shouldShow = false;
+
+                if (!lastDismissedTime) {
+                    shouldShow = true; // Never dismissed, show it
+                } else {
+                    // If dismissed, check frequency
+                    switch (n.frequency) {
+                        case 'hourly':
+                            shouldShow = now - lastDismissedTime > 3600000;
+                            break;
+                        case 'daily':
+                            shouldShow = now - lastDismissedTime > 86400000;
+                            break;
+                        case 'once':
+                        default:
+                            shouldShow = false; // Dismissed once, never show again
+                            break;
+                    }
+                }
+
+                if (shouldShow) {
+                    const newToastId = toast.custom((t) => (
+                        <NotificationToast
+                            notification={n}
+                            toastId={t.id}
+                            onClose={() => handleDismissNotification(n.id, t.id)}
+                        />
+                    ), {
+                        id: n.id, // Use notification ID as toast ID for easier management
+                        duration: Infinity, // Keep open until dismissed
+                    });
+                    setActiveNotificationToasts(prev => ({ ...prev, [n.id]: newToastId }));
                 }
             });
-            
-            setVisibleNotification(notificationToShow || null);
         } else {
-            // If user is admin, never show notifications
-            setVisibleNotification(null);
+            // If user is admin, dismiss all active notification toasts
+            Object.values(activeNotificationToasts).forEach(toastId => toast.dismiss(toastId));
+            setActiveNotificationToasts({});
         }
-    }, [notifications, userRole]); // Removed currentPage from dependencies
+    }, [notifications, userRole, activeNotificationToasts]);
 
     const handleLogin = (name: string) => {
         setIsLoggedIn(true);
@@ -126,15 +141,6 @@ const App: React.FC = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
-    const handleCloseNotification = () => {
-        if (visibleNotification) {
-            const dismissedNotifications = JSON.parse(localStorage.getItem('dismissedNotifications') || '{}');
-            dismissedNotifications[visibleNotification.id] = new Date().getTime();
-            localStorage.setItem('dismissedNotifications', JSON.stringify(dismissedNotifications));
-            setVisibleNotification(null);
-        }
-    };
-
     if (!isLoggedIn) {
         return <Login onLogin={handleLogin} />;
     }
@@ -154,7 +160,7 @@ const App: React.FC = () => {
                     toggleSidebar={toggleSidebar}
                 />
                 <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
-                    {visibleNotification && <NotificationModal notification={visibleNotification} onClose={handleCloseNotification} />}
+                    <ToastProvider /> {/* Add ToastProvider here */}
                     <Routes>
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/profile" element={<UserProfile />} />

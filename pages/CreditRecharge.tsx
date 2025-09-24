@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { Page } from '../types';
 import { FaArrowLeft, FaQrcode } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 interface CreditRechargeProps {
-  setCurrentPage: (page: Page) => void;
+  // setCurrentPage: (page: Page) => void; // Removed
 }
 
 const presetAmounts = [20, 50, 80, 100, 150, 200];
 
-const CreditRecharge: React.FC<CreditRechargeProps> = ({ setCurrentPage }) => {
+const CreditRecharge: React.FC<CreditRechargeProps> = () => { // Removed setCurrentPage from props
     const [amount, setAmount] = useState('');
     const [selectedPreset, setSelectedPreset] = useState<number | null>(null);
+    const navigate = useNavigate();
 
     const handlePresetClick = (preset: number) => {
         setAmount(preset.toString());
@@ -75,7 +76,7 @@ const CreditRecharge: React.FC<CreditRechargeProps> = ({ setCurrentPage }) => {
                         <FaQrcode className="w-6 h-6 mr-3" />
                         Gerar QR Code
                     </button>
-                     <button onClick={() => setCurrentPage(Page.Dashboard)} className="w-full flex items-center justify-center space-x-2 text-gray-600 font-semibold py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors">
+                     <button onClick={() => navigate('/dashboard')} className="w-full flex items-center justify-center space-x-2 text-gray-600 font-semibold py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors">
                         <FaArrowLeft className="w-4 h-4" />
                         <span>Voltar ao Início</span>
                     </button>

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Page, Notification, User } from '../types';
+import { Notification, User } from '../types';
 import { 
     FaArrowLeft, FaUsers, FaChartBar, FaBell, FaPlus, FaTrash, FaPauseCircle, FaPlayCircle, 
     FaEdit, FaUserPlus, FaSearchDollar, FaMoneyBillWave, FaTimes, FaSave, FaFilter, FaCalendarAlt
 } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import { showSuccess, showError } from '../utils/toast'; // Import toast utilities
 
 interface AdminProps {
-  setCurrentPage: (page: Page) => void;
   notifications: Notification[];
   setNotifications: React.Dispatch<React.SetStateAction<Notification[]>>;
   users: User[];
@@ -53,6 +54,8 @@ const UserModal: React.FC<{
         e.preventDefault();
         if(formData.name && formData.email) {
             onSave(formData);
+        } else {
+            showError("Nome e Email são obrigatórios.");
         }
     }
 
@@ -108,8 +111,10 @@ const UserManagement: React.FC<{ users: User[], setUsers: React.Dispatch<React.S
     const handleSaveUser = (user: User) => {
         if(editingUser) { // update
             setUsers(prev => prev.map(u => u.id === user.id ? user : u));
+            showSuccess("Usuário atualizado com sucesso!");
         } else { // create
             setUsers(prev => [user, ...prev]);
+            showSuccess("Usuário adicionado com sucesso!");
         }
         setIsModalOpen(false);
         setEditingUser(null);
@@ -128,6 +133,7 @@ const UserManagement: React.FC<{ users: User[], setUsers: React.Dispatch<React.S
     const handleDeleteUser = (id: string) => {
         if(window.confirm('Tem certeza que deseja excluir este usuário?')) {
             setUsers(prev => prev.filter(u => u.id !== id));
+            showSuccess("Usuário excluído com sucesso!");
         }
     }
     
@@ -232,7 +238,10 @@ const NotificationManagement: React.FC<{
 
     const handleAddNotification = (e: React.FormEvent) => {
         e.preventDefault();
-        if(!title.trim() || !message.trim()) return;
+        if(!title.trim() || !message.trim()) {
+            showError("Título e Mensagem são obrigatórios.");
+            return;
+        }
 
         const newNotification: Notification = {
             id: new Date().toISOString(),
@@ -245,14 +254,25 @@ const NotificationManagement: React.FC<{
         setTitle('');
         setMessage('');
         setFrequency('once');
+        showSuccess("Aviso adicionado com sucesso!");
     };
 
     const handleToggleStatus = (id: string) => {
-        setNotifications(prev => prev.map(n => n.id === id ? { ...n, status: n.status === 'active' ? 'paused' : 'active' } : n));
+        setNotifications(prev => prev.map(n => {
+            if (n.id === id) {
+                const newStatus = n.status === 'active' ? 'paused' : 'active';
+                showSuccess(`Aviso ${newStatus === 'active' ? 'reativado' : 'pausado'} com sucesso!`);
+                return { ...n, status: newStatus };
+            }
+            return n;
+        }));
     };
 
     const handleDelete = (id: string) => {
-        setNotifications(prev => prev.filter(n => n.id !== id));
+        if(window.confirm('Tem certeza que deseja excluir este aviso?')) {
+            setNotifications(prev => prev.filter(n => n.id !== id));
+            showSuccess("Aviso excluído com sucesso!");
+        }
     };
 
 
@@ -324,14 +344,15 @@ const NotificationManagement: React.FC<{
 };
 
 
-const Admin: React.FC<AdminProps> = ({ setCurrentPage, notifications, setNotifications, users, setUsers }) => {
+const Admin: React.FC<AdminProps> = ({ notifications, setNotifications, users, setUsers }) => {
     const [activeSection, setActiveSection] = useState('dashboard');
+    const navigate = useNavigate();
 
     const renderDashboard = () => (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Painel do Administrador</h1>
-                <button onClick={() => setCurrentPage(Page.Dashboard)} className="flex items-center space-x-2 text-blue-600 hover:underline">
+                <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-600 hover:underline">
                     <FaArrowLeft className="w-4 h-4" />
                     <span>Voltar ao Início</span>
                 </button>
