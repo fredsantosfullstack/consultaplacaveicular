@@ -5,7 +5,7 @@ import {
     FaEdit, FaUserPlus, FaSearchDollar, FaMoneyBillWave, FaTimes, FaSave, FaFilter, FaCalendarAlt
 } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { showSuccess, showError } from '../utils/toast'; // Import toast utilities
+import { showSuccess, showError } from '../src/utils/toast'; // Import toast utilities
 
 interface AdminProps {
   notifications: Notification[];
