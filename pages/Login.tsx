@@ -10,7 +10,7 @@ const SuccessModal = () => (
   <div className="fixed inset-0 bg-gray-900 bg-opacity-60 flex items-center justify-center z-50 animate-fade-in">
     <div className="bg-white rounded-lg shadow-2xl p-8 max-w-sm w-full text-center transform transition-all duration-300 ease-out animate-scale-in">
        <div className="mx-auto mb-4 w-20 h-20">
-            <svg className="checkmark-svg" xmlns="http://www.w.org/2000/svg" viewBox="0 0 52 52">
+            <svg className="checkmark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
                 <circle className="checkmark-circle" cx="26" cy="26" r="25"/>
                 <path className="checkmark-check" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
             </svg>
