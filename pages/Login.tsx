@@ -48,12 +48,10 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     <>
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex flex-col justify-center items-center p-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-gray-200/50 p-8 sm:p-10 space-y-6">
-        <div className="text-center space-y-4">
+        <div className="text-center">
             <div className="flex justify-center">
                 <PortalDespachantesLogo className="h-16 w-auto" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-800 tracking-tight">Bem-vindo de volta!</h1>
-            <p className="text-gray-500">Acesse sua conta para continuar.</p>
         </div>
         
         <form onSubmit={handleLogin} className="space-y-6">
