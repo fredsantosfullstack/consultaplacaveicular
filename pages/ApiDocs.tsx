@@ -29,13 +29,13 @@ const ApiDocs: React.FC<ApiDocsProps> = () => { // Removed setCurrentPage from p
   
   return (
     <div className="p-8 space-y-6">
-      <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-500 hover:underline">
+      <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-[#002672] hover:underline">
         <ArrowLeft className="w-4 h-4" />
         <span>Voltar</span>
       </button>
 
       <div className="flex items-center space-x-3 text-2xl font-bold text-gray-800">
-          <FileText className="w-8 h-8 text-blue-500" />
+          <FileText className="w-8 h-8 text-[#002672]" />
           <h1>Documentação das APIs - CRV / CRLV</h1>
       </div>
       <p className="text-gray-600">Solicite sua chave de acesso no menu inicial, via WhatsApp do suporte.</p>
@@ -56,7 +56,7 @@ const ApiDocs: React.FC<ApiDocsProps> = () => { // Removed setCurrentPage from p
 
        <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
           <div className="flex items-center space-x-3">
-            <FileText className="w-6 h-6 text-blue-500" />
+            <FileText className="w-6 h-6 text-[#002672]" />
             <h2 className="text-xl font-semibold text-gray-700">Endpoints disponíveis</h2>
           </div>
           <p className="text-gray-600">Use o menu abaixo para escolher o tipo de consulta que deseja Integrar.</p>
@@ -64,17 +64,17 @@ const ApiDocs: React.FC<ApiDocsProps> = () => { // Removed setCurrentPage from p
       
        <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
           <div className="flex items-center space-x-3">
-            <FileText className="w-6 h-6 text-blue-500" />
+            <FileText className="w-6 h-6 text-[#002672]" />
             <h2 className="text-xl font-semibold text-gray-700">Guia de Requisições API</h2>
           </div>
           <div className="space-y-4">
             <label htmlFor="consulta-tipo" className="block text-sm font-medium text-gray-700">Escolha o tipo de consulta:</label>
-            <select id="consulta-tipo" className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 transition-colors duration-200">
+            <select id="consulta-tipo" className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-[#002672] focus:outline-none focus:ring-2 focus:ring-[#002672]/20 transition-colors duration-200">
                 <option>Consulta Base Estadual (POST)</option>
                 <option>Consulta CRLV-E (POST)</option>
                 <option>Consulta Débitos (POST)</option>
             </select>
-            <button onClick={handleShowExample} className="bg-blue-500 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 transition-colors duration-200">
+            <button onClick={handleShowExample} className="bg-[#002672] text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-[#001a4d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#002672] transition-colors duration-200">
                 Mostrar exemplo de request
             </button>
             {requestExample && <CodeBlock>{requestExample}</CodeBlock>}

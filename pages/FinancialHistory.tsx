@@ -12,7 +12,7 @@ const FinancialHistory: React.FC<FinancialHistoryProps> = () => { // Removed set
 
   return (
     <div className="p-8 space-y-6">
-      <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-600 hover:underline">
+      <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-[#002672] hover:underline">
         <ArrowLeft className="w-4 h-4" />
         <span>Voltar</span>
       </button>

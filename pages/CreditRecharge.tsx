@@ -50,7 +50,7 @@ const CreditRecharge: React.FC<CreditRechargeProps> = () => { // Removed setCurr
                             value={amount}
                             onChange={handleAmountChange}
                             placeholder="0"
-                            className="w-48 text-center bg-transparent text-6xl font-bold text-blue-500 tracking-tight border-none p-0 focus:ring-0"
+                            className="w-48 text-center bg-transparent text-6xl font-bold text-[#002672] tracking-tight border-none p-0 focus:ring-0"
                         />
                     </div>
                 </div>
@@ -62,8 +62,8 @@ const CreditRecharge: React.FC<CreditRechargeProps> = () => { // Removed setCurr
                             onClick={() => handlePresetClick(p)} 
                             className={`w-full py-3 rounded-lg font-semibold text-center transition-all duration-200 border-2 ${
                                 selectedPreset === p 
-                                ? 'bg-blue-500 text-white border-blue-500 shadow-lg scale-105' 
-                                : 'bg-white text-gray-700 border-gray-200 hover:border-blue-400 hover:bg-blue-50'
+                                ? 'bg-[#002672] text-white border-[#002672] shadow-lg scale-105' 
+                                : 'bg-white text-gray-700 border-gray-200 hover:border-[#002672] hover:bg-[#002672]/10'
                             }`}
                         >
                            R$ {p}
@@ -72,7 +72,7 @@ const CreditRecharge: React.FC<CreditRechargeProps> = () => { // Removed setCurr
                 </div>
 
                 <div className="space-y-4 pt-4">
-                    <button className="w-full flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-500 text-white text-lg font-bold p-4 rounded-xl hover:from-blue-500 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    <button className="w-full flex items-center justify-center bg-gradient-to-r from-[#003399] to-[#002672] text-white text-lg font-bold p-4 rounded-xl hover:from-[#002672] hover:to-[#001a4d] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                         <QrCode className="w-6 h-6 mr-3" />
                         Gerar QR Code
                     </button>

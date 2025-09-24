@@ -8,13 +8,13 @@ const MyOrders: React.FC = () => {
     return (
         <div className="p-4 sm:p-6 md:p-8 space-y-8">
             <div className="flex justify-center items-center space-x-4">
-                <Truck className="w-10 h-10 text-blue-500"/>
+                <Truck className="w-10 h-10 text-[#002672]"/>
                 <h1 className="text-3xl font-bold text-gray-800">Meus Pedidos</h1>
             </div>
 
             <div className="flex justify-center items-center space-x-2">
                 <label htmlFor="status-filter" className="font-medium text-gray-700">Filtrar por status:</label>
-                <select id="status-filter" className="w-auto p-2 border border-gray-300 bg-gray-50 rounded-lg shadow-sm text-gray-900 focus:bg-white focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 transition-colors duration-200">
+                <select id="status-filter" className="w-auto p-2 border border-gray-300 bg-gray-50 rounded-lg shadow-sm text-gray-900 focus:bg-white focus:border-[#002672] focus:outline-none focus:ring-2 focus:ring-[#002672]/20 transition-colors duration-200">
                     <option>Todos</option>
                     <option>Pendente</option>
                     <option>Em Andamento</option>
@@ -27,7 +27,7 @@ const MyOrders: React.FC = () => {
                     <ArrowLeft className="w-5 h-5"/>
                     <span>Voltar ao Menu</span>
                 </button>
-                <button className="flex items-center space-x-2 bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition-opacity">
+                <button className="flex items-center space-x-2 bg-[#002672] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#001a4d] transition-opacity">
                     <Plus className="w-5 h-5"/>
                     <span>Novo Pedido</span>
                 </button>
