@@ -15,10 +15,10 @@ const TermsOfUse: React.FC = () => {
     <div className="p-4 sm:p-6 md:p-8 space-y-6">
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-3">
-          <Book className="w-8 h-8 text-[#002672]" />
+          <Book className="w-8 h-8 text-[#0f43aa]" />
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Termos de Uso e Política de Privacidade</h1>
         </div>
-        <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-[#002672] hover:underline">
+        <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-[#0f43aa] hover:underline">
           <ArrowLeft className="w-4 h-4" />
           <span>Voltar</span>
         </button>

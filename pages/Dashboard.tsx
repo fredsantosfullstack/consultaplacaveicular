@@ -52,11 +52,11 @@ const ConsultationCard: React.FC<{
     icon: React.ElementType;
     onConsult: () => void;
 }> = ({ title, isNew, fields, description, icon: Icon, onConsult }) => (
-    <div className="bg-white rounded-lg border border-gray-200 p-5 flex flex-col group transition-all duration-300 hover:border-[#002672] hover:shadow-lg">
+    <div className="bg-white rounded-lg border border-gray-200 p-5 flex flex-col group transition-all duration-300 hover:border-[#0f43aa] hover:shadow-lg">
         <div className="flex-grow space-y-3 flex flex-col">
             <div className="flex justify-between items-start">
                 <div className="flex items-center space-x-3">
-                    <Icon className="w-6 h-6 text-[#002672] flex-shrink-0" />
+                    <Icon className="w-6 h-6 text-[#0f43aa] flex-shrink-0" />
                     <h3 className="font-bold text-gray-800">{title}</h3>
                 </div>
                 {isNew && <span className="bg-yellow-100 text-yellow-800 text-xs font-bold px-2.5 py-1 rounded-full whitespace-nowrap">NOVO</span>}
@@ -74,7 +74,7 @@ const ConsultationCard: React.FC<{
             </div>
         </div>
         <div className="pt-4">
-             <button onClick={onConsult} className="w-full bg-[#002672] text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-[#001a4d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#002672] transition-colors duration-200">Consultar</button>
+             <button onClick={onConsult} className="w-full bg-[#0f43aa] text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-[#0c3688] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0f43aa] transition-colors duration-200">Consultar</button>
         </div>
     </div>
 );

@@ -37,8 +37,8 @@ const NavItem: React.FC<NavItemProps> = ({ icon: Icon, label, to, onClick }) => 
       <Link
         to={to}
         onClick={onClick}
-        className={`flex items-center p-3 rounded-lg text-gray-300 hover:bg-[#001a4d] hover:text-white transition-colors duration-200 ${
-          isActive ? 'bg-[#002672] text-white' : ''
+        className={`flex items-center p-3 rounded-lg text-gray-300 hover:bg-white/10 hover:text-white transition-colors duration-200 ${
+          isActive ? 'bg-[#0f43aa] text-white' : ''
         }`}
       >
         <Icon className="w-5 h-5 mr-3" />

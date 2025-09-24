@@ -13,7 +13,7 @@ const Footer: React.FC = () => {
             href="https://fredsonluz.dev.br"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-bold text-[#002672] hover:underline"
+            className="font-bold text-[#0f43aa] hover:underline"
           >
             Fredson Luz
           </a>

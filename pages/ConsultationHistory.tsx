@@ -21,7 +21,7 @@ const ConsultationHistory: React.FC<ConsultationHistoryProps> = () => { // Remov
             
             <div className="bg-white p-6 rounded-xl shadow-lg flex items-center justify-center flex-wrap gap-4">
                 <FilterInput label="Tipo de Consulta">
-                    <select className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-[#002672] focus:outline-none focus:ring-2 focus:ring-[#002672]/20 transition-colors duration-200">
+                    <select className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-[#0f43aa] focus:outline-none focus:ring-2 focus:ring-[#0f43aa]/20 transition-colors duration-200">
                         <option>Todos</option>
                     </select>
                 </FilterInput>
@@ -32,7 +32,7 @@ const ConsultationHistory: React.FC<ConsultationHistoryProps> = () => { // Remov
                           placeholder="dd/mm/aaaa"
                           onFocus={(e) => (e.target.type = 'date')}
                           onBlur={(e) => (e.target.type = 'text')}
-                          className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 placeholder:text-gray-500 focus:bg-white focus:border-[#002672] focus:outline-none focus:ring-2 focus:ring-[#002672]/20 transition-colors duration-200" 
+                          className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 placeholder:text-gray-500 focus:bg-white focus:border-[#0f43aa] focus:outline-none focus:ring-2 focus:ring-[#0f43aa]/20 transition-colors duration-200" 
                         />
                          <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 w-5 h-5" />
                     </div>
@@ -44,13 +44,13 @@ const ConsultationHistory: React.FC<ConsultationHistoryProps> = () => { // Remov
                           placeholder="dd/mm/aaaa"
                           onFocus={(e) => (e.target.type = 'date')}
                           onBlur={(e) => (e.target.type = 'text')}
-                          className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 placeholder:text-gray-500 focus:bg-white focus:border-[#002672] focus:outline-none focus:ring-2 focus:ring-[#002672]/20 transition-colors duration-200" 
+                          className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 placeholder:text-gray-500 focus:bg-white focus:border-[#0f43aa] focus:outline-none focus:ring-2 focus:ring-[#0f43aa]/20 transition-colors duration-200" 
                         />
                         <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 w-5 h-5" />
                     </div>
                 </FilterInput>
                  <FilterInput label="Mostrar">
-                    <select className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-[#002672] focus:outline-none focus:ring-2 focus:ring-[#002672]/20 transition-colors duration-200">
+                    <select className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-[#0f43aa] focus:outline-none focus:ring-2 focus:ring-[#0f43aa]/20 transition-colors duration-200">
                         <option>10</option>
                         <option>25</option>
                         <option>50</option>
@@ -73,7 +73,7 @@ const ConsultationHistory: React.FC<ConsultationHistoryProps> = () => { // Remov
             </div>
 
              <div className="text-center pt-4">
-                <button onClick={() => navigate('/dashboard')} className="bg-[#002672] text-white font-bold py-2 px-8 rounded-lg hover:bg-[#001a4d] transition-opacity">
+                <button onClick={() => navigate('/dashboard')} className="bg-[#0f43aa] text-white font-bold py-2 px-8 rounded-lg hover:bg-[#0c3688] transition-opacity">
                     Voltar
                 </button>
              </div>

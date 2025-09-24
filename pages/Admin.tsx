@@ -26,7 +26,7 @@ interface AdminProps {
 
 const AdminCard: React.FC<{ icon: React.ElementType; title: string; description: string; onClick: () => void }> = ({ icon: Icon, title, description, onClick }) => (
     <button onClick={onClick} className="bg-white p-6 rounded-xl shadow-lg flex items-center space-x-4 text-left hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-        <Icon className="w-10 h-10 text-[#002672] flex-shrink-0" />
+        <Icon className="w-10 h-10 text-[#0f43aa] flex-shrink-0" />
         <div>
             <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
             <p className="text-gray-600">{description}</p>
@@ -79,33 +79,33 @@ const UserModal: React.FC<{
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700">URL da Foto de Perfil</label>
-                        <input type="text" name="avatarUrl" value={formData.avatarUrl} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-[#002672]" placeholder="https://example.com/avatar.png" />
+                        <input type="text" name="avatarUrl" value={formData.avatarUrl} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-[#0f43aa]" placeholder="https://example.com/avatar.png" />
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Nome</label>
-                        <input type="text" name="name" value={formData.name} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-[#002672]" required />
+                        <input type="text" name="name" value={formData.name} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-[#0f43aa]" required />
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" name="email" value={formData.email} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-[#002672]" required />
+                        <input type="email" name="email" value={formData.email} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-[#0f43aa]" required />
                     </div>
                      <div>
                         <label className="block text-sm font-medium text-gray-700">Função</label>
-                        <select name="role" value={formData.role} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-[#002672]">
+                        <select name="role" value={formData.role} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-[#0f43aa]">
                             <option value="user">Usuário</option>
                             <option value="admin">Administrador</option>
                         </select>
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Status</label>
-                        <select name="status" value={formData.status} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-[#002672]">
+                        <select name="status" value={formData.status} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-[#0f43aa]">
                             <option value="active">Ativo</option>
                             <option value="inactive">Inativo</option>
                         </select>
                     </div>
                     <div className="flex justify-end space-x-3">
                         <button type="button" onClick={onClose} className="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Cancelar</button>
-                        <button type="submit" className="bg-[#002672] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#001a4d] flex items-center space-x-2"><Save /><span>Salvar</span></button>
+                        <button type="submit" className="bg-[#0f43aa] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#0c3688] flex items-center space-x-2"><Save /><span>Salvar</span></button>
                     </div>
                 </form>
             </div>
@@ -150,11 +150,11 @@ const UserManagement: React.FC<{ users: User[], setUsers: React.Dispatch<React.S
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-gray-800">Gerenciar Usuários</h2>
-                <button onClick={goBack} className="flex items-center space-x-2 text-[#002672] hover:underline"><ArrowLeft /><span>Voltar</span></button>
+                <button onClick={goBack} className="flex items-center space-x-2 text-[#0f43aa] hover:underline"><ArrowLeft /><span>Voltar</span></button>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-lg">
                 <div className="flex justify-end mb-4">
-                    <button onClick={openAddModal} className="bg-[#002672] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#001a4d] flex items-center space-x-2"><UserPlus /><span>Adicionar Usuário</span></button>
+                    <button onClick={openAddModal} className="bg-[#0f43aa] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#0c3688] flex items-center space-x-2"><UserPlus /><span>Adicionar Usuário</span></button>
                 </div>
                 <div className="space-y-1">
                     {users.map(user => (
@@ -174,7 +174,7 @@ const UserManagement: React.FC<{ users: User[], setUsers: React.Dispatch<React.S
                                 </span>
                             </div>
                             <div className="flex items-center space-x-2">
-                                <button onClick={() => openEditModal(user)} className="text-[#002672] hover:text-[#001a4d] p-2 rounded-full hover:bg-[#002672]/10 transition-colors">
+                                <button onClick={() => openEditModal(user)} className="text-[#0f43aa] hover:text-[#0c3688] p-2 rounded-full hover:bg-[#0f43aa]/10 transition-colors">
                                     <Pencil className="w-5 h-5" />
                                 </button>
                                 <button onClick={() => handleDeleteUser(user.id)} className="text-red-600 hover:text-red-800 p-2 rounded-full hover:bg-red-100 transition-colors">
@@ -194,10 +194,10 @@ const ReportDashboard: React.FC<{ goBack: () => void, userCount: number }> = ({ 
     <div className="space-y-6">
         <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold text-gray-800">Relatórios</h2>
-            <button onClick={goBack} className="flex items-center space-x-2 text-[#002672] hover:underline"><ArrowLeft /><span>Voltar</span></button>
+            <button onClick={goBack} className="flex items-center space-x-2 text-[#0f43aa] hover:underline"><ArrowLeft /><span>Voltar</span></button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <StatCard icon={Users} title="Total de Usuários" value={userCount.toString()} color="border-[#002672]" />
+            <StatCard icon={Users} title="Total de Usuários" value={userCount.toString()} color="border-[#0f43aa]" />
             <StatCard icon={Search} title="Consultas (Hoje)" value="1,204" color="border-green-500" />
             <StatCard icon={Landmark} title="Receita Total" value="R$ 45.890,50" color="border-yellow-500" />
         </div>
@@ -240,7 +240,7 @@ const NotificationManagement: React.FC<{
          <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-gray-800">Gerenciar Notificações</h2>
-                <button onClick={goBack} className="flex items-center space-x-2 text-[#002672] hover:underline"><ArrowLeft /><span>Voltar</span></button>
+                <button onClick={goBack} className="flex items-center space-x-2 text-[#0f43aa] hover:underline"><ArrowLeft /><span>Voltar</span></button>
             </div>
             <form onSubmit={handleAddNotification} className="bg-white p-6 rounded-xl shadow-lg space-y-4">
                  <h3 className="text-lg font-semibold text-gray-700">Criar Novo Aviso</h3>
@@ -251,7 +251,7 @@ const NotificationManagement: React.FC<{
                     <option value="hourly">A cada hora</option>
                     <option value="daily">A cada 24 horas</option>
                  </select>
-                 <button type="submit" className="bg-[#002672] text-white p-2 rounded hover:bg-[#001a4d]">Adicionar Aviso</button>
+                 <button type="submit" className="bg-[#0f43aa] text-white p-2 rounded hover:bg-[#0c3688]">Adicionar Aviso</button>
             </form>
             <div className="bg-white p-6 rounded-xl shadow-lg space-y-3">
                 {notifications.map(n => (
@@ -311,7 +311,7 @@ const PriceModal: React.FC<{
                     </div>
                     <div className="flex justify-end space-x-3">
                         <button type="button" onClick={onClose} className="bg-gray-200 p-2 rounded">Cancelar</button>
-                        <button type="submit" className="bg-[#002672] text-white p-2 rounded hover:bg-[#001a4d]">Salvar</button>
+                        <button type="submit" className="bg-[#0f43aa] text-white p-2 rounded hover:bg-[#0c3688]">Salvar</button>
                     </div>
                 </form>
             </div>
@@ -356,11 +356,11 @@ const PriceManagement: React.FC<{ priceList: PriceItem[], setPriceList: React.Di
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-gray-800">Gerenciar Tabela de Preços</h2>
-                <button onClick={goBack} className="flex items-center space-x-2 text-[#002672] hover:underline"><ArrowLeft /><span>Voltar</span></button>
+                <button onClick={goBack} className="flex items-center space-x-2 text-[#0f43aa] hover:underline"><ArrowLeft /><span>Voltar</span></button>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-lg">
                 <div className="flex justify-end mb-4">
-                    <button onClick={openAddModal} className="bg-[#002672] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#001a4d] flex items-center space-x-2"><Plus /><span>Adicionar Item</span></button>
+                    <button onClick={openAddModal} className="bg-[#0f43aa] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#0c3688] flex items-center space-x-2"><Plus /><span>Adicionar Item</span></button>
                 </div>
                 <div className="space-y-2">
                     {priceList.map(item => (
@@ -369,7 +369,7 @@ const PriceManagement: React.FC<{ priceList: PriceItem[], setPriceList: React.Di
                             <div className="flex-grow"></div>
                             <span className="text-gray-600 mr-6">R$ {item.price.toFixed(2).replace('.', ',')}</span>
                             <div className="flex items-center space-x-2">
-                                <button onClick={() => openEditModal(item)} className="text-[#002672] p-2 rounded-full hover:bg-[#002672]/10"><Pencil /></button>
+                                <button onClick={() => openEditModal(item)} className="text-[#0f43aa] p-2 rounded-full hover:bg-[#0f43aa]/10"><Pencil /></button>
                                 <button onClick={() => handleDeleteItem(item.id)} className="text-red-600 p-2 rounded-full hover:bg-red-100"><Trash2 /></button>
                             </div>
                         </div>
@@ -404,18 +404,18 @@ const AppearanceManagement: React.FC<{
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-gray-800">Personalizar Aparência</h2>
-                <button onClick={goBack} className="flex items-center space-x-2 text-[#002672] hover:underline"><ArrowLeft /><span>Voltar</span></button>
+                <button onClick={goBack} className="flex items-center space-x-2 text-[#0f43aa] hover:underline"><ArrowLeft /><span>Voltar</span></button>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-lg space-y-6">
                 <div>
                     <h3 className="text-lg font-semibold text-gray-700">Logo do Sistema</h3>
                     <p className="text-sm text-gray-500 mb-2">Use uma imagem com fundo transparente (PNG) para melhores resultados. Altura recomendada: 64px.</p>
-                    <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, setLogoUrl, 'customLogo')} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#002672]/10 file:text-[#002672] hover:file:bg-[#002672]/20"/>
+                    <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, setLogoUrl, 'customLogo')} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#0f43aa]/10 file:text-[#0f43aa] hover:file:bg-[#0f43aa]/20"/>
                 </div>
                 <div>
                     <h3 className="text-lg font-semibold text-gray-700">Favicon</h3>
                     <p className="text-sm text-gray-500 mb-2">Use uma imagem quadrada (ex: 32x32 ou 64x64 pixels).</p>
-                    <input type="file" accept="image/png, image/x-icon, image/svg+xml" onChange={(e) => handleFileChange(e, setFaviconUrl, 'customFavicon')} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#002672]/10 file:text-[#002672] hover:file:bg-[#002672]/20"/>
+                    <input type="file" accept="image/png, image/x-icon, image/svg+xml" onChange={(e) => handleFileChange(e, setFaviconUrl, 'customFavicon')} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#0f43aa]/10 file:text-[#0f43aa] hover:file:bg-[#0f43aa]/20"/>
                 </div>
             </div>
         </div>
@@ -459,7 +459,7 @@ const Admin: React.FC<AdminProps> = ({ notifications, setNotifications, users, s
 
   return (
     <div className="p-8 space-y-6">
-      <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-[#002672] hover:underline mb-4">
+      <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-[#0f43aa] hover:underline mb-4">
           <ArrowLeft />
           <span>Voltar ao Início</span>
       </button>
