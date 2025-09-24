@@ -31,7 +31,7 @@ const UserProfile: React.FC = () => {
     <div className="p-4 sm:p-6 md:p-8 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Meu Perfil</h1>
-        <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-600 hover:underline">
+        <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-500 hover:underline">
           <ArrowLeft className="w-4 h-4" />
           <span>Voltar</span>
         </button>
@@ -63,23 +63,23 @@ const UserProfile: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-500">Nome Completo</label>
-                        <input type="text" name="name" value={userData.name} onChange={handleInputChange} disabled={!isEditing} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors duration-200"/>
+                        <input type="text" name="name" value={userData.name} onChange={handleInputChange} disabled={!isEditing} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed focus:bg-white focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 transition-colors duration-200"/>
                     </div>
                      <div>
                         <label className="block text-sm font-medium text-gray-500">CPF/CNPJ</label>
-                        <input type="text" name="document" value={userData.document} onChange={handleInputChange} disabled={!isEditing} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors duration-200"/>
+                        <input type="text" name="document" value={userData.document} onChange={handleInputChange} disabled={!isEditing} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed focus:bg-white focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 transition-colors duration-200"/>
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-500">Email</label>
-                        <input type="email" name="email" value={userData.email} onChange={handleInputChange} disabled={!isEditing} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors duration-200"/>
+                        <input type="email" name="email" value={userData.email} onChange={handleInputChange} disabled={!isEditing} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed focus:bg-white focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 transition-colors duration-200"/>
                     </div>
                      <div>
                         <label className="block text-sm font-medium text-gray-500">Telefone</label>
-                        <input type="tel" name="phone" value={userData.phone} onChange={handleInputChange} disabled={!isEditing} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors duration-200"/>
+                        <input type="tel" name="phone" value={userData.phone} onChange={handleInputChange} disabled={!isEditing} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed focus:bg-white focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 transition-colors duration-200"/>
                     </div>
                      <div>
                         <label className="block text-sm font-medium text-gray-500">Empresa</label>
-                        <input type="text" name="company" value={userData.company} onChange={handleInputChange} disabled={!isEditing} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors duration-200"/>
+                        <input type="text" name="company" value={userData.company} onChange={handleInputChange} disabled={!isEditing} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed focus:bg-white focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 transition-colors duration-200"/>
                     </div>
                 </div>
 

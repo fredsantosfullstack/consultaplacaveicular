@@ -4,7 +4,7 @@ export const GoldenVeicularLogo: React.FC<React.SVGProps<SVGSVGElement>> = (prop
     <svg viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg" {...props}>
         <style>
             {`.title { font-family: Arial, sans-serif; font-size: 32px; font-weight: bold; fill: #B58F4E; }`}
-            {`.car-main { fill: #0000FF; }`}
+            {`.car-main { fill: #3B82F6; }`}
             {`.car-window { fill: #B58F4E; }`}
         </style>
         <path className="car-main" d="M20,55 C25,45 40,40 60,40 L260,40 C280,40 295,45 300,55 L290,60 L30,60 Z" />

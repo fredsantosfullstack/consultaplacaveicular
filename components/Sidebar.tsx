@@ -19,6 +19,7 @@ interface SidebarProps {
   toggleSidebar: () => void;
   userRole: 'user' | 'admin';
   handleLogout: () => void;
+  logoUrl: string | null;
 }
 
 interface NavItemProps {
@@ -47,7 +48,7 @@ const NavItem: React.FC<NavItemProps> = ({ icon: Icon, label, to, onClick }) => 
   );
 };
 
-const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, toggleSidebar, userRole, handleLogout }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, toggleSidebar, userRole, handleLogout, logoUrl }) => {
   return (
     <>
       <aside
@@ -56,7 +57,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, toggleSidebar, userRol
         } md:relative md:translate-x-0 transition-transform duration-300 ease-in-out z-30 flex flex-col`}
       >
         <div className="flex items-center justify-center h-20">
-            <GoldenVeicularLogoWhite className="w-auto h-16" />
+            {logoUrl ? (
+                <img src={logoUrl} alt="Logo" className="h-16 w-auto object-contain" />
+            ) : (
+                <GoldenVeicularLogoWhite className="w-auto h-16" />
+            )}
         </div>
         
         <nav className="mt-4 flex-1">

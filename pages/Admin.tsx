@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Notification, User } from '../types';
 import { 
     ArrowLeft, Users, BarChart, Bell, Plus, Trash2, PauseCircle, PlayCircle, 
-    Pencil, UserPlus, Search, Landmark, X, Save, Filter, Tags
+    Pencil, UserPlus, Search, Landmark, X, Save, Filter, Tags, Palette
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { showSuccess, showError } from '../src/utils/toast';
@@ -20,6 +20,8 @@ interface AdminProps {
   setUsers: React.Dispatch<React.SetStateAction<User[]>>;
   priceList: PriceItem[];
   setPriceList: React.Dispatch<React.SetStateAction<PriceItem[]>>;
+  setLogoUrl: (url: string) => void;
+  setFaviconUrl: (url: string) => void;
 }
 
 const AdminCard: React.FC<{ icon: React.ElementType; title: string; description: string; onClick: () => void }> = ({ icon: Icon, title, description, onClick }) => (
@@ -77,33 +79,33 @@ const UserModal: React.FC<{
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700">URL da Foto de Perfil</label>
-                        <input type="text" name="avatarUrl" value={formData.avatarUrl} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-blue-500" placeholder="https://example.com/avatar.png" />
+                        <input type="text" name="avatarUrl" value={formData.avatarUrl} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-blue-400" placeholder="https://example.com/avatar.png" />
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Nome</label>
-                        <input type="text" name="name" value={formData.name} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-blue-500" required />
+                        <input type="text" name="name" value={formData.name} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-blue-400" required />
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" name="email" value={formData.email} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-blue-500" required />
+                        <input type="email" name="email" value={formData.email} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-blue-400" required />
                     </div>
                      <div>
                         <label className="block text-sm font-medium text-gray-700">Função</label>
-                        <select name="role" value={formData.role} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-blue-500">
+                        <select name="role" value={formData.role} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-blue-400">
                             <option value="user">Usuário</option>
                             <option value="admin">Administrador</option>
                         </select>
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Status</label>
-                        <select name="status" value={formData.status} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-blue-500">
+                        <select name="status" value={formData.status} onChange={handleChange} className="mt-1 w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-blue-400">
                             <option value="active">Ativo</option>
                             <option value="inactive">Inativo</option>
                         </select>
                     </div>
                     <div className="flex justify-end space-x-3">
                         <button type="button" onClick={onClose} className="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Cancelar</button>
-                        <button type="submit" className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center space-x-2"><Save /><span>Salvar</span></button>
+                        <button type="submit" className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 flex items-center space-x-2"><Save /><span>Salvar</span></button>
                     </div>
                 </form>
             </div>
@@ -148,11 +150,11 @@ const UserManagement: React.FC<{ users: User[], setUsers: React.Dispatch<React.S
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-gray-800">Gerenciar Usuários</h2>
-                <button onClick={goBack} className="flex items-center space-x-2 text-blue-600 hover:underline"><ArrowLeft /><span>Voltar</span></button>
+                <button onClick={goBack} className="flex items-center space-x-2 text-blue-500 hover:underline"><ArrowLeft /><span>Voltar</span></button>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-lg">
                 <div className="flex justify-end mb-4">
-                    <button onClick={openAddModal} className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center space-x-2"><UserPlus /><span>Adicionar Usuário</span></button>
+                    <button onClick={openAddModal} className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 flex items-center space-x-2"><UserPlus /><span>Adicionar Usuário</span></button>
                 </div>
                 <div className="space-y-1">
                     {users.map(user => (
@@ -172,7 +174,7 @@ const UserManagement: React.FC<{ users: User[], setUsers: React.Dispatch<React.S
                                 </span>
                             </div>
                             <div className="flex items-center space-x-2">
-                                <button onClick={() => openEditModal(user)} className="text-blue-600 hover:text-blue-800 p-2 rounded-full hover:bg-blue-100 transition-colors">
+                                <button onClick={() => openEditModal(user)} className="text-blue-500 hover:text-blue-700 p-2 rounded-full hover:bg-blue-100 transition-colors">
                                     <Pencil className="w-5 h-5" />
                                 </button>
                                 <button onClick={() => handleDeleteUser(user.id)} className="text-red-600 hover:text-red-800 p-2 rounded-full hover:bg-red-100 transition-colors">
@@ -192,10 +194,10 @@ const ReportDashboard: React.FC<{ goBack: () => void, userCount: number }> = ({ 
     <div className="space-y-6">
         <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold text-gray-800">Relatórios</h2>
-            <button onClick={goBack} className="flex items-center space-x-2 text-blue-600 hover:underline"><ArrowLeft /><span>Voltar</span></button>
+            <button onClick={goBack} className="flex items-center space-x-2 text-blue-500 hover:underline"><ArrowLeft /><span>Voltar</span></button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <StatCard icon={Users} title="Total de Usuários" value={userCount.toString()} color="border-blue-500" />
+            <StatCard icon={Users} title="Total de Usuários" value={userCount.toString()} color="border-blue-400" />
             <StatCard icon={Search} title="Consultas (Hoje)" value="1,204" color="border-green-500" />
             <StatCard icon={Landmark} title="Receita Total" value="R$ 45.890,50" color="border-yellow-500" />
         </div>
@@ -238,7 +240,7 @@ const NotificationManagement: React.FC<{
          <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-gray-800">Gerenciar Notificações</h2>
-                <button onClick={goBack} className="flex items-center space-x-2 text-blue-600 hover:underline"><ArrowLeft /><span>Voltar</span></button>
+                <button onClick={goBack} className="flex items-center space-x-2 text-blue-500 hover:underline"><ArrowLeft /><span>Voltar</span></button>
             </div>
             <form onSubmit={handleAddNotification} className="bg-white p-6 rounded-xl shadow-lg space-y-4">
                  <h3 className="text-lg font-semibold text-gray-700">Criar Novo Aviso</h3>
@@ -249,7 +251,7 @@ const NotificationManagement: React.FC<{
                     <option value="hourly">A cada hora</option>
                     <option value="daily">A cada 24 horas</option>
                  </select>
-                 <button type="submit" className="bg-blue-600 text-white p-2 rounded">Adicionar Aviso</button>
+                 <button type="submit" className="bg-blue-500 text-white p-2 rounded">Adicionar Aviso</button>
             </form>
             <div className="bg-white p-6 rounded-xl shadow-lg space-y-3">
                 {notifications.map(n => (
@@ -309,7 +311,7 @@ const PriceModal: React.FC<{
                     </div>
                     <div className="flex justify-end space-x-3">
                         <button type="button" onClick={onClose} className="bg-gray-200 p-2 rounded">Cancelar</button>
-                        <button type="submit" className="bg-blue-600 text-white p-2 rounded">Salvar</button>
+                        <button type="submit" className="bg-blue-500 text-white p-2 rounded">Salvar</button>
                     </div>
                 </form>
             </div>
@@ -354,11 +356,11 @@ const PriceManagement: React.FC<{ priceList: PriceItem[], setPriceList: React.Di
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-gray-800">Gerenciar Tabela de Preços</h2>
-                <button onClick={goBack} className="flex items-center space-x-2 text-blue-600 hover:underline"><ArrowLeft /><span>Voltar</span></button>
+                <button onClick={goBack} className="flex items-center space-x-2 text-blue-500 hover:underline"><ArrowLeft /><span>Voltar</span></button>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-lg">
                 <div className="flex justify-end mb-4">
-                    <button onClick={openAddModal} className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center space-x-2"><Plus /><span>Adicionar Item</span></button>
+                    <button onClick={openAddModal} className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 flex items-center space-x-2"><Plus /><span>Adicionar Item</span></button>
                 </div>
                 <div className="space-y-2">
                     {priceList.map(item => (
@@ -367,7 +369,7 @@ const PriceManagement: React.FC<{ priceList: PriceItem[], setPriceList: React.Di
                             <div className="flex-grow"></div>
                             <span className="text-gray-600 mr-6">R$ {item.price.toFixed(2).replace('.', ',')}</span>
                             <div className="flex items-center space-x-2">
-                                <button onClick={() => openEditModal(item)} className="text-blue-600 p-2 rounded-full hover:bg-blue-100"><Pencil /></button>
+                                <button onClick={() => openEditModal(item)} className="text-blue-500 p-2 rounded-full hover:bg-blue-100"><Pencil /></button>
                                 <button onClick={() => handleDeleteItem(item.id)} className="text-red-600 p-2 rounded-full hover:bg-red-100"><Trash2 /></button>
                             </div>
                         </div>
@@ -379,7 +381,48 @@ const PriceManagement: React.FC<{ priceList: PriceItem[], setPriceList: React.Di
     );
 };
 
-const Admin: React.FC<AdminProps> = ({ notifications, setNotifications, users, setUsers, priceList, setPriceList }) => {
+const AppearanceManagement: React.FC<{
+    setLogoUrl: (url: string) => void;
+    setFaviconUrl: (url: string) => void;
+    goBack: () => void;
+}> = ({ setLogoUrl, setFaviconUrl, goBack }) => {
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, setter: (url: string) => void, storageKey: string) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result as string;
+                setter(base64String);
+                localStorage.setItem(storageKey, base64String);
+                showSuccess("Imagem atualizada com sucesso!");
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    return (
+        <div className="space-y-6">
+            <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold text-gray-800">Personalizar Aparência</h2>
+                <button onClick={goBack} className="flex items-center space-x-2 text-blue-500 hover:underline"><ArrowLeft /><span>Voltar</span></button>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow-lg space-y-6">
+                <div>
+                    <h3 className="text-lg font-semibold text-gray-700">Logo do Sistema</h3>
+                    <p className="text-sm text-gray-500 mb-2">Use uma imagem com fundo transparente (PNG) para melhores resultados. Altura recomendada: 64px.</p>
+                    <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, setLogoUrl, 'customLogo')} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-500 hover:file:bg-blue-100"/>
+                </div>
+                <div>
+                    <h3 className="text-lg font-semibold text-gray-700">Favicon</h3>
+                    <p className="text-sm text-gray-500 mb-2">Use uma imagem quadrada (ex: 32x32 ou 64x64 pixels).</p>
+                    <input type="file" accept="image/png, image/x-icon, image/svg+xml" onChange={(e) => handleFileChange(e, setFaviconUrl, 'customFavicon')} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-500 hover:file:bg-blue-100"/>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const Admin: React.FC<AdminProps> = ({ notifications, setNotifications, users, setUsers, priceList, setPriceList, setLogoUrl, setFaviconUrl }) => {
     const [activeSection, setActiveSection] = useState('dashboard');
     const navigate = useNavigate();
 
@@ -391,6 +434,7 @@ const Admin: React.FC<AdminProps> = ({ notifications, setNotifications, users, s
                 <AdminCard icon={BarChart} title="Visualizar Relatórios" description="Acompanhe as métricas do sistema." onClick={() => setActiveSection('reports')} />
                 <AdminCard icon={Bell} title="Gerenciar Notificações" description="Crie e gerencie avisos para os usuários." onClick={() => setActiveSection('notifications')} />
                 <AdminCard icon={Tags} title="Gerenciar Tabela de Preços" description="Edite os serviços e valores." onClick={() => setActiveSection('prices')} />
+                <AdminCard icon={Palette} title="Personalizar Aparência" description="Altere o logo e o favicon do sistema." onClick={() => setActiveSection('appearance')} />
             </div>
         </div>
     );
@@ -406,6 +450,8 @@ const Admin: React.FC<AdminProps> = ({ notifications, setNotifications, users, s
                 return <ReportDashboard goBack={goBackToDashboard} userCount={users.length} />;
             case 'prices':
                 return <PriceManagement priceList={priceList} setPriceList={setPriceList} goBack={goBackToDashboard} />;
+            case 'appearance':
+                return <AppearanceManagement setLogoUrl={setLogoUrl} setFaviconUrl={setFaviconUrl} goBack={goBackToDashboard} />;
             default:
                 return renderDashboard();
         }
@@ -413,7 +459,7 @@ const Admin: React.FC<AdminProps> = ({ notifications, setNotifications, users, s
 
   return (
     <div className="p-8 space-y-6">
-      <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-600 hover:underline mb-4">
+      <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-500 hover:underline mb-4">
           <ArrowLeft />
           <span>Voltar ao Início</span>
       </button>

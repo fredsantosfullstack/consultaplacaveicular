@@ -52,11 +52,11 @@ const ConsultationCard: React.FC<{
     icon: React.ElementType;
     onConsult: () => void;
 }> = ({ title, isNew, fields, description, icon: Icon, onConsult }) => (
-    <div className="bg-white rounded-lg border border-gray-200 p-5 flex flex-col group transition-all duration-300 hover:border-blue-500 hover:shadow-lg">
+    <div className="bg-white rounded-lg border border-gray-200 p-5 flex flex-col group transition-all duration-300 hover:border-blue-400 hover:shadow-lg">
         <div className="flex-grow space-y-3 flex flex-col">
             <div className="flex justify-between items-start">
                 <div className="flex items-center space-x-3">
-                    <Icon className="w-6 h-6 text-blue-600 flex-shrink-0" />
+                    <Icon className="w-6 h-6 text-blue-500 flex-shrink-0" />
                     <h3 className="font-bold text-gray-800">{title}</h3>
                 </div>
                 {isNew && <span className="bg-yellow-100 text-yellow-800 text-xs font-bold px-2.5 py-1 rounded-full whitespace-nowrap">NOVO</span>}

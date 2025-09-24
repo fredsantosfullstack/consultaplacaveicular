@@ -29,7 +29,7 @@ const ApiDocs: React.FC<ApiDocsProps> = () => { // Removed setCurrentPage from p
   
   return (
     <div className="p-8 space-y-6">
-      <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-600 hover:underline">
+      <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-500 hover:underline">
         <ArrowLeft className="w-4 h-4" />
         <span>Voltar</span>
       </button>
@@ -69,12 +69,12 @@ const ApiDocs: React.FC<ApiDocsProps> = () => { // Removed setCurrentPage from p
           </div>
           <div className="space-y-4">
             <label htmlFor="consulta-tipo" className="block text-sm font-medium text-gray-700">Escolha o tipo de consulta:</label>
-            <select id="consulta-tipo" className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors duration-200">
+            <select id="consulta-tipo" className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 transition-colors duration-200">
                 <option>Consulta Base Estadual (POST)</option>
                 <option>Consulta CRLV-E (POST)</option>
                 <option>Consulta Débitos (POST)</option>
             </select>
-            <button onClick={handleShowExample} className="bg-blue-600 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+            <button onClick={handleShowExample} className="bg-blue-500 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 transition-colors duration-200">
                 Mostrar exemplo de request
             </button>
             {requestExample && <CodeBlock>{requestExample}</CodeBlock>}

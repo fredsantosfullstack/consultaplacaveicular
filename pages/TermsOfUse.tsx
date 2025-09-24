@@ -18,7 +18,7 @@ const TermsOfUse: React.FC = () => {
           <Book className="w-8 h-8 text-blue-500" />
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Termos de Uso e Política de Privacidade</h1>
         </div>
-        <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-600 hover:underline">
+        <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-blue-500 hover:underline">
           <ArrowLeft className="w-4 h-4" />
           <span>Voltar</span>
         </button>

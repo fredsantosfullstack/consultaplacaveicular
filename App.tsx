@@ -67,6 +67,8 @@ const App: React.FC = () => {
     const [userRole, setUserRole] = useState<'user' | 'admin'>('user');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [balance, setBalance] = useState(123.45);
+    const [logoUrl, setLogoUrl] = useState<string | null>(null);
+    const [faviconUrl, setFaviconUrl] = useState<string | null>(null);
     const navigate = useNavigate();
     
     const [notifications, setNotifications] = useState<Notification[]>(() => {
@@ -83,6 +85,25 @@ const App: React.FC = () => {
 
     const [users, setUsers] = useState<User[]>(initialUsers);
     const [priceList, setPriceList] = useState(initialPriceData);
+
+    useEffect(() => {
+        const savedLogo = localStorage.getItem('customLogo');
+        const savedFavicon = localStorage.getItem('customFavicon');
+        if (savedLogo) setLogoUrl(savedLogo);
+        if (savedFavicon) setFaviconUrl(savedFavicon);
+    }, []);
+
+    useEffect(() => {
+        if (faviconUrl) {
+            let link: HTMLLinkElement | null = document.querySelector("link[rel~='icon']");
+            if (!link) {
+                link = document.createElement('link');
+                link.rel = 'icon';
+                document.head.appendChild(link);
+            }
+            link.href = faviconUrl;
+        }
+    }, [faviconUrl]);
 
     useEffect(() => {
         localStorage.setItem('appNotifications', JSON.stringify(notifications));
@@ -183,6 +204,7 @@ const App: React.FC = () => {
                 toggleSidebar={toggleSidebar}
                 userRole={userRole}
                 handleLogout={handleLogout}
+                logoUrl={logoUrl}
             />
             <div className="flex-1 flex flex-col overflow-hidden">
                 <Header 
@@ -204,7 +226,16 @@ const App: React.FC = () => {
                         {userRole === 'admin' && (
                             <Route 
                                 path="/admin" 
-                                element={<Admin notifications={notifications} setNotifications={setNotifications} users={users} setUsers={setUsers} priceList={priceList} setPriceList={setPriceList} />} 
+                                element={<Admin 
+                                    notifications={notifications} 
+                                    setNotifications={setNotifications} 
+                                    users={users} 
+                                    setUsers={setUsers} 
+                                    priceList={priceList} 
+                                    setPriceList={setPriceList}
+                                    setLogoUrl={setLogoUrl}
+                                    setFaviconUrl={setFaviconUrl}
+                                />} 
                             />
                         )}
                         <Route path="/api-docs" element={<ApiDocs />} />

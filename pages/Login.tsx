@@ -69,7 +69,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                   type="email"
                   autoComplete="email"
                   required
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 pl-12 pr-4 py-2.5 text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors duration-200"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 pl-12 pr-4 py-2.5 text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 transition-colors duration-200"
                   placeholder="seu@email.com"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
@@ -89,7 +89,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                   type="password"
                   autoComplete="current-password"
                   required
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 pl-12 pr-4 py-2.5 text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors duration-200"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 pl-12 pr-4 py-2.5 text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 transition-colors duration-200"
                   placeholder="Sua senha"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -105,7 +105,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-blue-500 focus:ring-blue-400 border-gray-300 rounded"
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
                   Lembrar-me
@@ -113,7 +113,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
               </div>
 
               <div className="text-sm">
-                <a href="#" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
+                <a href="#" className="font-medium text-blue-500 hover:text-blue-400 transition-colors">
                   Esqueceu sua senha?
                 </a>
               </div>
@@ -122,7 +122,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             <div className="pt-4">
               <button
                 type="submit"
-                className="group relative w-full flex justify-center items-center py-3 px-4 border border-transparent text-base font-semibold rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-blue-500/30 transform hover:-translate-y-0.5"
+                className="group relative w-full flex justify-center items-center py-3 px-4 border border-transparent text-base font-semibold rounded-lg text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 disabled:opacity-70 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-blue-400/30 transform hover:-translate-y-0.5"
               >
                 {isLoading ? 'Entrando...' : 'Entrar'}
                 {!isLoading && <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />}
@@ -135,18 +135,18 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           <div>
             <p>
               Não tem uma conta?{' '}
-              <a href="#" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
+              <a href="#" className="font-medium text-blue-500 hover:text-blue-400 transition-colors">
                 Cadastre-se
               </a>
             </p>
           </div>
           <p className="text-xs text-gray-500">
             Ao clicar em Entrar você concorda com os{' '}
-            <Link to="/terms-of-use" target="_blank" className="font-medium text-blue-600 hover:text-blue-500">
+            <Link to="/terms-of-use" target="_blank" className="font-medium text-blue-500 hover:text-blue-400">
               Termos de Uso
             </Link>{' '}
             e{' '}
-            <Link to="/terms-of-use" target="_blank" className="font-medium text-blue-600 hover:text-blue-500">
+            <Link to="/terms-of-use" target="_blank" className="font-medium text-blue-500 hover:text-blue-400">
               Política de Proteção de Dados
             </Link>{' '}
             da Golden Veicular.
