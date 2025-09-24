@@ -18,6 +18,7 @@ import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import ToastProvider from './src/components/ToastProvider';
 import NotificationToast from './src/components/NotificationToast';
+import PriceTable from './pages/PriceTable';
 
 // Mock user data
 const initialUsers: User[] = [
@@ -165,6 +166,7 @@ const App: React.FC = () => {
                         <Route path="/my-orders" element={<MyOrders />} />
                         <Route path="/financial-history" element={<FinancialHistory />} />
                         <Route path="/credit-recharge" element={<CreditRecharge />} />
+                        <Route path="/price-table" element={<PriceTable />} />
                         <Route path="/terms-of-use" element={<TermsOfUse />} />
                         {userRole === 'admin' && (
                             <Route 

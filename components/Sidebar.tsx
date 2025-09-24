@@ -9,6 +9,7 @@ import {
   FaSignOutAlt,
   FaBook,
   FaUserShield,
+  FaTags,
 } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -67,6 +68,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, toggleSidebar, userRol
             <NavItem icon={FaFolderOpen} label="Pedidos CRLV-E" to="/my-orders" onClick={toggleSidebar} />
             <NavItem icon={FaDollarSign} label="Financeiro" to="/financial-history" onClick={toggleSidebar} />
             <NavItem icon={FaCreditCard} label="Recarga de Crédito" to="/credit-recharge" onClick={toggleSidebar} />
+            <NavItem icon={FaTags} label="Tabela de Valores" to="/price-table" onClick={toggleSidebar} />
             <NavItem icon={FaBook} label="Termos de Uso" to="/terms-of-use" onClick={toggleSidebar} />
           </ul>
         </nav>
