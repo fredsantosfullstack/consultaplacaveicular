@@ -211,7 +211,7 @@ const NotificationManagement: React.FC<{
 }> = ({ notifications, setNotifications, goBack }) => {
     const [title, setTitle] = useState('');
     const [message, setMessage] = useState('');
-    const [frequency, setFrequency] = useState<'once' | 'hourly' | 'daily'>('once');
+    const [frequency, setFrequency] = useState<Notification['frequency']>('once');
 
     const handleAddNotification = (e: React.FormEvent) => {
         e.preventDefault();
@@ -250,6 +250,8 @@ const NotificationManagement: React.FC<{
                     <option value="once">Apenas uma vez</option>
                     <option value="hourly">A cada hora</option>
                     <option value="daily">A cada 24 horas</option>
+                    <option value="monthly">Mensal</option>
+                    <option value="yearly">Anual</option>
                  </select>
                  <button type="submit" className="bg-[#0f43aa] text-white p-2 rounded hover:bg-[#0c3688]">Adicionar Aviso</button>
             </form>

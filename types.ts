@@ -18,7 +18,7 @@ export interface Notification {
   title: string;
   message: string;
   status: 'active' | 'paused';
-  frequency: 'once' | 'hourly' | 'daily';
+  frequency: 'once' | 'hourly' | 'daily' | 'monthly' | 'yearly';
 }
 
 export interface User {

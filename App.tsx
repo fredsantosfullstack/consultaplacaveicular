@@ -164,10 +164,16 @@ const App: React.FC = () => {
                 } else {
                     switch (n.frequency) {
                         case 'hourly':
-                            shouldShow = now - lastDismissedTime > 3600000;
+                            shouldShow = now - lastDismissedTime > 3600000; // 1 hour
                             break;
                         case 'daily':
-                            shouldShow = now - lastDismissedTime > 86400000;
+                            shouldShow = now - lastDismissedTime > 86400000; // 24 hours
+                            break;
+                        case 'monthly':
+                            shouldShow = now - lastDismissedTime > 2592000000; // 30 days
+                            break;
+                        case 'yearly':
+                            shouldShow = now - lastDismissedTime > 31536000000; // 365 days
                             break;
                         case 'once':
                         default:
