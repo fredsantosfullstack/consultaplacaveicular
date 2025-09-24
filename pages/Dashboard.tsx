@@ -74,7 +74,7 @@ const ConsultationCard: React.FC<{
             </div>
         </div>
         <div className="pt-4">
-             <button onClick={onConsult} className="w-full bg-gray-900 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200">Consultar</button>
+             <button onClick={onConsult} className="w-full bg-[#002672] text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-[#001a4d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#002672] transition-colors duration-200">Consultar</button>
         </div>
     </div>
 );

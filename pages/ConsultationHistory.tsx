@@ -73,7 +73,7 @@ const ConsultationHistory: React.FC<ConsultationHistoryProps> = () => { // Remov
             </div>
 
              <div className="text-center pt-4">
-                <button onClick={() => navigate('/dashboard')} className="bg-gray-800 text-white font-bold py-2 px-8 rounded-lg hover:bg-gray-700 transition-opacity">
+                <button onClick={() => navigate('/dashboard')} className="bg-[#002672] text-white font-bold py-2 px-8 rounded-lg hover:bg-[#001a4d] transition-opacity">
                     Voltar
                 </button>
              </div>

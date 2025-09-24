@@ -23,7 +23,7 @@ const MyOrders: React.FC = () => {
             </div>
 
             <div className="flex justify-center items-center flex-wrap gap-2 sm:gap-4">
-                 <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-700 transition-opacity">
+                 <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 bg-[#002672] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#001a4d] transition-opacity">
                     <ArrowLeft className="w-5 h-5"/>
                     <span>Voltar ao Menu</span>
                 </button>
