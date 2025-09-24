@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { GoldenVeicularLogo } from '../components/Icons';
-import { FaUser, FaLock, FaArrowRight } from 'react-icons/fa';
+import { Mail, Lock, ArrowRight } from 'lucide-react';
 
 interface LoginProps {
   onLogin: (username: string) => void;
@@ -46,59 +46,57 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
   return (
     <>
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex flex-col justify-center items-center p-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-gray-200/50 p-8 sm:p-10 space-y-6">
-        <div className="text-center">
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center p-4">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-200/80 p-8 sm:p-10 space-y-6">
+        <div className="text-center mb-4">
             <div className="flex justify-center">
-                <GoldenVeicularLogo className="h-16 w-auto" />
+                <GoldenVeicularLogo className="h-20 w-auto" />
             </div>
         </div>
         
         <form onSubmit={handleLogin} className="space-y-6">
-          <fieldset disabled={isLoading}>
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <FaUser className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                  </div>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 pl-10 pr-4 py-2.5 text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors duration-200"
-                    placeholder="seu@email.com"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
+          <fieldset disabled={isLoading} className="space-y-4">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+              <div className="relative">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+                  <Mail className="h-5 w-5 text-gray-400" aria-hidden="true" />
                 </div>
-              </div>
-
-              <div>
-                <label htmlFor="password"className="block text-sm font-medium text-gray-700 mb-1">Senha</label>
-                <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <FaLock className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                  </div>
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 pl-10 pr-4 py-2.5 text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors duration-200"
-                    placeholder="Sua senha"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 pl-12 pr-4 py-2.5 text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors duration-200"
+                  placeholder="seu@email.com"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
               </div>
             </div>
 
-            <div className="flex items-center justify-between mt-4">
+            <div>
+              <label htmlFor="password"className="block text-sm font-medium text-gray-700 mb-1.5">Senha</label>
+              <div className="relative">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+                  <Lock className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                </div>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 pl-12 pr-4 py-2.5 text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors duration-200"
+                  placeholder="Sua senha"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-2">
               <div className="flex items-center">
                 <input
                   id="remember-me"
@@ -120,35 +118,24 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
               </div>
             </div>
 
-            <div className="pt-6">
+            <div className="pt-4">
               <button
                 type="submit"
-                className="group relative w-full flex justify-center items-center py-3 px-4 border border-transparent text-base font-semibold rounded-lg text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-blue-500/30 transform hover:-translate-y-0.5"
+                className="group relative w-full flex justify-center items-center py-3 px-4 border border-transparent text-base font-semibold rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-blue-500/30 transform hover:-translate-y-0.5"
               >
                 {isLoading ? 'Entrando...' : 'Entrar'}
-                {!isLoading && <FaArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />}
+                {!isLoading && <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />}
               </button>
             </div>
           </fieldset>
         </form>
 
-        <div className="text-center text-sm text-gray-600 pt-4">
-          <p className="mb-4">
+        <div className="text-center text-sm text-gray-600 pt-4 border-t border-gray-200">
+          <p>
             Não tem uma conta?{' '}
             <a href="#" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
               Cadastre-se
             </a>
-          </p>
-          <p className="text-xs leading-relaxed">
-            Ao clicar em "Entrar", você concorda com os{' '}
-            <a href="#" className="text-blue-600 hover:text-blue-500 transition-colors">
-              Termos de Uso
-            </a>{' '}
-            e{' '}
-            <a href="#" className="text-blue-600 hover:text-blue-500 transition-colors">
-              Política de Proteção de Dados
-            </a>{' '}
-            da Golden Veicular.
           </p>
         </div>
       </div>
