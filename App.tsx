@@ -205,7 +205,8 @@ const App: React.FC = () => {
     const handleLogin = (name: string) => {
         setIsLoggedIn(true);
         setUsername(name.split('@')[0]);
-        if (name.toLowerCase() === 'admin@goldenveicular.com.br') {
+        const email = name.toLowerCase();
+        if (email === 'admin@goldenveicular.com.br' || email === 'admin@app:goldenveicular.com.br') {
             setUserRole('admin');
         } else {
             setUserRole('user');
