@@ -3,12 +3,12 @@ import { Notification, User } from '../types';
 import { ArrowLeft, Users, BarChart, Bell, Tags, Palette } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-import AdminCard from '../src/components/admin/AdminCard';
-import UserManagement from '../src/components/admin/UserManagement';
-import ReportDashboard from '../src/components/admin/ReportDashboard';
-import NotificationManagement from '../src/components/admin/NotificationManagement';
-import PriceManagement from '../src/components/admin/PriceManagement';
-import AppearanceManagement from '../src/components/admin/AppearanceManagement';
+import AdminCard from '@/src/components/admin/AdminCard';
+import UserManagement from '@/src/components/admin/UserManagement';
+import ReportDashboard from '@/src/components/admin/ReportDashboard';
+import NotificationManagement from '@/src/components/admin/NotificationManagement';
+import PriceManagement from '@/src/components/admin/PriceManagement';
+import AppearanceManagement from '@/src/components/admin/AppearanceManagement';
 
 interface PriceItem {
   id: string;

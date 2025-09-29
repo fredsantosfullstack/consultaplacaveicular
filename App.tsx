@@ -62,9 +62,9 @@ const initialPriceData = [
 
 
 const App: React.FC = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [username, setUsername] = useState('');
-    const [userRole, setUserRole] = useState<'user' | 'admin'>('user');
+    const [isLoggedIn, setIsLoggedIn] = useState(() => !!localStorage.getItem('isLoggedIn'));
+    const [username, setUsername] = useState(() => localStorage.getItem('username') || '');
+    const [userRole, setUserRole] = useState<'user' | 'admin'>(() => (localStorage.getItem('userRole') as 'user' | 'admin') || 'user');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [balance, setBalance] = useState(123.45);
     const [logoUrl, setLogoUrl] = useState<string | null>(null);
@@ -203,18 +203,25 @@ const App: React.FC = () => {
     }, [notifications, userRole, activeNotificationToasts]);
 
     const handleLogin = (name: string) => {
-        setIsLoggedIn(true);
-        setUsername(name.split('@')[0]);
         const email = name.toLowerCase();
-        if (email === 'admin@goldenveicular.com.br' || email === 'admin@app:goldenveicular.com.br') {
-            setUserRole('admin');
-        } else {
-            setUserRole('user');
-        }
+        const role = (email === 'admin@goldenveicular.com.br' || email === 'admin@app:goldenveicular.com.br') ? 'admin' : 'user';
+        const user = name.split('@')[0];
+
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('username', user);
+        localStorage.setItem('userRole', role);
+
+        setIsLoggedIn(true);
+        setUsername(user);
+        setUserRole(role);
         navigate('/dashboard');
     };
 
     const handleLogout = () => {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('username');
+        localStorage.removeItem('userRole');
+
         setIsLoggedIn(false);
         setUsername('');
         setUserRole('user');
