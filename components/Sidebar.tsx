@@ -41,7 +41,7 @@ const NavItem: React.FC<NavItemProps> = ({ icon: Icon, label, to, onClick }) => 
           isActive ? 'bg-white/10 text-white' : ''
         }`}
       >
-        <Icon className="w-5 h-5 mr-3" />
+        <Icon className="w-5 h-5 mr-3 text-[#D2AE6D]" />
         <span className="font-medium text-sm">{label}</span>
       </Link>
     </li>
