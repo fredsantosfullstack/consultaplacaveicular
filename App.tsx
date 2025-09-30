@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider, useAuth } from './src/contexts/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -47,37 +47,35 @@ const AdminRoute = () => {
 
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <Routes>
-          {/* Rotas Públicas */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/cadastre-se" element={<SignUp />} />
-          <Route path="/recuperar-senha" element={<ForgotPassword />} />
-          <Route path="/resetar-senha" element={<ResetPassword />} /> {/* Supabase usa um link diferente, ajustaremos */}
-          <Route path="/termos-de-uso" element={<TermsOfUse />} />
+    <AuthProvider>
+      <Routes>
+        {/* Rotas Públicas */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/cadastre-se" element={<SignUp />} />
+        <Route path="/recuperar-senha" element={<ForgotPassword />} />
+        <Route path="/resetar-senha" element={<ResetPassword />} />
+        <Route path="/termos-de-uso" element={<TermsOfUse />} />
 
-          {/* Rotas Protegidas para Usuários Logados */}
-          <Route element={<ProtectedRoute />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/perfil" element={<UserProfile />} />
-            <Route path="/historico-consultas" element={<ConsultationHistory />} />
-            <Route path="/meus-pedidos" element={<MyOrders />} />
-            <Route path="/tabela-precos" element={<PriceTable />} />
-            <Route path="/recarga-creditos" element={<CreditRecharge />} />
-            <Route path="/docs-api" element={<ApiDocs />} />
+        {/* Rotas Protegidas para Usuários Logados */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/perfil" element={<UserProfile />} />
+          <Route path="/historico-consultas" element={<ConsultationHistory />} />
+          <Route path="/meus-pedidos" element={<MyOrders />} />
+          <Route path="/tabela-precos" element={<PriceTable />} />
+          <Route path="/recarga-creditos" element={<CreditRecharge />} />
+          <Route path="/docs-api" element={<ApiDocs />} />
 
-            {/* Rotas Protegidas para Admins (aninhadas) */}
-            <Route element={<AdminRoute />}>
-              <Route path="/admin" element={<Admin />} />
-            </Route>
+          {/* Rotas Protegidas para Admins (aninhadas) */}
+          <Route element={<AdminRoute />}>
+            <Route path="/admin" element={<Admin />} />
           </Route>
+        </Route>
 
-          {/* Redirecionamento Padrão */}
-          <Route path="*" element={<Navigate to="/dashboard" />} />
-        </Routes>
-      </AuthProvider>
-    </Router>
+        {/* Redirecionamento Padrão */}
+        <Route path="*" element={<Navigate to="/dashboard" />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 
