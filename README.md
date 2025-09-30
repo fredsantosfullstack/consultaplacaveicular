@@ -1,12 +1,16 @@
 # 🚗 Golden Veicular
 
-> Sistema completo de consulta veicular com painel administrativo
+Sistema moderno de consultas veiculares desenvolvido com **React + TypeScript + Vite + Supabase**.
 
 ## ✨ Funcionalidades
 
-### 👤 **Autenticação**
-- Login seguro com JWT
-- Controle de permissões (admin/usuário)
+- 🔐 **Autenticação completa** (Login, cadastro, Recuperação de senha)
+- 🚗 **Consultas veiculares** (Placa, Chassi, RENAVAM)
+- 💰 **Sistema de créditos** e recarga
+- 📊 **Painel administrativo** completo
+- 📱 **Design responsivo** e moderno
+- 🎨 **Logotipos customizáveis**
+- 📈 **Relatórios e estatísticas**
 - Sessões persistentes
 
 ### 🎛️ **Painel Administrativo**
@@ -24,22 +28,31 @@
 
 ### 🎨 **Interface**
 - Design responsivo
-- Performance otimizada
 - Tema customizável
 - Logotipos personalizáveis
 
 ## 🛠️ Tecnologias
 
-- **Frontend:** React 19 + TypeScript + Vite
+- **Frontend:** React 19, TypeScript, Vite
+- **Backend:** Supabase (PostgreSQL + Auth + Storage)
 - **Styling:** Tailwind CSS
 - **Icons:** Lucide React
-- **Backend:** PHP + MySQL
-- **Auth:** JWT
+- **Deploy:** Vercel
 
-## 🚀 Desenvolvimento
+## 🚀 Configuração e Deploy
 
+### Pré-requisitos
+- Node.js 18+
+- Conta no Supabase
+- Conta no Vercel (para deploy)
+
+### Instalação Local
 ```bash
-# Instalar dependências
+# Clone o repositório
+git clone https://github.com/seu-usuario/golden-veicular.git
+cd golden-veicular
+
+# Instale as dependências
 npm install
 
 # Executar em desenvolvimento

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { GoldenVeicularLogo } from '../../components/Icons';
-import { apiService } from '../services/apiService';
+// import { apiService } from '../services/apiService'; // Removido - usando localStorage como fallback
 
 interface CustomLogoProps {
     type: 'menu' | 'login';
@@ -41,16 +41,7 @@ const CustomLogo: React.FC<CustomLogoProps> = ({ type, className = '', fallbackC
             // Tentar carregar da API primeiro
             const logoType = type === 'menu' ? 'menu_logo' : 'login_logo';
             
-            try {
-                const logoData = await apiService.getLogo(logoType);
-                if (logoData) {
-                    console.log(`Logo ${type} carregado da API:`, logoData.substring(0, 50) + '...');
-                    setLogoUrl(logoData);
-                    return;
-                }
-            } catch (apiError) {
-                console.log(`API não disponível para ${type}, usando localStorage`);
-            }
+            // API removida - usando apenas localStorage como fallback
             
             // Fallback para localStorage
             const storageKey = type === 'menu' ? 'customLogo' : 'customLoginLogo';

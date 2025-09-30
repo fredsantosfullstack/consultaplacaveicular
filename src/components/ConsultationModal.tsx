@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Search, AlertCircle, CheckCircle } from 'lucide-react';
-import { apiService } from '../services/apiService';
+// import { apiService } from '../services/apiService'; // Removido
 import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
 
@@ -25,7 +25,7 @@ const ConsultationModal: React.FC<ConsultationModalProps> = ({
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState('');
 
-  const { user, refreshUser } = useAuth();
+  const { user } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,11 +46,15 @@ const ConsultationModal: React.FC<ConsultationModalProps> = ({
         ...(chassis && { chassis: chassis.toUpperCase() })
       };
 
-      const consultation = await apiService.createConsultation(consultationData);
+      // Simulação de consulta - integração com Supabase será implementada
+      const consultation = {
+        id: Date.now(),
+        ...consultationData,
+        result: 'Consulta simulada - dados não disponíveis no momento',
+        status: 'completed',
+        created_at: new Date().toISOString()
+      };
       setResult(consultation);
-      
-      // Atualizar saldo do usuário
-      await refreshUser();
       
       toast.success('Consulta realizada com sucesso!');
     } catch (error: any) {
@@ -92,7 +96,7 @@ const ConsultationModal: React.FC<ConsultationModalProps> = ({
               {/* Saldo do usuário */}
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <p className="text-sm text-blue-800">
-                  <strong>Saldo atual:</strong> R$ {user?.balance?.toFixed(2) || '0,00'}
+                  <strong>Saldo atual:</strong> R$ 0,00 (Em desenvolvimento)
                 </p>
               </div>
 

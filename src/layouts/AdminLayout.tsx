@@ -15,7 +15,7 @@ const AdminHeader: React.FC = () => {
         <header className="bg-white shadow-md p-4 flex justify-between items-center sticky top-0 z-20">
             <div>
                 <h1 className="text-xl font-bold text-gray-800">Painel Administrativo</h1>
-                <p className="text-sm text-gray-500">Bem-vindo, {user?.name || 'Admin'}</p>
+                <p className="text-sm text-gray-500">Bem-vindo, {user?.email || 'Admin'}</p>
             </div>
             <button 
                 onClick={logout}

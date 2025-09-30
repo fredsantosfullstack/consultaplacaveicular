@@ -1,15 +1,20 @@
 import React from 'react';
 import { Bell, X } from 'lucide-react';
-import { Notification } from '../types';
 import toast from 'react-hot-toast';
+
+interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  status: 'active' | 'inactive';
+}
 
 interface NotificationToastProps {
   notification: Notification;
-  toastId: string;
   onClose: (id: string) => void;
 }
 
-const NotificationToast: React.FC<NotificationToastProps> = ({ notification, toastId, onClose }) => {
+const NotificationToast: React.FC<NotificationToastProps> = ({ notification, onClose }) => {
   return (
     <div className="bg-white w-full max-w-sm rounded-xl shadow-2xl p-5 border border-gray-200 animate-fade-in">
       <div className="flex items-start space-x-4">
@@ -20,8 +25,8 @@ const NotificationToast: React.FC<NotificationToastProps> = ({ notification, toa
           <h3 className="font-bold text-gray-800">{notification.title}</h3>
           <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
         </div>
-        <button onClick={() => onClose(toastId)} className="text-gray-400 hover:text-gray-600">
-          <X />
+        <button onClick={() => onClose(notification.id)} className="text-gray-400 hover:text-gray-600">
+          <X className="w-4 h-4" />
         </button>
       </div>
     </div>
