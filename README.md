@@ -1,20 +1,73 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 🚗 Golden Veicular
 
-# Run and deploy your AI Studio app
+> Sistema completo de consulta veicular com painel administrativo
 
-This contains everything you need to run your app locally.
+## ✨ Funcionalidades
 
-View your app in AI Studio: https://ai.studio/apps/drive/1TT-NiE_19v21TCbLm-7MwmTb0AnETv9R
+### 👤 **Autenticação**
+- Login seguro com JWT
+- Controle de permissões (admin/usuário)
+- Sessões persistentes
 
-## Run Locally
+### 🎛️ **Painel Administrativo**
+- Dashboard com métricas em tempo real
+- Gerenciamento de usuários
+- Sistema de relatórios
+- Upload de logotipos customizáveis
+- Tabela de preços
 
-**Prerequisites:**  Node.js
+### 🔍 **Consulta Veicular**
+- Busca por placa
+- Histórico de consultas
+- Sistema de créditos
+- Relatórios detalhados
 
+### 🎨 **Interface**
+- Design responsivo
+- Performance otimizada
+- Tema customizável
+- Logotipos personalizáveis
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## 🛠️ Tecnologias
+
+- **Frontend:** React 19 + TypeScript + Vite
+- **Styling:** Tailwind CSS
+- **Icons:** Lucide React
+- **Backend:** PHP + MySQL
+- **Auth:** JWT
+
+## 🚀 Desenvolvimento
+
+```bash
+# Instalar dependências
+npm install
+
+# Executar em desenvolvimento
+npm run dev
+
+# Build para produção
+npm run build
+
+# Preview do build
+npm run preview
+```
+
+## 📁 Estrutura
+
+```
+golden-veicular/
+src/                 # Código fonte React
+pages/               # Páginas da aplicação
+components/          # Componentes reutilizáveis
+api/                 # Backend PHP
+dist/                # Build de produção
+package.json         # Dependências
+```
+
+## 🔐 Credenciais Padrão
+
+- **Admin:** `admin@goldenveicular.com.br` / `admin123`
+
+## 📄 Licença
+
+Projeto proprietário - Golden Veicular  2024

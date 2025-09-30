@@ -1,0 +1,186 @@
+/* 
+ * Estilos Otimizados - Golden Veicular
+ * Foco em performance e design limpo
+ */
+
+/* ===== RESET DE SOMBRAS PESADAS ===== */
+.no-heavy-shadow {
+  box-shadow: none !important;
+}
+
+.light-shadow {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.minimal-shadow {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* ===== BORDAS LIMPAS ===== */
+.clean-border {
+  border: 1px solid #e5e7eb;
+  box-shadow: none;
+}
+
+.clean-border-hover:hover {
+  border-color: #d1d5db;
+  transition: border-color 0.15s ease;
+}
+
+/* ===== CARDS OTIMIZADOS ===== */
+.optimized-card {
+  background: white;
+  border: 1px solid #f3f4f6;
+  border-radius: 8px;
+  transition: border-color 0.15s ease;
+}
+
+.optimized-card:hover {
+  border-color: #e5e7eb;
+}
+
+/* ===== BOTÕES PERFORMÁTICOS ===== */
+.btn-optimized {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+  box-shadow: none;
+}
+
+.btn-primary-optimized {
+  background-color: #0f43aa;
+  color: white;
+  border-color: #0f43aa;
+}
+
+.btn-primary-optimized:hover {
+  background-color: #0c3688;
+  border-color: #0c3688;
+}
+
+.btn-secondary-optimized {
+  background-color: white;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+.btn-secondary-optimized:hover {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+}
+
+/* ===== GRADIENTES OTIMIZADOS ===== */
+.gradient-blue-optimized {
+  background: linear-gradient(135deg, #0f43aa 0%, #1e40af 100%);
+}
+
+.gradient-green-optimized {
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+}
+
+.gradient-purple-optimized {
+  background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
+}
+
+.gradient-orange-optimized {
+  background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
+}
+
+/* ===== ANIMAÇÕES LEVES ===== */
+.fade-in-light {
+  animation: fadeInLight 0.2s ease-out;
+}
+
+@keyframes fadeInLight {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scale-hover-light:hover {
+  transform: scale(1.02);
+  transition: transform 0.15s ease;
+}
+
+/* ===== LOADING OTIMIZADO ===== */
+.spinner-light {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f4f6;
+  border-top: 2px solid #0f43aa;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ===== LAYOUT LIMPO ===== */
+.clean-layout {
+  background-color: #fafafa;
+}
+
+.clean-container {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #f0f0f0;
+}
+
+/* ===== TEXTO OTIMIZADO ===== */
+.text-optimized {
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.text-title-optimized {
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+/* ===== RESPONSIVIDADE LEVE ===== */
+@media (max-width: 768px) {
+  .mobile-optimized {
+    padding: 1rem;
+  }
+  
+  .mobile-text-sm {
+    font-size: 0.875rem;
+  }
+}
+
+/* ===== PERFORMANCE HELPERS ===== */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.no-select {
+  user-select: none;
+}
+
+.pointer-events-none {
+  pointer-events: none;
+}
+
+/* ===== CORES OTIMIZADAS ===== */
+:root {
+  --color-primary: #0f43aa;
+  --color-primary-hover: #0c3688;
+  --color-gray-50: #fafafa;
+  --color-gray-100: #f5f5f5;
+  --color-gray-200: #e5e5e5;
+  --color-gray-300: #d4d4d4;
+  --color-gray-400: #a3a3a3;
+  --color-gray-500: #737373;
+  --color-gray-600: #525252;
+  --color-gray-700: #404040;
+  --color-gray-800: #262626;
+  --color-gray-900: #171717;
+}

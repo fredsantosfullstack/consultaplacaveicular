@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { GoldenVeicularLogoWhite } from './Icons';
-import CustomLogo from '../src/components/CustomLogo';
+import CustomLogo from './CustomLogo';
 
 interface SidebarProps {
   isSidebarOpen: boolean;
@@ -60,8 +60,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, toggleSidebar, userRol
         <div className="flex items-center justify-center h-20">
             <CustomLogo 
                 type="menu" 
-                className="h-16 w-auto max-w-48 object-contain" 
-                fallbackClassName="w-auto h-16"
+                className="w-[150px] h-auto"
+                fallbackClassName="w-[150px] h-auto"
             />
         </div>
         

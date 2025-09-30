@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Notification } from '../types';
-import { ArrowLeft, Users, BarChart, Bell, Tags, Palette, TrendingUp, DollarSign, Activity, Settings } from 'lucide-react';
+import { ArrowLeft, Users, BarChart, Bell, Tags, Palette, TrendingUp, DollarSign, Activity, LogOut, Home } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../src/contexts/AuthContext';
 import { apiService, User } from '../src/services/apiService';
@@ -13,12 +13,21 @@ import NotificationManagement from '../src/components/admin/NotificationManageme
 import PriceManagement from '../src/components/admin/PriceManagement';
 import AppearanceManagement from '../src/components/admin/AppearanceManagement';
 import AdminLoadingState from '../src/components/admin/AdminLoadingState';
-import SettingsManagement from '../src/components/admin/SettingsManagement';
+import CustomLogo from '../src/components/CustomLogo';
 
 interface PriceItem {
   id: string;
   name: string;
   price: number;
+}
+
+interface AdminProps {
+  notifications: Notification[];
+  setNotifications: React.Dispatch<React.SetStateAction<Notification[]>>;
+  priceList: PriceItem[];
+  setPriceList: React.Dispatch<React.SetStateAction<PriceItem[]>>;
+  setLogoUrl: (url: string) => void;
+  setFaviconUrl: (url: string) => void;
 }
 
 interface DashboardStats {
@@ -28,12 +37,7 @@ interface DashboardStats {
   activeUsers: number;
 }
 
-const AdminPage: React.FC = () => {
-    const [notifications, setNotifications] = useState<Notification[]>([]);
-    const [priceList, setPriceList] = useState<any[]>([]);
-    // As funções setLogoUrl e setFaviconUrl agora são gerenciadas internamente ou em um contexto global, se necessário.
-    const setLogoUrl = (url: string) => { console.log("Logo URL set to:", url); };
-    const setFaviconUrl = (url: string) => { console.log("Favicon URL set to:", url); };
+const AdminStandalone: React.FC<AdminProps> = ({ notifications, setNotifications, priceList, setPriceList, setLogoUrl, setFaviconUrl }) => {
     const [activeSection, setActiveSection] = useState('dashboard');
     const [users, setUsers] = useState<User[]>([]);
     const [stats, setStats] = useState<DashboardStats>({
@@ -44,30 +48,18 @@ const AdminPage: React.FC = () => {
     });
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
-    const { user } = useAuth();
+    const { user, logout } = useAuth();
 
-    // Carregar dados imediatamente quando o componente montar
+    // Carregar dados imediatamente
     useEffect(() => {
-        console.log('Admin component mounted, loading data immediately');
         loadDashboardData();
     }, []);
-    
-    // Verificar permissões do usuário - removido redirecionamento automático
-    useEffect(() => {
-        if (user && user.role !== 'admin') {
-            console.log('Usuário não é admin, mas permitindo acesso para demonstração');
-            // navigate('/dashboard'); // Comentado para permitir acesso demo
-        }
-    }, [user, navigate]);
 
     const loadDashboardData = async () => {
         try {
-            console.log('Iniciando carregamento dos dados do admin...');
-            setIsLoading(true);
+            console.log('Carregando dados do admin standalone...');
             
-            // Carregamento rápido sem delay desnecessário
-            
-            // Dados mockados para teste inicial - carregar imediatamente
+            // Dados mockados otimizados
             const mockUsers = [
                 { id: 1, name: 'Admin User', email: 'admin@goldenveicular.com.br', role: 'admin', status: 'active', balance: 100 },
                 { id: 2, name: 'Usuário Teste', email: 'user@teste.com', role: 'user', status: 'active', balance: 50 },
@@ -76,10 +68,8 @@ const AdminPage: React.FC = () => {
                 { id: 5, name: 'Ana Costa', email: 'ana@teste.com', role: 'user', status: 'active', balance: 150 }
             ];
             
-            console.log('Definindo usuários mockados:', mockUsers);
             setUsers(mockUsers);
             
-            // Estatísticas mockadas - mais realistas
             const mockStats = {
                 totalUsers: mockUsers.length,
                 todayConsultations: 18,
@@ -87,15 +77,13 @@ const AdminPage: React.FC = () => {
                 activeUsers: mockUsers.filter(u => u.status === 'active').length
             };
             
-            console.log('Definindo estatísticas mockadas:', mockStats);
             setStats(mockStats);
             
-            // Tentar carregar dados reais das APIs
+            // Tentar carregar dados reais se API disponível
             try {
                 const usersData = await apiService.getUsers(1, 100);
                 if (usersData && usersData.users) {
                     setUsers(usersData.users);
-                    
                     setStats(prev => ({
                         ...prev,
                         totalUsers: usersData.users.length,
@@ -106,61 +94,60 @@ const AdminPage: React.FC = () => {
                 console.log('API não disponível, usando dados mockados');
             }
             
-            try {
-                const consultationsData = await apiService.getConsultationHistory(1, 1000);
-                if (consultationsData && consultationsData.consultations) {
-                    const today = new Date().toISOString().split('T')[0];
-                    const todayConsultations = consultationsData.consultations.filter(
-                        c => c.created_at.startsWith(today)
-                    ).length;
-                    
-                    const totalRevenue = consultationsData.consultations.reduce(
-                        (sum, c) => sum + (c.price || 0), 0
-                    );
-                    
-                    setStats(prev => ({
-                        ...prev,
-                        todayConsultations,
-                        totalRevenue
-                    }));
-                }
-            } catch (apiError) {
-                console.log('API de consultas não disponível, usando dados mockados');
-            }
-            
         } catch (error) {
-            console.error('Erro ao carregar dados do dashboard:', error);
-            
-            // Fallback para dados de demonstração em caso de erro
-            const fallbackUsers = [
-                { id: 1, name: 'Admin User', email: 'admin@goldenveicular.com.br', role: 'admin', status: 'active', balance: 100 },
-                { id: 2, name: 'Usuário Demo', email: 'demo@teste.com', role: 'user', status: 'active', balance: 25 }
-            ];
-            
-            setUsers(fallbackUsers);
-            setStats({
-                totalUsers: fallbackUsers.length,
-                todayConsultations: 3,
-                totalRevenue: 75.00,
-                activeUsers: fallbackUsers.filter(u => u.status === 'active').length
-            });
-            
-            console.log('Usando dados de fallback devido ao erro');
+            console.error('Erro ao carregar dados:', error);
         } finally {
-            console.log('Finalizando carregamento dos dados do admin');
             setIsLoading(false);
         }
     };
+
+    const renderTopBar = () => (
+        <div className="bg-white border-b border-gray-200 px-6 py-4">
+            <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                    <CustomLogo 
+                        type="menu" 
+                        className="h-10 w-auto" 
+                        fallbackClassName="h-10 w-auto"
+                    />
+                    <div className="h-8 w-px bg-gray-300"></div>
+                    <h1 className="text-xl font-semibold text-gray-900">Painel Administrativo</h1>
+                </div>
+                
+                <div className="flex items-center space-x-4">
+                    <span className="text-sm text-gray-600">Olá, {user?.name}</span>
+                    <div className="flex items-center space-x-2">
+                        <button
+                            onClick={() => navigate('/dashboard')}
+                            className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                            title="Voltar ao Sistema"
+                        >
+                            <Home className="w-4 h-4" />
+                            <span className="text-sm">Sistema</span>
+                        </button>
+                        <button
+                            onClick={logout}
+                            className="flex items-center space-x-2 px-3 py-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                            title="Sair"
+                        >
+                            <LogOut className="w-4 h-4" />
+                            <span className="text-sm">Sair</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 
     const renderDashboard = () => (
         <div className="space-y-8">
             {/* Métricas Principais */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-6 text-white">
+                <div className="bg-blue-600 rounded-lg p-6 text-white border border-blue-700">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-blue-100 text-sm font-medium">Total de Usuários</p>
-                            <p className="text-3xl font-bold">{isLoading ? '...' : stats.totalUsers}</p>
+                            <p className="text-3xl font-bold">{stats.totalUsers}</p>
                         </div>
                         <Users className="w-8 h-8 text-blue-200" />
                     </div>
@@ -170,11 +157,11 @@ const AdminPage: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-xl p-6 text-white">
+                <div className="bg-green-600 rounded-lg p-6 text-white border border-green-700">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-green-100 text-sm font-medium">Consultas Hoje</p>
-                            <p className="text-3xl font-bold">{isLoading ? '...' : stats.todayConsultations}</p>
+                            <p className="text-3xl font-bold">{stats.todayConsultations}</p>
                         </div>
                         <Activity className="w-8 h-8 text-green-200" />
                     </div>
@@ -184,11 +171,11 @@ const AdminPage: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl p-6 text-white">
+                <div className="bg-purple-600 rounded-lg p-6 text-white border border-purple-700">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-purple-100 text-sm font-medium">Receita Total</p>
-                            <p className="text-3xl font-bold">R$ {isLoading ? '...' : stats.totalRevenue.toFixed(2)}</p>
+                            <p className="text-3xl font-bold">R$ {stats.totalRevenue.toFixed(2)}</p>
                         </div>
                         <DollarSign className="w-8 h-8 text-purple-200" />
                     </div>
@@ -198,7 +185,7 @@ const AdminPage: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl p-6 text-white">
+                <div className="bg-orange-600 rounded-lg p-6 text-white border border-orange-700">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-orange-100 text-sm font-medium">Notificações</p>
@@ -215,7 +202,7 @@ const AdminPage: React.FC = () => {
 
             {/* Menu de Ações */}
             <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Gerenciamento</h2>
+                <h2 className="text-xl font-semibold text-gray-900 mb-6">Gerenciamento</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <AdminCard 
                         icon={Users} 
@@ -247,12 +234,6 @@ const AdminPage: React.FC = () => {
                         description="Logo, favicon e aparência"
                         onClick={() => setActiveSection('appearance')} 
                     />
-                    <AdminCard 
-                        icon={Settings} 
-                        title="Configurações Gerais" 
-                        description="Dados do admin e e-mail de contato"
-                        onClick={() => setActiveSection('settings')} 
-                    />
                 </div>
             </div>
         </div>
@@ -261,7 +242,6 @@ const AdminPage: React.FC = () => {
     const renderSection = () => {
         const goBackToDashboard = () => setActiveSection('dashboard');
         
-        // Se ainda está carregando, mostrar loading
         if (isLoading) {
             return <AdminLoadingState />;
         }
@@ -277,35 +257,57 @@ const AdminPage: React.FC = () => {
                 return <PriceManagement priceList={priceList} setPriceList={setPriceList} goBack={goBackToDashboard} />;
             case 'appearance':
                 return <AppearanceManagement setLogoUrl={setLogoUrl} setFaviconUrl={setFaviconUrl} goBack={goBackToDashboard} />;
-            case 'settings':
-                return <SettingsManagement goBack={goBackToDashboard} />;
             default:
                 return renderDashboard();
         }
+    };
+
+    // Verificar se usuário é admin
+    if (!user) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-gray-50">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#0f43aa] mx-auto"></div>
+                    <p className="mt-4 text-gray-600">Verificando permissões...</p>
+                </div>
+            </div>
+        );
     }
 
-  // Modo demonstração - permitir acesso mesmo sem usuário admin
-  if (!user) {
-    console.log('Usuário não logado, mas permitindo acesso demo ao admin');
-    // Continuar com renderização normal para demonstração
-  }
+    if (user.role !== 'admin') {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-gray-50">
+                <div className="text-center">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-2">Acesso Negado</h2>
+                    <p className="text-gray-600 mb-4">Você não tem permissão para acessar esta área.</p>
+                    <button 
+                        onClick={() => navigate('/dashboard')}
+                        className="px-4 py-2 bg-[#0f43aa] text-white rounded-lg hover:bg-[#0c3688] transition-colors"
+                    >
+                        Voltar ao Dashboard
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="p-4 sm:p-6 lg:p-8">
-        {activeSection !== 'dashboard' && (
-          <button 
-            onClick={() => navigate('/dashboard')} 
-            className="flex items-center space-x-2 text-[#0f43aa] hover:text-[#0c3688] transition-colors mb-6 font-medium"
-          >
-            <ArrowLeft className="w-4 h-4"/>
-            <span>Voltar ao Dashboard</span>
-          </button>
-        )}
-        {renderSection()}
-      </div>
-    </div>
-  );
+    return (
+        <div className="min-h-screen bg-gray-50">
+            {renderTopBar()}
+            <div className="p-6 lg:p-8">
+                {activeSection !== 'dashboard' && (
+                    <button 
+                        onClick={() => setActiveSection('dashboard')} 
+                        className="flex items-center space-x-2 text-[#0f43aa] hover:text-[#0c3688] transition-colors mb-6 font-medium"
+                    >
+                        <ArrowLeft className="w-4 h-4"/>
+                        <span>Voltar ao Dashboard</span>
+                    </button>
+                )}
+                {renderSection()}
+            </div>
+        </div>
+    );
 };
 
-export default AdminPage;
+export default AdminStandalone;

@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Book } from 'lucide-react';
+import CustomLogo from '../src/components/CustomLogo';
+import Footer from '../src/components/Footer';
 
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <section className="space-y-2">
@@ -12,19 +14,27 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title
 const TermsOfUse: React.FC = () => {
   const navigate = useNavigate();
   return (
-    <div className="p-4 sm:p-6 md:p-8 space-y-6">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-3">
-          <Book className="w-8 h-8 text-[#0f43aa]" />
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Termos de Uso e Política de Privacidade</h1>
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <header className="bg-white shadow-sm p-4">
+        <div className="max-w-7xl mx-auto">
+          <CustomLogo type="menu" className="h-10 w-auto" />
         </div>
-        <button onClick={() => navigate('/dashboard')} className="flex items-center space-x-2 text-[#0f43aa] hover:underline">
-          <ArrowLeft className="w-4 h-4" />
-          <span>Voltar</span>
-        </button>
-      </div>
-      
-      <div className="max-w-4xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-lg space-y-8 text-gray-700">
+      </header>
+
+      <main className="flex-grow p-4 sm:p-6 md:p-8 space-y-6">
+        <div className="max-w-4xl mx-auto">
+            <div className="flex justify-between items-center mb-6">
+                <div className="flex items-center space-x-3">
+                <Book className="w-8 h-8 text-[#0f43aa]" />
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Termos de Uso e Política de Privacidade</h1>
+                </div>
+                <button onClick={() => navigate('/login')} className="flex items-center space-x-2 text-[#0f43aa] hover:underline">
+                <ArrowLeft className="w-4 h-4" />
+                <span>Voltar ao Login</span>
+                </button>
+            </div>
+            
+            <div className="bg-white p-6 sm:p-8 rounded-xl shadow-lg space-y-8 text-gray-700">
         
         <Section title="1. Termos de Uso">
             <p>Bem-vindo à Golden Veicular! Ao acessar e utilizar nosso sistema, você concorda com os seguintes Termos de Uso. Caso não concorde com qualquer parte dos termos, pedimos que não utilize nossos serviços.</p>
@@ -73,6 +83,9 @@ const TermsOfUse: React.FC = () => {
         
         <p className="pt-4">📩 Se você tiver dúvidas, entre em contato conosco pelo e-mail: contato@goldenveicular.com.br</p>
       </div>
+        </div>
+      </main>
+      <Footer />
     </div>
   );
 };

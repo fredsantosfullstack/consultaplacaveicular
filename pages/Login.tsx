@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { GoldenVeicularLogo } from '../components/Icons';
+import CustomLogo from '../src/components/CustomLogo';
 import { Mail, Lock, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
-
-interface LoginProps {
-  onLogin: (username: string) => void;
-}
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../src/contexts/AuthContext';
 
 const SuccessModal = () => (
   <div className="fixed inset-0 bg-gray-900 bg-opacity-60 flex items-center justify-center z-50 animate-fade-in">
@@ -22,26 +20,35 @@ const SuccessModal = () => (
   </div>
 );
 
-const Login: React.FC<LoginProps> = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
+const Login: React.FC = () => {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState('');
+  
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     
-    if (username && password) {
+    if (email && password) {
       setIsLoading(true);
-      setTimeout(() => {
+      try {
+        await login(email, password);
         setShowSuccess(true);
         setTimeout(() => {
-          onLogin(username);
+          navigate('/dashboard');
         }, 2000);
-      }, 500);
-
+      } catch (error: any) {
+        setError(error.message || 'Erro ao fazer login');
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -51,7 +58,11 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-200/80 p-8 sm:p-10 space-y-6">
         <div className="text-center mb-4">
             <div className="flex justify-center">
-                <GoldenVeicularLogo className="h-20 w-auto" />
+                <CustomLogo 
+                    type="login" 
+                    className="w-[150px] h-auto"
+                    fallbackClassName="w-[150px] h-auto"
+                />
             </div>
         </div>
         
@@ -71,8 +82,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                   required
                   className="block w-full rounded-lg border border-gray-300 bg-gray-50 pl-12 pr-4 py-2.5 text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-[#0f43aa] focus:outline-none focus:ring-2 focus:ring-[#0f43aa]/20 transition-colors duration-200"
                   placeholder="seu@email.com"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
             </div>
@@ -113,11 +124,17 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
               </div>
 
               <div className="text-sm">
-                <a href="#" className="font-medium text-[#0f43aa] hover:text-[#0c3688] transition-colors">
+                <Link to="/recuperar-senha" className="font-medium text-[#0f43aa] hover:text-[#0c3688] transition-colors">
                   Esqueceu sua senha?
-                </a>
+                </Link>
               </div>
             </div>
+
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
 
             <div className="pt-4">
               <button
@@ -135,19 +152,19 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           <div>
             <p>
               Não tem uma conta?{' '}
-              <a href="#" className="font-medium text-[#0f43aa] hover:text-[#0c3688] transition-colors">
+              <Link to="/cadastre-se" className="font-medium text-[#0f43aa] hover:text-[#0c3688] transition-colors">
                 Cadastre-se
-              </a>
+              </Link>
             </p>
           </div>
           <p className="text-xs text-gray-500">
             Ao clicar em Entrar você concorda com os{' '}
-            <Link to="/terms-of-use" target="_blank" className="font-medium text-[#0f43aa] hover:text-[#0c3688]">
+            <Link to="/termos-de-uso" target="_blank" className="font-medium text-[#0f43aa] hover:text-[#0c3688]">
               Termos de Uso
             </Link>{' '}
             e{' '}
-            <Link to="/terms-of-use" target="_blank" className="font-medium text-[#0f43aa] hover:text-[#0c3688]">
-              Política de Proteção de Dados
+            <Link to="/termos-de-uso" target="_blank" className="font-medium text-[#0f43aa] hover:text-[#0c3688]">
+              Política de Privacidade
             </Link>{' '}
             da Golden Veicular.
           </p>
