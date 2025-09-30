@@ -1,57 +1,64 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
+import { supabase } from '../src/supabaseClient';
+import UserLayout from '../src/layouts/UserLayout';
+import LoadingSpinner from '../src/components/LoadingSpinner';
 
-interface PriceItem {
-  id: string;
-  name: string;
-  price: number;
-}
-
-interface PriceTableProps {
-  priceData: PriceItem[];
-}
-
-const PriceTable: React.FC<PriceTableProps> = ({ priceData }) => {
+const PriceTable: React.FC = () => {
+  const [prices, setPrices] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchPrices = async () => {
+      setIsLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('prices')
+          .select('*')
+          .order('service_name', { ascending: true });
+
+        if (error) throw error;
+        setPrices(data || []);
+      } catch (error: any) {
+        console.error('Error fetching prices:', error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPrices();
+  }, []);
+
   return (
-    <div className="p-4 sm:p-6 md:p-8 bg-gray-100 min-h-full flex items-center justify-center">
-      <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6 sm:p-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Tabela de Preços Padrão</h1>
-        <div className="overflow-hidden border border-gray-200 rounded-lg">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-[#0f43aa]">
-              <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                  Nome Exibição
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                  Valor (R$)
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {priceData.map((item) => (
-                <tr key={item.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.price.toFixed(2).replace('.', ',')}</td>
+    <UserLayout>
+      <div className="space-y-8">
+        <h1 className="text-3xl font-bold text-gray-900">Tabela de Preços</h1>
+        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+          {isLoading ? (
+            <div className="flex justify-center items-center h-64"><LoadingSpinner /></div>
+          ) : (
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Serviço</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Preço</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="mt-6">
-          <button
-            onClick={() => navigate('/dashboard')}
-            className="flex items-center space-x-2 bg-[#0f43aa] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#0c3688] transition-colors"
-          >
-            <FaArrowLeft />
-            <span>Voltar</span>
-          </button>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {prices.map((item) => (
+                  <tr key={item.id}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.service_name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">R$ {Number(item.price).toFixed(2)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
-    </div>
+    </UserLayout>
   );
 };
 

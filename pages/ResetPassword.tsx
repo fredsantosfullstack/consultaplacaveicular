@@ -1,27 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useSearchParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Lock, ArrowRight } from 'lucide-react';
 import CustomLogo from '../src/components/CustomLogo';
-import { apiService } from '../src/services/apiService';
-import toast from 'react-hot-toast';
+import { supabase } from '../src/supabaseClient';
 
 const ResetPassword = () => {
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [token, setToken] = useState<string | null>(null);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    const urlToken = searchParams.get('token');
-    if (urlToken) {
-      setToken(urlToken);
-    } else {
-      setError('Token de redefinição não encontrado ou inválido.');
-    }
-  }, [searchParams]);
+  // Supabase lida com o token na URL automaticamente quando o usuário chega nesta página.
+  // O evento onAuthStateChange com 'PASSWORD_RECOVERY' é acionado.
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,19 +21,18 @@ const ResetPassword = () => {
       setError('As senhas não coincidem.');
       return;
     }
-    if (!token) {
-      setError('Token inválido.');
-      return;
-    }
 
     setIsLoading(true);
     setError('');
     try {
-      await apiService.resetPassword(token, password);
-      toast.success('Senha redefinida com sucesso! Você já pode fazer o login.');
-      navigate('/login');
+      const { error } = await supabase.auth.updateUser({ password: password });
+      if (error) throw error;
+      setMessage('Senha redefinida com sucesso! Você será redirecionado para o login.');
+      setTimeout(() => {
+        navigate('/login');
+      }, 3000);
     } catch (err: any) {
-      setError(err.message || 'Erro ao redefinir a senha.');
+      setError(err.message || 'Erro ao redefinir a senha. O link pode ter expirado.');
     } finally {
       setIsLoading(false);
     }
@@ -52,14 +43,14 @@ const ResetPassword = () => {
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 sm:p-10 space-y-6">
         <div className="text-center mb-4">
           <div className="flex justify-center">
-            <CustomLogo type="login" className="h-20 w-auto" />
+            <CustomLogo type="login" className="w-[150px] h-auto" fallbackClassName="w-[150px] h-auto" />
           </div>
           <h2 className="mt-6 text-2xl font-bold text-gray-800">Redefinir Senha</h2>
           <p className="mt-2 text-sm text-gray-600">Crie uma nova senha para sua conta.</p>
         </div>
         
         <form onSubmit={handleSubmit} className="space-y-6">
-          <fieldset disabled={isLoading || !token}>
+          <fieldset disabled={isLoading}>
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5">Nova Senha</label>
               <div className="relative">
@@ -85,9 +76,14 @@ const ResetPassword = () => {
                 {error}
               </div>
             )}
+            {message && (
+              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
+                {message}
+              </div>
+            )}
 
             <div className="pt-4">
-              <button type="submit" disabled={isLoading || !token} className="group relative w-full flex justify-center items-center py-3 px-4 border border-transparent text-base font-semibold rounded-lg text-white bg-[#0f43aa] hover:bg-[#0c3688]">
+              <button type="submit" disabled={isLoading} className="group relative w-full flex justify-center items-center py-3 px-4 border border-transparent text-base font-semibold rounded-lg text-white bg-[#0f43aa] hover:bg-[#0c3688] disabled:opacity-70">
                 {isLoading ? 'Redefinindo...' : 'Redefinir Senha'}
                 {!isLoading && <ArrowRight className="ml-2 h-5 w-5" />}
               </button>

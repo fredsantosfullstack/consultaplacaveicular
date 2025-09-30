@@ -1,69 +1,58 @@
-import React, { useState } from 'react';
-import { GoldenVeicularLogo } from '../components/Icons';
-import CustomLogo from '../src/components/CustomLogo';
+import React, { useState, useEffect } from 'react';
 import { Mail, Lock, ArrowRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { supabase } from '../src/supabaseClient';
 import { useAuth } from '../src/contexts/AuthContext';
-
-const SuccessModal = () => (
-  <div className="fixed inset-0 bg-gray-900 bg-opacity-60 flex items-center justify-center z-50 animate-fade-in">
-    <div className="bg-white rounded-lg shadow-2xl p-8 max-w-sm w-full text-center transform transition-all duration-300 ease-out animate-scale-in">
-       <div className="mx-auto mb-4 w-20 h-20">
-            <svg className="checkmark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                <circle className="checkmark-circle" cx="26" cy="26" r="25"/>
-                <path className="checkmark-check" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-            </svg>
-       </div>
-      <h2 className="text-2xl font-bold text-gray-800 mt-4">Login realizado com sucesso!</h2>
-      <p className="text-gray-600 mt-2">Você será redirecionado em instantes...</p>
-    </div>
-  </div>
-);
+import CustomLogo from '../src/components/CustomLogo';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
-  
-  const { login } = useAuth();
   const navigate = useNavigate();
+  const { session } = useAuth();
 
+  useEffect(() => {
+    // Se já houver uma sessão ativa, redireciona para o dashboard
+    if (session) {
+      navigate('/dashboard');
+    }
+  }, [session, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    
-    if (email && password) {
-      setIsLoading(true);
-      try {
-        await login(email, password);
-        setShowSuccess(true);
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 2000);
-      } catch (error: any) {
-        setError(error.message || 'Erro ao fazer login');
-      } finally {
-        setIsLoading(false);
+    setIsLoading(true);
+
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+
+      if (error) {
+        throw error;
       }
+      // O AuthContext cuidará do redirecionamento no sucesso
+    } catch (error: any) {
+      setError(error.message || 'Erro ao fazer login. Verifique suas credenciais.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <>
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center p-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-200/80 p-8 sm:p-10 space-y-6">
         <div className="text-center mb-4">
-            <div className="flex justify-center">
-                <CustomLogo 
-                    type="login" 
-                    className="w-[150px] h-auto"
-                    fallbackClassName="w-[150px] h-auto"
-                />
-            </div>
+          <div className="flex justify-center">
+            <CustomLogo 
+              type="login" 
+              className="w-[150px] h-auto"
+              fallbackClassName="w-[150px] h-auto"
+            />
+          </div>
         </div>
         
         <form onSubmit={handleLogin} className="space-y-6">
@@ -108,21 +97,7 @@ const Login: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-2">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="h-4 w-4 text-[#0f43aa] focus:ring-[#0f43aa] border-gray-300 rounded"
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                  Lembrar-me
-                </label>
-              </div>
-
+            <div className="flex items-center justify-end pt-2">
               <div className="text-sm">
                 <Link to="/recuperar-senha" className="font-medium text-[#0f43aa] hover:text-[#0c3688] transition-colors">
                   Esqueceu sua senha?
@@ -171,8 +146,6 @@ const Login: React.FC = () => {
         </div>
       </div>
     </div>
-    {showSuccess && <SuccessModal />}
-    </>
   );
 };
 

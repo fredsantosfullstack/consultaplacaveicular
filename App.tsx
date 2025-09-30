@@ -1,66 +1,84 @@
-import React, { Suspense, lazy, useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider, useAuth } from './src/contexts/AuthContext';
-import ToastProvider from './src/components/ToastProvider';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import Admin from './pages/Admin';
+import UserProfile from './pages/UserProfile';
+import ConsultationHistory from './pages/ConsultationHistory';
+import MyOrders from './pages/MyOrders';
+import PriceTable from './pages/PriceTable';
+import CreditRecharge from './pages/CreditRecharge';
+import ApiDocs from './pages/ApiDocs';
+import TermsOfUse from './pages/TermsOfUse';
+import SignUp from './pages/SignUp';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import LoadingSpinner from './src/components/LoadingSpinner';
 
-// Lazy load das páginas
-const LoginPage = lazy(() => import('./pages/Login'));
-const SignUpPage = lazy(() => import('./pages/SignUp'));
-const ForgotPasswordPage = lazy(() => import('./pages/ForgotPassword'));
-const ResetPasswordPage = lazy(() => import('./pages/ResetPassword'));
-const UserLayout = lazy(() => import('./src/layouts/UserLayout'));
-const AdminLayout = lazy(() => import('./src/layouts/AdminLayout'));
-const TermsOfUsePage = lazy(() => import('./pages/TermsOfUse'));
+// Componente para proteger rotas que exigem autenticação
+const ProtectedRoute = () => {
+  const { session, isLoading } = useAuth();
 
-// Componente de Roteamento Principal
-const AppRoutes: React.FC = () => {
-    const { user, isLoading, isAuthenticated } = useAuth();
+  if (isLoading) {
+    return <div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>;
+  }
 
-    if (isLoading) {
-        return <LoadingSpinner fullScreen />;
-    }
+  if (!session) {
+    return <Navigate to="/login" replace />;
+  }
 
-    if (!isAuthenticated) {
-        return (
-            <Routes>
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/cadastre-se" element={<SignUpPage />} />
-                <Route path="/recuperar-senha" element={<ForgotPasswordPage />} />
-                <Route path="/redefinir-senha" element={<ResetPasswordPage />} />
-                <Route path="/termos-de-uso" element={<TermsOfUsePage />} />
-                <Route path="*" element={<Navigate to="/login" replace />} />
-            </Routes>
-        );
-    }
+  return <Outlet />; // Renderiza o componente filho (a rota aninhada)
+};
 
-    // Se autenticado, redirecionar baseado na role
-    if (user?.role === 'admin') {
-        return (
-            <Routes>
-                <Route path="/admin/*" element={<AdminLayout />} />
-                <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
-            </Routes>
-        );
-    }
+// Componente para proteger rotas que exigem papel de 'admin'
+const AdminRoute = () => {
+  const { profile, isLoading } = useAuth();
 
-    return (
+  if (isLoading) {
+    return <div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>;
+  }
+
+  if (profile?.role !== 'admin') {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return <Outlet />;
+};
+
+function App() {
+  return (
+    <Router>
+      <AuthProvider>
         <Routes>
-            <Route path="/*" element={<UserLayout />} />
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
-        </Routes>
-    );
-};
+          {/* Rotas Públicas */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/cadastre-se" element={<SignUp />} />
+          <Route path="/recuperar-senha" element={<ForgotPassword />} />
+          <Route path="/resetar-senha" element={<ResetPassword />} /> {/* Supabase usa um link diferente, ajustaremos */}
+          <Route path="/termos-de-uso" element={<TermsOfUse />} />
 
-const App: React.FC = () => {
-    return (
-        <AuthProvider>
-            <ToastProvider />
-            <Suspense fallback={<LoadingSpinner fullScreen />}>
-                <AppRoutes />
-            </Suspense>
-        </AuthProvider>
-    );
-};
+          {/* Rotas Protegidas para Usuários Logados */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/perfil" element={<UserProfile />} />
+            <Route path="/historico-consultas" element={<ConsultationHistory />} />
+            <Route path="/meus-pedidos" element={<MyOrders />} />
+            <Route path="/tabela-precos" element={<PriceTable />} />
+            <Route path="/recarga-creditos" element={<CreditRecharge />} />
+            <Route path="/docs-api" element={<ApiDocs />} />
+
+            {/* Rotas Protegidas para Admins (aninhadas) */}
+            <Route element={<AdminRoute />}>
+              <Route path="/admin" element={<Admin />} />
+            </Route>
+          </Route>
+
+          {/* Redirecionamento Padrão */}
+          <Route path="*" element={<Navigate to="/dashboard" />} />
+        </Routes>
+      </AuthProvider>
+    </Router>
+  );
+}
 
 export default App;

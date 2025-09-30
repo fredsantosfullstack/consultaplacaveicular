@@ -2,24 +2,27 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, ArrowRight } from 'lucide-react';
 import CustomLogo from '../src/components/CustomLogo';
-import { apiService } from '../src/services/apiService';
-import toast from 'react-hot-toast';
+import { supabase } from '../src/supabaseClient';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setMessage('');
+    setError('');
     try {
-      await apiService.requestPasswordReset(email);
-      toast.success('Se o e-mail estiver cadastrado, você receberá um link para redefinir sua senha.');
-      setMessage('Verifique sua caixa de entrada.');
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/resetar-senha`,
+      });
+      if (error) throw error;
+      setMessage('Se o e-mail estiver cadastrado, você receberá um link para redefinir sua senha. Verifique sua caixa de entrada e spam.');
     } catch (error: any) {
-      toast.error(error.message || 'Erro ao solicitar redefinição.');
+      setError(error.message || 'Erro ao solicitar redefinição de senha.');
     } finally {
       setIsLoading(false);
     }
@@ -30,7 +33,7 @@ const ForgotPassword = () => {
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 sm:p-10 space-y-6">
         <div className="text-center mb-4">
           <div className="flex justify-center">
-            <CustomLogo type="login" className="h-20 w-auto" />
+            <CustomLogo type="login" className="w-[150px] h-auto" fallbackClassName="w-[150px] h-auto" />
           </div>
           <h2 className="mt-6 text-2xl font-bold text-gray-800">Recuperar Senha</h2>
           <p className="mt-2 text-sm text-gray-600">Digite seu e-mail para receber o link de redefinição.</p>
@@ -52,10 +55,15 @@ const ForgotPassword = () => {
               {message}
             </div>
           )}
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+              {error}
+            </div>
+          )}
 
           <div className="pt-4">
-            <button type="submit" disabled={isLoading} className="group relative w-full flex justify-center items-center py-3 px-4 border border-transparent text-base font-semibold rounded-lg text-white bg-[#0f43aa] hover:bg-[#0c3688]">
-              {isLoading ? 'Enviando...' : 'Enviar Link'}
+            <button type="submit" disabled={isLoading} className="group relative w-full flex justify-center items-center py-3 px-4 border border-transparent text-base font-semibold rounded-lg text-white bg-[#0f43aa] hover:bg-[#0c3688] disabled:opacity-70">
+              {isLoading ? 'Enviando...' : 'Enviar Link de Recuperação'}
               {!isLoading && <ArrowRight className="ml-2 h-5 w-5" />}
             </button>
           </div>
