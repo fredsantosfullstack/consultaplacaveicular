@@ -31,6 +31,7 @@ const SignUp: React.FC = () => {
         email: email,
         password: password,
         options: {
+          emailRedirectTo: `${window.location.origin}/login`,
           data: {
             name: name,
             document_type: documentType,
@@ -51,7 +52,15 @@ const SignUp: React.FC = () => {
       }
 
     } catch (err: any) {
-      setError(err.message || 'Erro ao criar conta.');
+      const raw = (err?.message || '').toString();
+      const l = raw.toLowerCase();
+      if (l.includes('user already registered') || l.includes('already exists')) {
+        setError('Este e-mail já está cadastrado. Tente fazer login ou recuperar a senha.');
+      } else if (l.includes('password')) {
+        setError('Senha inválida. Use no mínimo 6 caracteres.');
+      } else {
+        setError(raw || 'Erro ao criar conta.');
+      }
     } finally {
       setIsLoading(false);
     }

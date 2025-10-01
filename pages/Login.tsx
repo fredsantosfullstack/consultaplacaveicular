@@ -10,6 +10,8 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [info, setInfo] = useState('');
+  const [needsConfirmation, setNeedsConfirmation] = useState(false);
   const navigate = useNavigate();
   const { session } = useAuth();
 
@@ -23,6 +25,8 @@ const Login: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setInfo('');
+    setNeedsConfirmation(false);
     setIsLoading(true);
 
     try {
@@ -41,12 +45,28 @@ const Login: React.FC = () => {
       const l = raw.toLowerCase();
       if (l.includes('email not confirmed')) {
         message = 'E-mail não confirmado. Verifique sua caixa de entrada (ou spam) e confirme seu cadastro.';
+        setNeedsConfirmation(true);
       } else if (l.includes('invalid login credentials') || l.includes('invalid_grant')) {
         message = 'Credenciais inválidas. Verifique o e-mail e a senha.';
       } else if (raw) {
         message = raw;
       }
       setError(message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleResendConfirmation = async () => {
+    setIsLoading(true);
+    setError('');
+    setInfo('');
+    try {
+      const { error } = await supabase.auth.resend({ type: 'signup', email });
+      if (error) throw error;
+      setInfo('Enviamos um novo e-mail de confirmação. Verifique sua caixa de entrada e spam.');
+    } catch (err: any) {
+      setError(err.message || 'Não foi possível reenviar o e-mail de confirmação.');
     } finally {
       setIsLoading(false);
     }
@@ -115,9 +135,26 @@ const Login: React.FC = () => {
               </div>
             </div>
 
+            {info && (
+              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
+                {info}
+              </div>
+            )}
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
                 {error}
+              </div>
+            )}
+            {needsConfirmation && (
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={handleResendConfirmation}
+                  className="text-sm font-medium text-[#0f43aa] hover:text-[#0c3688]"
+                  disabled={isLoading || !email}
+                >
+                  Reenviar e-mail de confirmação
+                </button>
               </div>
             )}
 
