@@ -36,7 +36,17 @@ const Login: React.FC = () => {
       }
       // O AuthContext cuidará do redirecionamento no sucesso
     } catch (error: any) {
-      setError(error.message || 'Erro ao fazer login. Verifique suas credenciais.');
+      let message = 'Erro ao fazer login.';
+      const raw = (error?.message || '').toString();
+      const l = raw.toLowerCase();
+      if (l.includes('email not confirmed')) {
+        message = 'E-mail não confirmado. Verifique sua caixa de entrada (ou spam) e confirme seu cadastro.';
+      } else if (l.includes('invalid login credentials') || l.includes('invalid_grant')) {
+        message = 'Credenciais inválidas. Verifique o e-mail e a senha.';
+      } else if (raw) {
+        message = raw;
+      }
+      setError(message);
     } finally {
       setIsLoading(false);
     }
