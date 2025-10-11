@@ -42,6 +42,23 @@ router.post('/login', async (req, res) => {
   } catch (err) { res.status(500).send('Erro no servidor'); }
 });
 
+// Rota para obter perfil do usuário logado
+router.get('/me', authMiddleware, async (req, res) => {
+  try {
+    const [users] = await db.query(
+      'SELECT id, name, email, phone, document_number, company, balance, avatar, created_at, role, recovery_email FROM users WHERE id = ?',
+      [req.user.id]
+    );
+    if (users.length === 0) {
+      return res.status(404).json({ msg: 'Usuário não encontrado.' });
+    }
+    res.json(users[0]);
+  } catch (err) {
+    console.error('Erro ao buscar perfil:', err);
+    res.status(500).json({ msg: 'Erro no servidor' });
+  }
+});
+
 // Rota de Solicitação de Redefinição de Senha
 router.post('/forgot-password', async (req, res) => {
   const { email } = req.body;
