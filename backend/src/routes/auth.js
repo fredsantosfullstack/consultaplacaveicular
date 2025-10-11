@@ -46,7 +46,7 @@ router.post('/login', async (req, res) => {
 router.get('/me', authMiddleware, async (req, res) => {
   try {
     const [users] = await db.query(
-      'SELECT id, name, email, phone, document_number, company, balance, avatar, created_at, role, recovery_email FROM users WHERE id = ?',
+      'SELECT id, name, email, phone, document_number, document_type, balance, role, is_active, created_at FROM users WHERE id = ?',
       [req.user.id]
     );
     if (users.length === 0) {
