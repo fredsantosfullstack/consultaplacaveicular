@@ -23,19 +23,29 @@ const PORT = process.env.PORT || 3001;
 
 // Middlewares
 // Configuração de CORS dinâmica baseada no ambiente
-const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5174').split(',');
+const allowedOrigins = [
+  'http://localhost:5174',
+  'http://localhost:5173',
+  'https://golden-veicular.vercel.app',
+  'https://dizapi.inf.br',
+  process.env.FRONTEND_URL
+].filter(Boolean);
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Permite requisições sem 'origin' (ex: mobile apps, curl)
+    // Permite requisições sem 'origin' (ex: mobile apps, curl, Postman)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'A política de CORS para este site não permite acesso da Origem especificada.';
-      return callback(new Error(msg), false);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
     }
-    return callback(null, true);
+    
+    console.log('❌ CORS bloqueado para origem:', origin);
+    const msg = 'A política de CORS para este site não permite acesso da Origem especificada.';
+    return callback(new Error(msg), false);
   },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-New-Balance'],
   exposedHeaders: ['X-New-Balance'], // Expor o header customizado
 }));
