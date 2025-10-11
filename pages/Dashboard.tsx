@@ -43,8 +43,6 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ title, slug, descri
         
         <a 
           href={`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'https://golden-veicular-production.up.railway.app'}/consultas/${slug}.html`}
-          target="_blank"
-          rel="noopener noreferrer"
           className="bg-transparent border-2 border-[#000042] text-[#000042] font-bold py-1.5 px-4 rounded-md hover:bg-[#000042] hover:text-white transition-colors duration-300 text-sm text-center"
         >
           Consultar
