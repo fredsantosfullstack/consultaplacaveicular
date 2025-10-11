@@ -34,7 +34,7 @@ router.post('/login', async (req, res) => {
     if (!isMatch) return res.status(400).json({ msg: 'Credenciais inválidas.' });
     const payload = { user: { id: user.id, role: user.role } };
     const secret = process.env.JWT_SECRET || 'seu_segredo_jwt_temporario';
-    const options = { expiresIn: rememberMe ? '7d' : '1h' };
+    const options = { expiresIn: rememberMe ? '7d' : '24h' };
     jwt.sign(payload, secret, options, (err, token) => {
       if (err) throw err;
       res.json({ token });
