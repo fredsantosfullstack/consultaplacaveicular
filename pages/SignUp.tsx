@@ -3,10 +3,15 @@ import { Link } from 'react-router-dom';
 import { User, Mail, Lock, FileText, Phone, CheckCircle, ArrowLeft } from 'lucide-react';
 import api from '../src/services/api';
 
-const InputField = ({ icon: Icon, ...props }) => (
+const InputField = ({ icon: Icon, type, ...props }) => (
   <div className="relative">
     {Icon && <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5"><Icon className="h-5 w-5 text-gray-400" /></div>}
-    <input {...props} className={`w-full p-3 ${Icon ? 'pl-12' : 'pl-4'} border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30 transition-all duration-300`} />
+    <input 
+      {...props} 
+      type={type}
+      autoComplete={type === 'password' ? 'new-password' : undefined}
+      className={`w-full p-3 ${Icon ? 'pl-12' : 'pl-4'} border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30 transition-all duration-300 ${type === 'password' ? '[&::-ms-reveal]:hidden [&::-ms-clear]:hidden [&::-webkit-credentials-auto-fill-button]:hidden [&::-webkit-contacts-auto-fill-button]:hidden' : ''}`} 
+    />
   </div>
 );
 

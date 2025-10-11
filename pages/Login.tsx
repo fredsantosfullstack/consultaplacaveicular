@@ -62,7 +62,7 @@ const Login: React.FC = () => {
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
                   <Lock className="h-5 w-5 text-gray-400" />
                 </div>
-                <input id="password" type={showPassword ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)} required className="w-full p-3 pl-12 pr-12 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30 transition-all duration-300" placeholder="Sua senha" />
+                <input id="password" type={showPassword ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)} required autoComplete="current-password" className="w-full p-3 pl-12 pr-12 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30 transition-all duration-300 [&::-ms-reveal]:hidden [&::-ms-clear]:hidden [&::-webkit-credentials-auto-fill-button]:hidden [&::-webkit-contacts-auto-fill-button]:hidden" placeholder="Sua senha" />
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3.5">
                   <button type="button" onClick={() => setShowPassword(!showPassword)} className="text-gray-500 hover:text-[#000042]">
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
