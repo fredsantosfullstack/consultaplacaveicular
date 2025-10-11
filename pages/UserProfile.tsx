@@ -165,7 +165,8 @@ const UserProfile: React.FC = () => {
 
   const getAvatarUrl = () => {
     if (profile?.avatar) {
-      return `http://localhost:3001${profile.avatar}`;
+      const baseUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'https://golden-veicular-production.up.railway.app';
+      return `${baseUrl}${profile.avatar}`;
     }
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(profile?.name || 'User')}&background=000042&color=fff&size=128`;
   };

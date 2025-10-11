@@ -3,6 +3,7 @@ import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
+import bcrypt from 'bcryptjs';
 import db from '../config/db.js';
 import authenticateToken from '../middleware/auth.js';
 import { isAdmin } from './settings.js';
@@ -34,7 +35,7 @@ const upload = multer({ storage });
 // Rota para buscar todos os usuários (apenas admin)
 router.get('/', authenticateToken, isAdmin, async (req, res) => {
   try {
-    const [users] = await db.query('SELECT id, name, email, role, credits, created_at, avatar FROM users ORDER BY created_at DESC');
+    const [users] = await db.query('SELECT id, name, email, role, balance, created_at, avatar FROM users ORDER BY created_at DESC');
     res.json(users);
   } catch (error) {
     console.error('Erro ao buscar usuários:', error);
@@ -64,11 +65,11 @@ router.put('/avatar', authenticateToken, upload.single('avatar'), async (req, re
 // Rota para atualizar um usuário (apenas admin)
 router.put('/:id', authenticateToken, isAdmin, async (req, res) => {
   const { id } = req.params;
-  const { role, credits } = req.body;
+  const { role, balance } = req.body;
 
   // Validação básica
-  if (!role && credits === undefined) {
-    return res.status(400).json({ msg: 'Pelo menos um campo (role ou credits) deve ser fornecido.' });
+  if (!role && balance === undefined) {
+    return res.status(400).json({ msg: 'Pelo menos um campo (role ou balance) deve ser fornecido.' });
   }
 
   try {
@@ -80,7 +81,7 @@ router.put('/:id', authenticateToken, isAdmin, async (req, res) => {
     const userToUpdate = users[0];
     const updatedFields = {
       role: role !== undefined ? role : userToUpdate.role,
-      credits: credits !== undefined ? parseFloat(credits) : userToUpdate.credits,
+      balance: balance !== undefined ? parseFloat(balance) : userToUpdate.balance,
     };
 
     await db.query('UPDATE users SET ? WHERE id = ?', [updatedFields, id]);
@@ -95,7 +96,7 @@ router.put('/:id', authenticateToken, isAdmin, async (req, res) => {
 
 // Rota para criar um novo usuário (apenas admin)
 router.post('/', authenticateToken, isAdmin, async (req, res) => {
-  const { name, email, password, role, credits, document_type, document_number, phone } = req.body;
+  const { name, email, password, role, balance, document_type, document_number, phone } = req.body;
 
   if (!name || !email || !password) {
     return res.status(400).json({ msg: 'Nome, e-mail e senha são obrigatórios.' });
@@ -115,7 +116,7 @@ router.post('/', authenticateToken, isAdmin, async (req, res) => {
       email,
       password: hashedPassword,
       role: role || 'user',
-      credits: credits || 0,
+      balance: balance || 0,
       document_type,
       document_number,
       phone
