@@ -261,7 +261,7 @@
             
             if (!token) {
                 alert('Sessão expirada. Faça login novamente.');
-                window.location.href = 'http://localhost:5174/';
+                window.location.href = 'https://golden-veicular.vercel.app/';
                 return;
             }
             
@@ -270,7 +270,7 @@
             submitBtn.disabled = true;
             
             try {
-                const response = await fetch('http://localhost:3001/api/consultations/execute/consultar-crv', {
+                const response = await fetch('https://golden-veicular-production.up.railway.app/api/consultations/execute/consultar-crv', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -282,7 +282,7 @@
                 if (response.status === 402) {
                     const errorData = await response.json();
                     message.className = 'message error';
-                    message.innerHTML = `${errorData.msg}<br><br>Saldo atual: R$ ${errorData.balance.toFixed(2)}<br>Valor necessário: R$ ${errorData.required.toFixed(2)}<br><br><a href="http://localhost:5174/credit-recharge" style="color: #000042; font-weight: bold;">Clique aqui para recarregar</a>`;
+                    message.innerHTML = `${errorData.msg}<br><br>Saldo atual: R$ ${errorData.balance.toFixed(2)}<br>Valor necessário: R$ ${errorData.required.toFixed(2)}<br><br><a href="https://golden-veicular.vercel.app/credit-recharge" style="color: #000042; font-weight: bold;">Clique aqui para recarregar</a>`;
                     message.style.display = 'block';
                 } else if (response.ok) {
                     const blob = await response.blob();
@@ -302,7 +302,7 @@
                 } else if (response.status === 401) {
                     alert('Sessão expirada. Faça login novamente.');
                     localStorage.removeItem('token');
-                    window.location.href = 'http://localhost:5174/';
+                    window.location.href = 'https://golden-veicular.vercel.app/';
                 } else {
                     const errorData = await response.json();
                     message.className = 'message error';
