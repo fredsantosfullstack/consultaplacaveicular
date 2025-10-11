@@ -1,84 +1,72 @@
 import React from 'react';
-import { Calendar } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Calendar, Search, Filter } from 'lucide-react';
 
-interface ConsultationHistoryProps {
-  // setCurrentPage: (page: Page) => void; // Removed
-}
-
-const FilterInput: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
-    <div className="flex flex-col flex-grow min-w-[150px]">
-        <label className="text-sm font-medium text-gray-700 mb-1">{label}</label>
-        {children}
-    </div>
+const FilterField = ({ label, children }) => (
+  <div>
+    <label className="text-xs text-gray-500 font-medium">{label}</label>
+    <div className="relative mt-1">{children}</div>
+  </div>
 );
 
-const ConsultationHistory: React.FC<ConsultationHistoryProps> = () => { // Removed setCurrentPage from props
-    const navigate = useNavigate();
-    return (
-        <div className="p-4 sm:p-6 md:p-8 space-y-6">
-            <h1 className="text-center text-3xl font-bold text-gray-800">Histórico de Consultas</h1>
-            
-            <div className="bg-white p-6 rounded-xl shadow-lg flex items-center justify-center flex-wrap gap-4">
-                <FilterInput label="Tipo de Consulta">
-                    <select className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-[#0f43aa] focus:outline-none focus:ring-2 focus:ring-[#0f43aa]/20 transition-colors duration-200">
-                        <option>Todos</option>
-                    </select>
-                </FilterInput>
-                 <FilterInput label="Data Inicial">
-                    <div className="relative">
-                        <input 
-                          type="text"
-                          placeholder="dd/mm/aaaa"
-                          onFocus={(e) => (e.target.type = 'date')}
-                          onBlur={(e) => (e.target.type = 'text')}
-                          className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 placeholder:text-gray-500 focus:bg-white focus:border-[#0f43aa] focus:outline-none focus:ring-2 focus:ring-[#0f43aa]/20 transition-colors duration-200" 
-                        />
-                         <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 w-5 h-5" />
-                    </div>
-                </FilterInput>
-                 <FilterInput label="Data Final">
-                    <div className="relative">
-                        <input 
-                          type="text"
-                          placeholder="dd/mm/aaaa"
-                          onFocus={(e) => (e.target.type = 'date')}
-                          onBlur={(e) => (e.target.type = 'text')}
-                          className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 placeholder:text-gray-500 focus:bg-white focus:border-[#0f43aa] focus:outline-none focus:ring-2 focus:ring-[#0f43aa]/20 transition-colors duration-200" 
-                        />
-                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 w-5 h-5" />
-                    </div>
-                </FilterInput>
-                 <FilterInput label="Mostrar">
-                    <select className="w-full p-2 border border-gray-300 bg-gray-50 rounded-lg text-gray-900 focus:bg-white focus:border-[#0f43aa] focus:outline-none focus:ring-2 focus:ring-[#0f43aa]/20 transition-colors duration-200">
-                        <option>10</option>
-                        <option>25</option>
-                        <option>50</option>
-                    </select>
-                </FilterInput>
-            </div>
+const ConsultationHistory: React.FC = () => {
+  return (
+    <div className="space-y-6">
+      <h1 className="text-xl font-bold text-gray-800">Histórico de Consultas</h1>
 
-            <div className="rounded-xl shadow-lg overflow-hidden">
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 text-sm font-semibold text-white bg-gray-800">
-                    <div className="p-3">Placa</div>
-                    <div className="p-3">Tipo de Consulta</div>
-                    <div className="p-3">Data da Consulta</div>
-                    <div className="p-3">Status da Consulta</div>
-                    <div className="p-3">Fonte</div>
-                    <div className="p-3">Ações</div>
-                </div>
-                <div className="bg-white">
-                    <div className="text-center py-16 text-gray-500">Nenhuma consulta registrada.</div>
-                </div>
-            </div>
-
-             <div className="text-center pt-4">
-                <button onClick={() => navigate('/dashboard')} className="bg-[#0f43aa] text-white font-bold py-2 px-8 rounded-lg hover:bg-[#0c3688] transition-opacity">
-                    Voltar
-                </button>
-             </div>
+      {/* Filtros */}
+      <div className="bg-white rounded-xl shadow-lg p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+          <FilterField label="Tipo de Consulta">
+            <select className="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30">
+              <option>Todos</option>
+              {/* Adicionar outros tipos de consulta aqui */}
+            </select>
+          </FilterField>
+          <FilterField label="Data Inicial">
+            <input type="date" className="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30" />
+          </FilterField>
+          <FilterField label="Data Final">
+            <input type="date" className="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30" />
+          </FilterField>
+          <FilterField label="Mostrar">
+            <select className="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30">
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+            </select>
+          </FilterField>
+          <button className="flex items-center justify-center gap-2 w-full bg-[#000042] text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-opacity-90 transition-all text-sm">
+            <Filter size={16} />
+            <span>Filtrar</span>
+          </button>
         </div>
-    );
+      </div>
+
+      {/* Tabela de Resultados */}
+      <div className="bg-white rounded-xl shadow-lg overflow-x-auto">
+        <table className="w-full text-left text-sm">
+          <thead className="bg-[#000042] text-white">
+            <tr>
+              <th className="px-6 py-3 font-semibold">Placa</th>
+              <th className="px-6 py-3 font-semibold">Tipo de Consulta</th>
+              <th className="px-6 py-3 font-semibold">Data</th>
+              <th className="px-6 py-3 font-semibold">Status</th>
+              <th className="px-6 py-3 font-semibold">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {/* Exemplo de quando não há dados */}
+            <tr>
+              <td colSpan={5} className="text-center py-16 text-gray-500">
+                <p>Nenhuma consulta encontrada.</p>
+                <p className="text-xs mt-1">Tente ajustar os filtros ou realize uma nova consulta.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 };
 
 export default ConsultationHistory;

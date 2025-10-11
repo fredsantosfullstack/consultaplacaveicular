@@ -1,150 +1,134 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Car, FileText, ShieldCheck, Search, User, Loader2, AlertTriangle } from 'lucide-react';
+import api from '../src/services/api';
 import { useAuth } from '../src/contexts/AuthContext';
-import { supabase } from '../src/supabaseClient';
-import { DollarSign, FileText } from 'lucide-react';
-import UserLayout from '../src/layouts/UserLayout';
-import ConsultationModal from '../src/components/ConsultationModal';
-import LoadingSpinner from '../src/components/LoadingSpinner';
+
+// Mapeamento de ícones para ser usado dinamicamente
+const iconMap: { [key: string]: React.ElementType } = {
+  Car,
+  FileText,
+  ShieldCheck,
+  User,
+  Default: Search // Ícone padrão
+};
+
+interface ConsultationCardProps {
+  title: string;
+  slug: string;
+  description: string;
+  icon: React.ElementType;
+  tag?: string;
+  price: number;
+}
+
+const ConsultationCard: React.FC<ConsultationCardProps> = ({ title, slug, description, icon: Icon, tag, price }) => {
+  
+  return (
+    <div className="bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow duration-300 overflow-hidden">
+      <div className="bg-[#000042] text-white px-4 py-3 flex items-center gap-3 min-h-[70px]">
+        <Icon className="w-5 h-5 flex-shrink-0" />
+        <h3 className="font-semibold text-sm uppercase break-words">{title}</h3>
+      </div>
+      <div className="p-4 flex-grow">
+        <p className="text-xs text-gray-600 min-h-[40px]">{description}</p>
+      </div>
+      <div className="px-4 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+        <div className="text-left">
+          <p className="text-xs text-gray-500">Por apenas</p>
+          <p className="text-xl font-bold text-gray-800">{price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+        </div>
+        
+        {tag && <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{tag}</span>}
+        
+        <a 
+          href={`http://localhost:3001/consultas/${slug}.html`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-transparent border-2 border-[#000042] text-[#000042] font-bold py-1.5 px-4 rounded-md hover:bg-[#000042] hover:text-white transition-colors duration-300 text-sm text-center"
+        >
+          Consultar
+        </a>
+      </div>
+    </div>
+  );
+};
 
 const Dashboard: React.FC = () => {
-  const { profile } = useAuth();
-  const [stats, setStats] = useState<any>({ totalConsultas: 0, ultimasConsultas: [] });
-  const [availableConsultations, setAvailableConsultations] = useState<any[]>([]);
+  const [consultations, setConsultations] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedConsultation, setSelectedConsultation] = useState<any>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  
   useEffect(() => {
-    const fetchData = async () => {
-      if (!profile) return;
-
+    const fetchConsultations = async () => {
       setIsLoading(true);
       try {
-        const { count, error: countError } = await supabase
-          .from('consultations')
-          .select('*', { count: 'exact', head: true })
-          .eq('user_id', profile.id);
-
-        const { data: recent, error: recentError } = await supabase
-          .from('consultations')
-          .select('*, prices(service_name)')
-          .eq('user_id', profile.id)
-          .order('created_at', { ascending: false })
-          .limit(5);
-
-        const { data: prices, error: pricesError } = await supabase
-          .from('prices')
-          .select('*')
-          .eq('status', 'active');
-
-        if (countError || recentError || pricesError) {
-          throw countError || recentError || pricesError;
-        }
-
-        setStats({ totalConsultas: count || 0, ultimasConsultas: recent || [] });
-        setAvailableConsultations(prices || []);
-
-      } catch (error: any) {
-        console.error('Error fetching dashboard data:', error.message);
+        const response = await api.get('/consultations');
+        setConsultations(response.data);
+      } catch (err) {
+        setError('Não foi possível carregar as consultas. Tente novamente mais tarde.');
+        console.error(err);
       } finally {
         setIsLoading(false);
       }
     };
+    fetchConsultations();
+  }, []);
 
-    if (profile) {
-      fetchData();
-    }
-  }, [profile]);
+  const filteredConsultations = consultations.filter(consultation =>
+    (consultation.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (consultation.description || '').toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  const handleConsultationSelect = (consultation: any) => {
-    setSelectedConsultation(consultation);
-    setIsModalOpen(true);
-  };
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center p-10">
+        <Loader2 className="animate-spin text-[#000042]" size={48} />
+      </div>
+    );
+  }
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  if (isLoading && !profile) {
-    return <UserLayout><div className="flex justify-center items-center h-64"><LoadingSpinner /></div></UserLayout>;
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center p-10 bg-red-50 border border-red-200 rounded-lg">
+        <AlertTriangle className="text-red-500" size={48} />
+        <p className="mt-4 text-red-700 font-semibold">{error}</p>
+      </div>
+    );
   }
 
   return (
-    <UserLayout>
-      <div className="space-y-8">
-        <h1 className="text-3xl font-bold text-gray-900">Painel de Controle</h1>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <StatCard icon={DollarSign} title="Saldo Atual" value={`R$ ${profile?.balance?.toFixed(2) ?? '0.00'}`} color="green" />
-          <StatCard icon={FileText} title="Consultas no Mês" value={stats.totalConsultas} color="blue" />
+    <div className="space-y-8">
+      
+        <div className="relative mb-4">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+          <input
+            type="text"
+            placeholder="Pesquise por nome ou descrição..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full py-3 pl-10 pr-4 border-2 border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#000042]"
+          />
         </div>
 
-        <div>
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Consultas Rápidas</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {availableConsultations.map((consult) => (
-              <ConsultationCard 
-                key={consult.id} 
-                {...consult} 
-                onSelect={() => handleConsultationSelect(consult)} 
-              />
-            ))}
-          </div>
+        <div id="consultation-cards" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredConsultations.map(consultation => (
+            <ConsultationCard
+              key={consultation.id}
+              title={consultation.name}
+              slug={consultation.slug}
+              description={consultation.description}
+              icon={iconMap[consultation.icon] || iconMap.Default}
+              tag={consultation.is_new ? 'NOVO' : undefined}
+              price={consultation.price}
+            />
+          ))}
         </div>
 
-        <div>
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Histórico Recente</h2>
-          <div className="bg-white p-4 rounded-lg shadow-sm">
-            {stats.ultimasConsultas.length > 0 ? (
-              <ul className="divide-y divide-gray-200">
-                {stats.ultimasConsultas.map((item: any) => (
-                  <li key={item.id} className="py-3 flex justify-between items-center">
-                    <div>
-                      <p className="font-medium text-gray-800">{item.prices?.service_name || 'Serviço Desconhecido'}</p>
-                      <p className="text-sm text-gray-500">{new Date(item.created_at).toLocaleString()}</p>
-                    </div>
-                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${item.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                      {item.status}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-gray-500">Nenhuma consulta recente.</p>
-            )}
+      
           </div>
-        </div>
-      </div>
-      {isModalOpen && selectedConsultation && (
-        <ConsultationModal 
-          consultation={selectedConsultation} 
-          onClose={handleCloseModal} 
-        />
-      )}
-    </UserLayout>
   );
 };
-
-const StatCard = ({ icon: Icon, title, value, color }: {icon: React.ElementType, title: string, value: string | number, color: string}) => (
-  <div className={`bg-white p-6 rounded-lg shadow-sm flex items-center space-x-4 border-l-4 border-${color}-500`}>
-    <div className={`bg-${color}-100 p-3 rounded-full`}>
-      <Icon className={`h-6 w-6 text-${color}-600`} />
-    </div>
-    <div>
-      <p className="text-sm text-gray-500">{title}</p>
-      <p className="text-2xl font-bold text-gray-900">{value}</p>
-    </div>
-  </div>
-);
-
-const ConsultationCard = ({ service_name, price, onSelect }: {service_name: string, price: number, onSelect: () => void}) => (
-    <div 
-        className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer border-l-4 border-transparent hover:border-blue-500 flex flex-col justify-between"
-        onClick={onSelect}
-    >
-        <h3 className="text-xl font-bold text-gray-800 mb-4">{service_name}</h3>
-        <p className="text-lg font-semibold text-green-600 self-end">R$ {Number(price).toFixed(2)}</p>
-    </div>
-);
 
 export default Dashboard;

@@ -1,81 +1,57 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { supabase } from '../src/supabaseClient';
-import CustomLogo from '../src/components/CustomLogo';
-import InputMask from 'react-input-mask';
+import { User, Mail, Lock, FileText, Phone, CheckCircle, ArrowLeft } from 'lucide-react';
+import api from '../src/services/api';
+
+const InputField = ({ icon: Icon, ...props }) => (
+  <div className="relative">
+    {Icon && <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5"><Icon className="h-5 w-5 text-gray-400" /></div>}
+    <input {...props} className={`w-full p-3 ${Icon ? 'pl-12' : 'pl-4'} border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30 transition-all duration-300`} />
+  </div>
+);
 
 const SignUp: React.FC = () => {
+  const [documentType, setDocumentType] = useState('cpf');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [documentType, setDocumentType] = useState('cpf');
   const [documentNumber, setDocumentNumber] = useState('');
   const [phone, setPhone] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-
     if (password !== confirmPassword) {
       setError('As senhas não coincidem.');
       return;
     }
-
     setIsLoading(true);
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email: email,
-        password: password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/login`,
-          data: {
-            name: name,
-            document_type: documentType,
-            document_number: documentNumber,
-            phone: phone,
-          },
-        },
+      await api.post('/auth/register', {
+        name, email, password, documentType, documentNumber, phone
       });
-
-      if (error) {
-        throw error;
-      }
-      
-      if (data.user && data.user.identities && data.user.identities.length === 0) {
-         setError('Este e-mail já está cadastrado.');
-      } else {
-        setSuccess(true);
-      }
-
+      setSuccess(true);
     } catch (err: any) {
-      const raw = (err?.message || '').toString();
-      const l = raw.toLowerCase();
-      if (l.includes('user already registered') || l.includes('already exists')) {
-        setError('Este e-mail já está cadastrado. Tente fazer login ou recuperar a senha.');
-      } else if (l.includes('password')) {
-        setError('Senha inválida. Use no mínimo 6 caracteres.');
-      } else {
-        setError(raw || 'Erro ao criar conta.');
-      }
+      setError(err.response?.data?.msg || 'Erro ao criar conta.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const documentMask = documentType === 'cpf' ? '999.999.999-99' : '99.999.999/9999-99';
-
   if (success) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center p-4 text-center">
-        <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-10">
-          <h2 className="text-2xl font-bold text-green-600 mb-4">Verifique seu e-mail!</h2>
-          <p className="text-gray-700 mb-6">Enviamos um link de confirmação para <strong>{email}</strong>. Por favor, clique no link para ativar sua conta.</p>
-          <Link to="/login" className="font-medium text-[#0f43aa] hover:text-[#0c3688]">
-            Voltar para o Login
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 font-sans">
+        <div className="w-full max-w-md bg-white rounded-xl shadow-2xl p-8 text-center">
+          <CheckCircle className="mx-auto h-16 w-16 text-green-500 mb-4" />
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Conta Criada com Sucesso!</h2>
+          <p className="text-gray-600 mb-6">Você já pode fazer login na plataforma.</p>
+          <Link to="/login" className="w-full flex items-center justify-center gap-2 bg-[#000042] text-white font-bold py-3 px-6 rounded-lg hover:bg-opacity-90 transition-all transform hover:-translate-y-0.5">
+            <ArrowLeft size={16} />
+            <span>Ir para o Login</span>
           </Link>
         </div>
       </div>
@@ -83,74 +59,50 @@ const SignUp: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center py-12 px-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-200/80 p-8 sm:p-10 space-y-6">
-        <div className="text-center mb-4">
-          <div className="flex justify-center">
-            <CustomLogo type="login" className="w-[150px] h-auto" fallbackClassName="w-[150px] h-auto" />
-          </div>
-          <h2 className="mt-6 text-2xl font-bold text-gray-800">Crie sua conta</h2>
-          <p className="mt-2 text-sm text-gray-600">Comece a usar nossos serviços de consulta.</p>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 font-sans">
+      <div className="w-full max-w-lg bg-white rounded-xl shadow-2xl p-8">
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-bold text-gray-800">Crie sua Conta</h1>
+          <p className="text-gray-500">Rápido e fácil, vamos começar.</p>
         </div>
         
-        <form onSubmit={handleSignUp} className="space-y-4">
-          <fieldset disabled={isLoading} className="space-y-4">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1.5">Nome Completo</label>
-              <input id="name" type="text" required value={name} onChange={(e) => setName(e.target.value)} className="block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5" placeholder="Seu nome completo" />
-            </div>
+        <form onSubmit={handleSignUp} className="space-y-5">
+          {error && <p className="bg-red-100 text-red-700 p-3 rounded-lg text-sm text-center font-medium">{error}</p>}
 
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">E-mail</label>
-              <input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5" placeholder="seu@email.com" />
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label htmlFor="documentType" className="block text-sm font-medium text-gray-700 mb-1.5">Tipo</label>
-                    <select id="documentType" value={documentType} onChange={(e) => setDocumentType(e.target.value)} className="block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5">
-                        <option value="cpf">CPF</option>
-                        <option value="cnpj">CNPJ</option>
-                    </select>
-                </div>
-                <div>
-                    <label htmlFor="documentNumber" className="block text-sm font-medium text-gray-700 mb-1.5">Número do Documento</label>
-                    <InputMask mask={documentMask} value={documentNumber} onChange={(e) => setDocumentNumber(e.target.value)} required className="block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5" placeholder={documentMask} />
-                </div>
-            </div>
+          <InputField icon={User} type="text" value={name} onChange={e => setName(e.target.value)} required placeholder="Nome Completo" />
 
-            <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1.5">Celular com DDD</label>
-              <InputMask mask="(99) 99999-9999" value={phone} onChange={(e) => setPhone(e.target.value)} required className="block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5" placeholder="(99) 99999-9999" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="relative">
+              <select value={documentType} onChange={e => setDocumentType(e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30 appearance-none">
+                <option value="cpf">Pessoa Física (CPF)</option>
+                <option value="cnpj">Pessoa Jurídica (CNPJ)</option>
+              </select>
             </div>
+            <InputField icon={FileText} type="text" value={documentNumber} onChange={e => setDocumentNumber(e.target.value)} required placeholder={`Número do ${documentType.toUpperCase()}`} />
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5">Senha</label>
-                    <input id="password" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} className="block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5" />
-                </div>
-                <div>
-                    <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1.5">Confirmar Senha</label>
-                    <input id="confirmPassword" type="password" required minLength={6} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5" />
-                </div>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <InputField icon={Mail} type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="Seu melhor e-mail" />
+            <InputField icon={Phone} type="tel" value={phone} onChange={e => setPhone(e.target.value)} required placeholder="(XX) XXXXX-XXXX" />
+          </div>
 
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-                {error}
-              </div>
-            )}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <InputField icon={Lock} type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={6} placeholder="Senha (mín. 6 dígitos)" />
+            <InputField icon={Lock} type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required minLength={6} placeholder="Confirmar Senha" />
+          </div>
 
-            <div className="pt-4">
-              <button type="submit" disabled={isLoading} className="group w-full flex justify-center py-3 px-4 border border-transparent text-base font-semibold rounded-lg text-white bg-[#0f43aa] hover:bg-[#0c3688] disabled:opacity-70">
-                {isLoading ? 'Criando conta...' : 'Criar Conta'}
-              </button>
-            </div>
-          </fieldset>
+          <div className="pt-2">
+            <button type="submit" disabled={isLoading} className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-md text-base font-bold text-white bg-[#000042] hover:bg-opacity-90 disabled:bg-opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#000042]">
+              {isLoading ? 'Criando conta...' : 'Finalizar Cadastro'}
+            </button>
+          </div>
         </form>
 
-        <div className="text-center text-sm text-gray-600 pt-4 border-t border-gray-200">
-            <p>Já tem uma conta? <Link to="/login" className="font-medium text-[#0f43aa] hover:text-[#0c3688]">Faça login</Link></p>
+        <div className="mt-6 text-center text-sm text-gray-600">
+          <p>
+            Já tem uma conta?{' '}
+            <Link to="/login" className="font-bold text-[#000042] hover:text-[#D2AE6D] hover:underline">Faça login</Link>
+          </p>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider, useAuth } from './src/contexts/AuthContext';
+import UserLayout from './src/layouts/UserLayout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Admin from './pages/Admin';
@@ -15,19 +16,23 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import LoadingSpinner from './src/components/LoadingSpinner';
 
-// Componente para proteger rotas que exigem autenticação
+// Componente para proteger rotas que exigem autenticação e aplicar layout global
 const ProtectedRoute = () => {
-  const { session, isLoading } = useAuth();
+  const { profile, isLoading } = useAuth();
 
   if (isLoading) {
     return <div className="min-h-screen flex items-center justify-center"><LoadingSpinner /></div>;
   }
 
-  if (!session) {
+  if (!profile) {
     return <Navigate to="/login" replace />;
   }
 
-  return <Outlet />; // Renderiza o componente filho (a rota aninhada)
+  return (
+    <UserLayout>
+      <Outlet />
+    </UserLayout>
+  );
 };
 
 // Componente para proteger rotas que exigem papel de 'admin'

@@ -1,97 +1,100 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
-import { supabase } from '../supabaseClient';
-import { Session, User } from '@supabase/supabase-js';
+import api from '../services/api';
 
-// Define um tipo customizado para o perfil do usuário, que será nosso objeto 'user' principal
+// Tipos que serão mantidos e adaptados para a nova API
 export interface UserProfile {
-  id: string;
-  name?: string;
-  avatar_url?: string;
-  balance?: number;
+  id: number;
+  name: string;
+  email: string;
+  phone?: string | null;
+  document_number?: string | null;
+  company?: string | null;
+  balance: number;
+  avatar?: string | null;
+  created_at?: string;
   role?: 'admin' | 'user';
-  // Adicione outros campos do perfil aqui
+  recovery_email?: string;
 }
-
 interface AuthContextType {
-  session: Session | null;
-  user: User | null; // O objeto de autenticação da Supabase
-  profile: UserProfile | null; // Nosso objeto de perfil customizado
-  logout: () => Promise<void>;
+  profile: UserProfile | null;
+  login: (token: string, rememberMe?: boolean) => Promise<void>;
+  logout: () => void;
   isLoading: boolean;
+  updateProfile: (data: Partial<UserProfile>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [session, setSession] = useState<Session | null>(null);
-  const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); // Inicia como true para simular a verificação inicial
 
-  useEffect(() => {
-    const getActiveSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        await fetchProfile(session.user.id);
-      } else {
-        setIsLoading(false);
-      }
-    };
-
-    getActiveSession();
-
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          await fetchProfile(session.user.id);
-        } else {
-          setProfile(null); // Limpa o perfil no logout
-        }
-      }
-    );
-
-    return () => {
-      authListener.subscription.unsubscribe();
-    };
-  }, []);
-
-  const fetchProfile = async (userId: string) => {
+    const fetchProfile = async () => {
     try {
-      const { data, error, status } = await supabase
-        .from('profiles')
-        .select(`*`)
-        .eq('id', userId)
-        .single();
-
-      if (error && status !== 406) {
-        throw error;
-      }
-
-      if (data) {
-        setProfile(data as UserProfile);
-      }
+      const { data } = await api.get('/auth/me');
+      setProfile(data);
     } catch (error: any) {
-      console.error('Error fetching profile:', error.message);
+      const status = error?.response?.status;
+      if (status === 401 || status === 403) {
+        console.error('Authorization error, logging out.');
+        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
+        setProfile(null);
+      } else {
+        console.error('Failed to fetch profile', error);
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
-  const logout = async () => {
-    await supabase.auth.signOut();
+  useEffect(() => {
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    if (token) {
+      // Configura o header do Axios antes de fazer a chamada
+      api.defaults.headers.common = (api.defaults.headers.common || {}) as any;
+      (api.defaults.headers.common as any)['Authorization'] = `Bearer ${token}`;
+      fetchProfile();
+    } else {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const login = async (token: string, rememberMe = false) => {
+    if (rememberMe) {
+      localStorage.setItem('token', token);
+    } else {
+      sessionStorage.setItem('token', token);
+    }
+    // Garante que a próxima requisição já leve o token
+    api.defaults.headers.common = (api.defaults.headers.common || {}) as any;
+    (api.defaults.headers.common as any)['Authorization'] = `Bearer ${token}`;
+    await fetchProfile();
+  };
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
+    // Remove header Authorization para evitar uso de token antigo
+    if ((api as any).defaults?.headers?.common) {
+      delete (api.defaults.headers.common as any)['Authorization'];
+    }
+    setProfile(null);
+    setIsLoading(false);
+  };
+
+    const updateProfile = (data: Partial<UserProfile>) => {
+    setProfile(prev => prev ? { ...prev, ...data } : null);
   };
 
   const value = {
-    session,
-    user,
     profile,
+    login,
     logout,
     isLoading,
+    updateProfile,
   };
+
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

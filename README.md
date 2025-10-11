@@ -34,7 +34,7 @@ Sistema moderno de consultas veiculares desenvolvido com **React + TypeScript + 
 ## 🛠️ Tecnologias
 
 - **Frontend:** React 19, TypeScript, Vite
-- **Backend:** Supabase (PostgreSQL + Auth + Storage)
+- **Backend:** Node.js, Express, MySQL
 - **Styling:** Tailwind CSS
 - **Icons:** Lucide React
 - **Deploy:** Vercel
@@ -43,7 +43,7 @@ Sistema moderno de consultas veiculares desenvolvido com **React + TypeScript + 
 
 ### Pré-requisitos
 - Node.js 18+
-- Conta no Supabase
+- Acesso a um banco de dados MySQL
 - Conta no Vercel (para deploy)
 
 ### Instalação Local
@@ -69,10 +69,9 @@ npm run preview
 
 ```
 golden-veicular/
-src/                 # Código fonte React
-pages/               # Páginas da aplicação
-components/          # Componentes reutilizáveis
-api/                 # Backend PHP
+src/                 # Código fonte do Frontend (React)
+backend/             # Código fonte do Backend (Node.js)
+public/              # Arquivos estáticos (imagens, etc)
 dist/                # Build de produção
 package.json         # Dependências
 ```

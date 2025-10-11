@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' http://localhost:3001; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
+    <title>Código de segurança PDF</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F6F6F6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #000042;
+        }
+        .header-section h1 {
+            color: #000042;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .header-section .subtitle {
+            color: #666;
+            font-size: 14px;
+        }
+        .price-info {
+            background-color: #f8f9fa;
+            border-left: 4px solid #000042;
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            border-radius: 4px;
+        }
+        .price-info .label {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+        .price-info .value {
+            color: #000042;
+            font-size: 22px;
+            font-weight: 700;
+        }
+        .info-box {
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .info-box h3 {
+            color: #000042;
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .info-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .info-box li {
+            color: #333;
+            font-size: 14px;
+            padding: 8px 0;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        .info-box li:last-child {
+            border-bottom: none;
+        }
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            text-transform: uppercase;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #000042;
+        }
+        input[type="text"]::placeholder {
+            text-transform: none;
+            color: #999;
+        }
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+        button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-consultar {
+            background-color: #000042;
+            color: white;
+        }
+        .btn-consultar:hover {
+            background-color: #000066;
+        }
+        .btn-consultar:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .btn-voltar {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-voltar:hover {
+            background-color: #5a6268;
+        }
+        .message {
+            padding: 14px 18px;
+            border-radius: 6px;
+            margin-top: 20px;
+            display: none;
+            font-size: 14px;
+        }
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            color: #000042;
+            font-weight: 600;
+        }
+        .info-text {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 25px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-section">
+            <h1>Código de segurança PDF</h1>
+            <p class="subtitle">Consulta CRV Digital pela Placa</p>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="left-column">
+                <div class="price-info">
+                    <div class="label">Valor da consulta:</div>
+                    <div class="value">R$ 10,00</div>
+                </div>
+
+                <div class="info-box">
+                    <h3>O que você vai consultar:</h3>
+                    <ul>
+                        <li>&#10003; Código de segurança do CRV</li>
+                        <li>&#10003; CRV Digital completo</li>
+                        <li>&#10003; Dados do documento</li>
+                        <li>&#10003; Informações de autenticidade</li>
+                        <li>&#10003; QR Code de verificação</li>
+                        <li>&#10003; Documento oficial DENATRAN</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <form id="consultaForm">
+                    <div class="form-group">
+                        <label for="placa">Placa do Veículo:</label>
+                        <input type="text" id="placa" name="placa" placeholder="ABC1234" required maxlength="7">
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button type="submit" class="btn-consultar">Consultar</button>
+                        <button type="button" class="btn-voltar" onclick="window.location.href='http://localhost:5174/'">Voltar</button>
+                    </div>
+                </form>
+                
+                <div class="loading" id="loading">Processando consulta...</div>
+                <div class="message" id="message"></div>
+                
+                <p class="info-text">
+                    &#128196; Resultado em PDF de alta qualidade<br>
+                    &#9889; Processamento rápido e seguro<br>
+                    &#128196; Consulta realizada com sucesso!
+                </p>
+            </div>
+        document.getElementById('consultaForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const placa = document.getElementById('placa').value;
+            const loading = document.getElementById('loading');
+            const submitBtn = document.querySelector('.btn-consultar');
+            const token = localStorage.getItem('token');
+            
+            if (!token) {
+                alert('Sessão expirada. Faça login novamente.');
+                window.location.href = 'http://localhost:5174/';
+                return;
+            }
+            
+            loading.style.display = 'block';
+            message.style.display = 'none';
+            submitBtn.disabled = true;
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/consultations/execute/consultar-crv', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ placa })
+                });
+                
+                if (response.status === 402) {
+                    const errorData = await response.json();
+                    message.className = 'message error';
+                    message.innerHTML = `${errorData.msg}<br><br>Saldo atual: R$ ${errorData.balance.toFixed(2)}<br>Valor necessário: R$ ${errorData.required.toFixed(2)}<br><br><a href="http://localhost:5174/credit-recharge" style="color: #000042; font-weight: bold;">Clique aqui para recarregar</a>`;
+                    message.style.display = 'block';
+                } else if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `codigo-seguranca-pdf-${placa}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                    
+                    const newBalance = response.headers.get('X-New-Balance');
+                    message.className = 'message success';
+                    message.innerHTML = `Download do PDF iniciado com sucesso!${newBalance ? `<br>Novo saldo: R$ ${parseFloat(newBalance).toFixed(2)}` : ''}`;
+                    message.style.display = 'block';
+                } else if (response.status === 401) {
+                    alert('Sessão expirada. Faça login novamente.');
+                    localStorage.removeItem('token');
+                    window.location.href = 'http://localhost:5174/';
+                } else {
+                    const errorData = await response.json();
+                    message.className = 'message error';
+                    message.textContent = errorData.msg || 'Erro ao processar consulta.';
+                    message.style.display = 'block';
+                }
+            } catch (error) {
+                message.className = 'message error';
+                message.textContent = 'Erro de conexão. Tente novamente.';
+                message.style.display = 'block';
+            } finally {
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

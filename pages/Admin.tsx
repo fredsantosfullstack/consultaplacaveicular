@@ -1,110 +1,121 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Users, BarChart, Bell, Tags, Palette, Settings } from 'lucide-react';
-import { useAuth } from '../src/contexts/AuthContext';
-import { supabase } from '../src/supabaseClient';
+import { Users, Settings, BarChart, ArrowLeft, ClipboardList, CreditCard, Tags } from 'lucide-react';
 import AdminCard from '../src/components/admin/AdminCard';
 import UserManagement from '../src/components/admin/UserManagement';
-import ReportDashboard from '../src/components/admin/ReportDashboard';
-import NotificationManagement from '../src/components/admin/NotificationManagement';
-import PriceManagement from '../src/components/admin/PriceManagement';
-import AppearanceManagement from '../src/components/admin/AppearanceManagement';
-import AdminLoadingState from '../src/components/admin/AdminLoadingState';
-import SettingsManagement from '../src/components/admin/SettingsManagement';
+import SiteSettings from '../src/components/admin/SiteSettings';
+import Reports from '../src/components/admin/Reports';
+import ConsultationManagement from '../src/components/admin/ConsultationManagement';
+import RechargePlanManagement from '../src/components/admin/RechargePlanManagement';
+import PriceTableManagement from '../src/components/admin/PriceTableManagement';
 
 const AdminPage: React.FC = () => {
-    const [activeSection, setActiveSection] = useState('dashboard');
-    const [users, setUsers] = useState<any[]>([]);
-    const [prices, setPrices] = useState<any[]>([]);
-    const [notifications, setNotifications] = useState<any[]>([]);
-    const [stats, setStats] = useState<any>({});
-    const [loading, setLoading] = useState(true);
-    const { profile } = useAuth();
+    const [activeSection, setActiveSection] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const { data: usersData, error: usersError } = await supabase.from('profiles').select('*');
-                if (usersError) throw usersError;
-                setUsers(usersData || []);
+        const handleGoHome = () => setActiveSection(null);
 
-                const { data: pricesData, error: pricesError } = await supabase.from('prices').select('*');
-                if (pricesError) throw pricesError;
-                setPrices(pricesData || []);
+        window.addEventListener('admin-gohome', handleGoHome);
 
-                // const { data: notificationsData, error: notificationsError } = await supabase.from('notifications').select('*');
-                // if (notificationsError) throw notificationsError;
-                // setNotifications(notificationsData || []);
-
-                const { count: totalUsers } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
-                const { count: totalConsultas } = await supabase.from('consultations').select('*', { count: 'exact', head: true });
-
-                setStats({ totalUsers, totalConsultas });
-
-            } catch (error: any) {
-                console.error('Erro ao buscar dados do admin:', error.message);
-            } finally {
-                setLoading(false);
-            }
+        // Limpa o listener quando o componente é desmontado
+        return () => {
+            window.removeEventListener('admin-gohome', handleGoHome);
         };
+    }, []); // O array vazio garante que isso rode apenas uma vez
 
-        fetchData();
-    }, []);
-
-    if (loading) {
-        return <AdminLoadingState />;
-    }
+    const handleNavigation = (section: string) => {
+        setActiveSection(section);
+    };
 
     const renderSection = () => {
+        if (!activeSection) {
+            return <AdminDashboard onNavigate={handleNavigation} />;
+        }
+
+        let component;
         switch (activeSection) {
             case 'user-management':
-                return <UserManagement users={users} goBack={() => setActiveSection('dashboard')} />;
+                component = <UserManagement onBack={() => setActiveSection(null)} />;
+                break;
+            case 'site-settings':
+                component = <SiteSettings />;
+                break;
             case 'reports':
-                return <ReportDashboard goBack={() => setActiveSection('dashboard')} stats={stats} users={users} />;
-            case 'notifications':
-                return <NotificationManagement goBack={() => setActiveSection('dashboard')} notifications={notifications} />;
-            case 'price-management':
-                return <PriceManagement goBack={() => setActiveSection('dashboard')} prices={prices} />;
-            case 'appearance':
-                return <AppearanceManagement goBack={() => setActiveSection('dashboard')} />;
-            case 'settings':
-                return <SettingsManagement goBack={() => setActiveSection('dashboard')} />;
+                component = <Reports />;
+                break;
+            case 'consultation-management':
+                component = <ConsultationManagement />;
+                break;
+            case 'recharge-plan-management':
+                component = <RechargePlanManagement />;
+                break;
+            case 'price-table-management':
+                component = <PriceTableManagement />;
+                break;
             default:
-                return (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        <AdminCard icon={Users} title="Gerenciar Usuários" description={`${users.length} usuários`} onClick={() => setActiveSection('user-management')} />
-                        <AdminCard icon={BarChart} title="Relatórios" description="Visão geral de dados" onClick={() => setActiveSection('reports')} />
-                        <AdminCard icon={Bell} title="Notificações" description="Enviar alertas" onClick={() => setActiveSection('notifications')} />
-                        <AdminCard icon={Tags} title="Tabela de Preços" description="Editar valores" onClick={() => setActiveSection('price-management')} />
-                        <AdminCard icon={Palette} title="Aparência" description="Customizar logos" onClick={() => setActiveSection('appearance')} />
-                        <AdminCard icon={Settings} title="Configurações" description="Ajustes do sistema" onClick={() => setActiveSection('settings')} />
-                    </div>
-                );
+                component = <AdminDashboard onNavigate={handleNavigation} />;
         }
+
+        return (
+            <div>
+                <button 
+                    onClick={() => setActiveSection(null)}
+                    className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-gray-800 mb-4"
+                >
+                    <ArrowLeft size={16} />
+                    Voltar ao Painel
+                </button>
+                {component}
+            </div>
+        );
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
-            <div className="max-w-7xl mx-auto">
-                <header className="mb-8">
-                    <div className="flex items-center justify-between">
-                        <h1 className="text-3xl font-bold text-gray-800">Painel Administrativo</h1>
-                        {activeSection !== 'dashboard' && (
-                            <button onClick={() => setActiveSection('dashboard')} className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900">
-                                <ArrowLeft className="w-4 h-4 mr-2" />
-                                Voltar
-                            </button>
-                        )}
-                    </div>
-                    <p className="mt-2 text-lg text-gray-500">Bem-vindo, {profile?.name}.</p>
-                </header>
-
-                <main>
-                    {renderSection()}
-                </main>
-            </div>
+        <div className="container mx-auto p-4 md:p-6">
+            {renderSection()}
         </div>
     );
 };
+
+interface AdminDashboardProps {
+    onNavigate: (section: string) => void;
+}
+
+const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => (
+    <div className="space-y-6">
+        <h2 className="text-2xl font-bold text-gray-800">Painel do Administrador</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <AdminCard 
+                icon={<Users className="w-8 h-8 text-[#000042]" />} 
+                title="Gerenciar Usuários" 
+                onClick={() => onNavigate('user-management')} 
+            />
+            <AdminCard 
+                icon={<ClipboardList className="w-8 h-8 text-[#000042]" />} 
+                title="Gerenciar Consultas" 
+                onClick={() => onNavigate('consultation-management')} 
+            />
+            <AdminCard 
+                icon={<CreditCard className="w-8 h-8 text-[#000042]" />} 
+                title="Gerenciar Planos" 
+                onClick={() => onNavigate('recharge-plan-management')} 
+            />
+            <AdminCard 
+                icon={<Tags className="w-8 h-8 text-[#000042]" />} 
+                title="Tabela de Preços" 
+                onClick={() => onNavigate('price-table-management')} 
+            />
+            <AdminCard 
+                icon={<Settings className="w-8 h-8 text-[#000042]" />} 
+                title="Configurações do Site" 
+                onClick={() => onNavigate('site-settings')} 
+            />
+            <AdminCard 
+                icon={<BarChart className="w-8 h-8 text-[#000042]" />} 
+                title="Relatórios" 
+                onClick={() => onNavigate('reports')} 
+            />
+        </div>
+    </div>
+);
 
 export default AdminPage;
