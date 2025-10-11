@@ -276,14 +276,13 @@ router.post('/execute/:slug', authenticateToken, async (req, res) => {
     // 6. Chamar a API externa
     // Mapeamento de slugs internos para endpoints da API externa
     const slugToEndpoint = {
-      'base-nacional': 'consultar-base-nacional',
-      'base-estadual': 'consultar-base-estadual',
-      'consulta-chassi': 'consultar-chassi',
+      'base-nacional': 'base-nacional',
+      'base-estadual': 'base-estadual',
+      'csv-renainf-renajud-recall-bin-proprietar': 'renajud',
       'gravame-v2': 'consultar-gravame',
-      'consultar-gravame': 'consultar-gravame',
       'codigo-seguranca-pdf': 'consultar-crv',
-      'consultar-crv': 'consultar-crv',
-      'csv-renainf-renajud-recall-bin-proprietar': 'consultar-csv-renainf-renajud-recall-bin-proprietar',
+      // Aguardando confirmação dos demais endpoints
+      'consulta-chassi': 'consultar-chassi',
       'ano-licenciamento-bin-nacional': 'consultar-ano-licenciamento-bin-nacional',
       'consulta-cautelar': 'consultar-cautelar',
       'consulta-leilao': 'consultar-leilao',
