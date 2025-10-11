@@ -654,22 +654,14 @@
                     const errorData = await response.json();
                     mostrarModal(errorData.balance, errorData.required);
                 } else if (response.ok) {
-                    // Se for PDF, faz o download
                     const blob = await response.blob();
                     pdfBlobUrl = window.URL.createObjectURL(blob);
-                    pdfFileName = a.download = `consulta-base-estadual-${placa}.pdf`;
+                    pdfFileName = `consulta-base-estadual-${placa}.pdf`;
                     
-                    const newBalance = response.headers.get(\'X-New-Balance\');
+                    const newBalance = response.headers.get('X-New-Balance');
                     
                     // Mostra modal de sucesso
                     mostrarModalSucesso();
-                    
-                    // Pegar novo saldo do header
-                    const newBalance = response.headers.get('X-New-Balance');
-                    
-                    message.className = 'message success';
-                    message.innerHTML = `Download do PDF iniciado com sucesso!${newBalance ? `<br>Novo saldo: R$ ${parseFloat(newBalance).toFixed(2)}` : ''}`;
-                    message.style.display = 'block';
                 } else if (response.status === 401) {
                     // Token inválido
                     alert('Sessão expirada. Faça login novamente.');
@@ -677,10 +669,10 @@
                     window.location.href = 'https://golden-veicular.vercel.app/';
                 } else {
                     const errorData = await response.json();
-                    mostrarModalErro(message.textContent = errorData.msg || 'Erro ao processar consulta.';);
+                    mostrarModalErro(errorData.msg || 'Erro ao processar consulta.');
                 }
             } catch (error) {
-                mostrarModalErro(message.textContent = 'Erro de conexão. Tente novamente.';);
+                mostrarModalErro('Erro de conexão. Tente novamente.');
             } finally {
                 loading.style.display = 'none';
                 submitBtn.disabled = false;
