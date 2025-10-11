@@ -42,7 +42,7 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ title, slug, descri
         {tag && <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{tag}</span>}
         
         <a 
-          href={`http://localhost:3001/consultas/${slug}.html`}
+          href={`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'https://golden-veicular-production.up.railway.app'}/consultas/${slug}.html`}
           target="_blank"
           rel="noopener noreferrer"
           className="bg-transparent border-2 border-[#000042] text-[#000042] font-bold py-1.5 px-4 rounded-md hover:bg-[#000042] hover:text-white transition-colors duration-300 text-sm text-center"
