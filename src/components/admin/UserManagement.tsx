@@ -7,7 +7,7 @@ interface User {
     id: string;
     name: string;
     email: string;
-    credits: number;
+    balance: number;
     role: 'user' | 'admin';
     created_at: string;
     avatar?: string;
@@ -51,7 +51,7 @@ const UserManagement: React.FC<UserManagementProps> = () => {
 
   const handleOpenModal = (user: User | null) => {
     setModalMode(user ? 'edit' : 'add');
-    setCurrentUser(user || { name: '', email: '', password: '', role: 'user', credits: 0 });
+    setCurrentUser(user || { name: '', email: '', password: '', role: 'user', balance: 0 });
     setIsModalOpen(true);
   };
 
@@ -189,13 +189,13 @@ const UserManagement: React.FC<UserManagementProps> = () => {
                     </select>
                   </div>
                   <div>
-                    <label htmlFor="credits" className="block text-sm font-medium text-gray-700">Créditos*</label>
-                    <input type="number" id="credits" value={currentUser.credits || 0} onChange={(e) => setCurrentUser(prev => ({ ...prev, credits: parseInt(e.target.value, 10) || 0 }))} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" />
+                    <label htmlFor="balance" className="block text-sm font-medium text-gray-700">Saldo (R$)*</label>
+                    <input type="number" id="balance" step="0.01" value={currentUser.balance || 0} onChange={(e) => setCurrentUser(prev => ({ ...prev, balance: parseFloat(e.target.value) || 0 }))} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" />
                   </div>
                 </div>
 
                 <div className="flex justify-between items-center pt-2">
-                  <p className="text-xs text-gray-500">*Concede créditos diretamente ao usuário. Não gera cobrança.</p>
+                  <p className="text-xs text-gray-500">*Concede saldo diretamente ao usuário. Não gera cobrança.</p>
                   <div>
                     <button type="button" onClick={handleCloseModal} className="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg mr-2 hover:bg-gray-300">Cancelar</button>
                     <button type="submit" className="bg-[#000042] text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90">Salvar</button>
@@ -210,7 +210,7 @@ const UserManagement: React.FC<UserManagementProps> = () => {
                         <tr>
                             <th className="py-3 px-4 text-left">Usuário</th>
                             <th className="py-3 px-4 text-left">Role</th>
-                            <th className="py-3 px-4 text-left">Créditos</th>
+                            <th className="py-3 px-4 text-left">Saldo</th>
                             <th className="py-3 px-4 text-left">Data de cadastro</th>
                             <th className="py-3 px-4 text-right">Ações</th>
                         </tr>
@@ -230,7 +230,7 @@ const UserManagement: React.FC<UserManagementProps> = () => {
                                         {user.role}
                                     </span>
                                 </td>
-                                <td className="py-3 px-4 font-medium">{user.credits}</td>
+                                <td className="py-3 px-4 font-medium">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(user.balance)}</td>
                                 <td className="py-3 px-4 text-gray-600">{new Date(user.created_at).toLocaleDateString()}</td>
                                 <td className="py-3 px-4 text-right">
                                     <div className="flex gap-4 justify-end">
