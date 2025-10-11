@@ -274,10 +274,45 @@ router.post('/execute/:slug', authenticateToken, async (req, res) => {
     const historyId = historyResult.insertId;
 
     // 6. Chamar a API externa
-    const apiSlug = slug.replace(/-/g, '.');
+    // Mapeamento de slugs internos para endpoints da API externa
+    const slugToEndpoint = {
+      'base-nacional': 'consultar-base-nacional',
+      'base-estadual': 'consultar-base-estadual',
+      'consulta-chassi': 'consultar-chassi',
+      'gravame-v2': 'consultar-gravame',
+      'consultar-gravame': 'consultar-gravame',
+      'codigo-seguranca-pdf': 'consultar-crv',
+      'consultar-crv': 'consultar-crv',
+      'csv-renainf-renajud-recall-bin-proprietar': 'consultar-csv-renainf-renajud-recall-bin-proprietar',
+      'ano-licenciamento-bin-nacional': 'consultar-ano-licenciamento-bin-nacional',
+      'consulta-cautelar': 'consultar-cautelar',
+      'consulta-leilao': 'consultar-leilao',
+      'consulta-comunicado-venda': 'consultar-comunicado-venda',
+      'crlv-e-agendado': 'consultar-crlv-e-agendado',
+      'crv-digital-agendado': 'consultar-crv-digital-agendado',
+      'proprietario-atual-v2': 'consultar-proprietario-atual-v2',
+      'proprietario-atual-restricoes': 'consultar-proprietario-atual-restricoes',
+      'reemissao-atpv-e': 'consultar-reemissao-atpv-e',
+      'verifica-autenticidade-crv': 'consultar-verifica-autenticidade-crv',
+      // CRLV-E TURBO por estado
+      'crlv-e-turbo-mg': 'consultar-crlv-mg',
+      'crlv-e-turbo-to': 'consultar-crlv-to',
+      'crlv-e-turbo-mt': 'consultar-crlv-mt',
+      'crlv-e-turbo-ap': 'consultar-crlv-ap',
+      'crlv-e-turbo-ma': 'consultar-crlv-ma',
+      'crlv-e-turbo-sp': 'consultar-crlv-sp',
+      'crlv-e-turbo-go': 'consultar-crlv-go',
+      'crlv-e-turbo-rr': 'consultar-crlv-rr',
+      'crlv-e-turbo-pi': 'consultar-crlv-pi',
+      'crlv-e-turbo-pr': 'consultar-crlv-pr',
+      'crlv-e-turbo-se': 'consultar-crlv-se',
+      'crlv-e-turbo-ac': 'consultar-crlv-ac',
+    };
+
+    const apiEndpoint = slugToEndpoint[slug] || slug;
     
     const response = await axios.post(
-      `https://portaldespachantes.online/${apiSlug}`,
+      `https://portaldespachantes.online/${apiEndpoint}`,
       data,
       {
         headers: {
