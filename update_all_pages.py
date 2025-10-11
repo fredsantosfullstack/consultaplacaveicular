@@ -1,29 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' http://localhost:3001; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
-    <title>CRLV-E AGENDADO</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background-color: #f5f5f5; }
-        .header { background-color: #000042; color: white; padding: 15px 20px; font-size: 18px; }
-        .container { max-width: 600px; margin: 50px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: #333; margin-bottom: 10px; }
-        .description { text-align: center; color: #666; margin-bottom: 30px; font-size: 14px; }
-        label { display: block; margin-bottom: 8px; color: #333; font-weight: 500; }
-        input[type="text"] { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-bottom: 20px; }
-        button { width: 100%; padding: 15px; border: none; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
-        .btn-consultar { background-color: #007bff; color: white; }
-        .btn-consultar:hover { background-color: #0056b3; }
-        .btn-voltar { background-color: #6c757d; color: white; }
-        .btn-voltar:hover { background-color: #545b62; }
-        .message { padding: 15px; border-radius: 4px; margin-top: 20px; display: none; }
-        .message.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .message.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .loading { display: none; text-align: center; margin-top: 20px; }
+import os
+import re
 
+# CSS adicional para modais e PDF viewer
+ADDITIONAL_CSS = """
         
         /* Modal de Sucesso */
         .modal-icon.success {
@@ -102,24 +81,25 @@
             border: 2px solid #dee2e6;
             border-radius: 8px;
             background-color: white;
-        }
-    </style>
-</head>
-<body>
-    <div class="header">CRLV-E AGENDADO</div>
-    <div class="container">
-        <h1>CRLV-E AGENDADO</h1>
-        <p class="description">Disponível para os estados: PI, RO, AC, DF, SC, RJ, AL, PB, PE, ES, CE, MS</p>
-        <form id="consultaForm">
-            <label for="placa">Placa do Veículo:</label>
-            <input type="text" id="placa" name="placa" placeholder="ABC1234" required maxlength="7">
-            <button type="submit" class="btn-consultar">Consultar</button>
-            <button type="button" class="btn-voltar" onclick="window.location.href='https://golden-veicular.vercel.app/dashboard'">Voltar</button>
-        </form>
-        <div class="loading" id="loading">Processando consulta...</div>
-        <div class="message" id="message"></div>
-    </div>
+        }"""
 
+# HTML do visualizador de PDF
+PDF_VIEWER_HTML = """
+    <!-- Visualizador de PDF -->
+    <div class="pdf-viewer-container" id="pdfViewerContainer">
+        <div class="pdf-viewer-header">
+            <h3 class="pdf-viewer-title">Resultado da Consulta</h3>
+            <div class="pdf-viewer-actions">
+                <button class="btn-download" id="btnDownloadPdf">⬇️ Download PDF</button>
+                <button class="btn-close-pdf" onclick="fecharPdfViewer()">✕ Fechar</button>
+            </div>
+        </div>
+        <iframe id="pdfIframe" class="pdf-iframe"></iframe>
+    </div>
+"""
+
+# HTML dos modais
+MODALS_HTML = """
     <!-- Modal de Sucesso -->
     <div class="modal-overlay" id="modalSucesso">
         <div class="modal-content">
@@ -154,9 +134,10 @@
             </div>
         </div>
     </div>
+"""
 
-    <script>
-        
+# JavaScript adicional
+ADDITIONAL_JS = """
         // Variáveis globais
         let pdfBlobUrl = null;
         let pdfFileName = '';
@@ -206,44 +187,94 @@
             document.body.removeChild(a);
         });
 
-document.getElementById('consultaForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const placa = document.getElementById('placa').value;
-            const loading = document.getElementById('loading');
-            const message = document.getElementById('message');
-            const submitBtn = document.querySelector('.btn-consultar');
-            loading.style.display = 'block';
-            message.style.display = 'none';
-            submitBtn.disabled = true;
-            try {
-                const response = await fetch('https://golden-veicular-production.up.railway.app/api/consultations/execute/crlv-e-agendado', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ placa })
-                });
-                if (response.ok) {
-                    const blob = await response.blob();
-                    pdfBlobUrl = window.URL.createObjectURL(blob);
-                    pdfFileName = a.download = `crlv-e-agendado-${placa}.pdf`;
-                    
-                    const newBalance = response.headers.get(\'X-New-Balance\');
-                    
-                    // Mostra modal de sucesso
-                    mostrarModalSucesso();
-                    message.className = 'message success';
-                    message.textContent = 'Download do PDF iniciado com sucesso!';
-                    message.style.display = 'block';
-                } else {
-                    const errorData = await response.json();
-                    mostrarModalErro(message.textContent = errorData.msg || 'Erro ao processar consulta.';);
-                }
-            } catch (error) {
-                mostrarModalErro(message.textContent = 'Erro de conexão. Tente novamente.';);
-            } finally {
-                loading.style.display = 'none';
-                submitBtn.disabled = false;
-            }
-        });
-    </script>
-</body>
-</html>
+"""
+
+def update_html_file(filepath):
+    """Atualiza um arquivo HTML com as melhorias"""
+    print(f"Processando: {filepath}")
+    
+    with open(filepath, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+    # Pula se já foi atualizado
+    if 'modalSucesso' in content:
+        print(f"  ✓ Já atualizado, pulando...")
+        return False
+    
+    # 1. Adiciona CSS antes de </style>
+    content = content.replace('    </style>', ADDITIONAL_CSS + '\n    </style>')
+    
+    # 2. Adiciona visualizador de PDF antes do primeiro modal
+    if '<!-- Modal' in content:
+        content = content.replace('    <!-- Modal', PDF_VIEWER_HTML + '\n    <!-- Modal')
+    
+    # 3. Adiciona modais antes de </body> ou antes do <script>
+    if '<script>' in content:
+        content = content.replace('    <script>', MODALS_HTML + '\n    <script>')
+    
+    # 4. Adiciona JavaScript no início do <script>
+    content = re.sub(
+        r'(<script>\s*)',
+        r'\1' + ADDITIONAL_JS,
+        content,
+        count=1
+    )
+    
+    # 5. Atualiza lógica de sucesso (response.ok)
+    # Procura por padrão de download direto e substitui
+    old_success_pattern = r'(const blob = await response\.blob\(\);)\s+(const url = window\.URL\.createObjectURL\(blob\);)\s+(const a = document\.createElement\(\'a\'\);)\s+(a\.href = url;)\s+(a\.download = [^;]+;)\s+(document\.body\.appendChild\(a\);)\s+(a\.click\(\);)\s+(window\.URL\.revokeObjectURL\(url\);)\s+(document\.body\.removeChild\(a\);)'
+    
+    new_success_code = r'\1\n                    pdfBlobUrl = window.URL.createObjectURL(blob);\n                    pdfFileName = \5\n                    \n                    const newBalance = response.headers.get(\'X-New-Balance\');\n                    \n                    // Mostra modal de sucesso\n                    mostrarModalSucesso();'
+    
+    content = re.sub(old_success_pattern, new_success_code, content, flags=re.DOTALL)
+    
+    # 6. Atualiza lógica de erro
+    content = re.sub(
+        r'(message\.className = \'message error\';)\s+(message\.textContent = [^;]+;)\s+(message\.style\.display = \'block\';)',
+        r'mostrarModalErro(\2);',
+        content
+    )
+    
+    # Salva arquivo atualizado
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(content)
+    
+    print(f"  ✓ Atualizado com sucesso!")
+    return True
+
+def main():
+    consultas_dir = r'backend\public\consultas'
+    
+    # Lista de arquivos para atualizar (exceto base-nacional que já foi feito)
+    files_to_update = [
+        'base-estadual.html',
+        'crlv-e-turbo.html',
+        'codigo-seguranca-pdf.html',
+        'csv-renainf-renajud-recall-bin-proprietar.html',
+        'gravame-v2.html',
+        'ano-licenciamento-bin-nacional.html',
+        'consulta-cautelar.html',
+        'consulta-chassi.html',
+        'consulta-leilao.html',
+        'consulta-comunicado-venda.html',
+        'crlv-e-agendado.html',
+        'crv-digital-agendado.html',
+        'proprietario-atual-v2.html',
+        'proprietario-atual-restricoes.html',
+        'reemissao-atpv-e.html',
+        'verifica-autenticidade-crv.html'
+    ]
+    
+    updated_count = 0
+    for filename in files_to_update:
+        filepath = os.path.join(consultas_dir, filename)
+        if os.path.exists(filepath):
+            if update_html_file(filepath):
+                updated_count += 1
+        else:
+            print(f"Arquivo não encontrado: {filepath}")
+    
+    print(f"\n✅ Total de arquivos atualizados: {updated_count}/{len(files_to_update)}")
+
+if __name__ == '__main__':
+    main()

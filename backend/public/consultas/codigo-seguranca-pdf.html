@@ -200,6 +200,86 @@
             margin-top: 25px;
             line-height: 1.6;
         }
+
+        
+        /* Modal de Sucesso */
+        .modal-icon.success {
+            background-color: #d4edda;
+        }
+        .modal-icon.success svg {
+            stroke: #28a745;
+        }
+        
+        /* Modal de Erro */
+        .modal-icon.error {
+            background-color: #f8d7da;
+        }
+        .modal-icon.error svg {
+            stroke: #dc3545;
+        }
+        
+        /* Visualizador de PDF */
+        .pdf-viewer-container {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 12px;
+        }
+        .pdf-viewer-container.active {
+            display: block;
+        }
+        .pdf-viewer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .pdf-viewer-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #000042;
+        }
+        .pdf-viewer-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-download {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-download:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+        .btn-close-pdf {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-close-pdf:hover {
+            background-color: #5a6268;
+        }
+        .pdf-iframe {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            background-color: white;
+        }
     </style>
 </head>
 <body>
@@ -286,14 +366,13 @@
                     message.style.display = 'block';
                 } else if (response.ok) {
                     const blob = await response.blob();
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `codigo-seguranca-pdf-${placa}.pdf`;
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                    document.body.removeChild(a);
+                    pdfBlobUrl = window.URL.createObjectURL(blob);
+                    pdfFileName = a.download = `codigo-seguranca-pdf-${placa}.pdf`;
+                    
+                    const newBalance = response.headers.get(\'X-New-Balance\');
+                    
+                    // Mostra modal de sucesso
+                    mostrarModalSucesso();
                     
                     const newBalance = response.headers.get('X-New-Balance');
                     message.className = 'message success';
@@ -305,14 +384,10 @@
                     window.location.href = 'https://golden-veicular.vercel.app/';
                 } else {
                     const errorData = await response.json();
-                    message.className = 'message error';
-                    message.textContent = errorData.msg || 'Erro ao processar consulta.';
-                    message.style.display = 'block';
+                    mostrarModalErro(message.textContent = errorData.msg || 'Erro ao processar consulta.';);
                 }
             } catch (error) {
-                message.className = 'message error';
-                message.textContent = 'Erro de conexão. Tente novamente.';
-                message.style.display = 'block';
+                mostrarModalErro(message.textContent = 'Erro de conexão. Tente novamente.';);
             } finally {
                 loading.style.display = 'none';
                 submitBtn.disabled = false;
