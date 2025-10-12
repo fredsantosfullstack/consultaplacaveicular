@@ -14,8 +14,9 @@ api.interceptors.request.use(config => {
     // Assegura que headers exista para evitar erros
     config.headers = config.headers || {};
     config.headers['Authorization'] = `Bearer ${token}`;
+    console.log('✅ Token encontrado e adicionado ao header');
   } else {
-    console.error('❌ Empty token!');
+    console.warn('⚠️ Token não encontrado - requisição sem autenticação');
   }
   
   return config;
