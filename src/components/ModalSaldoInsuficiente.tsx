@@ -18,10 +18,12 @@ export default function ModalSaldoInsuficiente({
   
   if (!isOpen) return null;
 
-  const faltam = valorConsulta - saldoAtual;
+  const saldoSeguro = isNaN(saldoAtual) || saldoAtual === null || saldoAtual === undefined ? 0 : saldoAtual;
+  const valorSeguro = isNaN(valorConsulta) || valorConsulta === null || valorConsulta === undefined ? 0 : valorConsulta;
+  const faltam = valorSeguro - saldoSeguro;
 
   const handleRecarregar = () => {
-    navigate('/credit-recharge');
+    navigate('/recarga-creditos');
   };
 
   return (
@@ -48,13 +50,13 @@ export default function ModalSaldoInsuficiente({
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Saldo atual:</span>
               <span className="font-semibold text-gray-900">
-                R$ {saldoAtual.toFixed(2)}
+                R$ {saldoSeguro.toFixed(2)}
               </span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Valor da consulta:</span>
               <span className="font-semibold text-gray-900">
-                R$ {valorConsulta.toFixed(2)}
+                R$ {valorSeguro.toFixed(2)}
               </span>
             </div>
             <div className="border-t border-gray-200 pt-2 flex justify-between text-sm">
