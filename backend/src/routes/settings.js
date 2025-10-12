@@ -127,4 +127,64 @@ router.post('/', authenticateToken, isAdmin, async (req, res) => {
   }
 });
 
+// ==================== ROTAS DE CONFIGURAÇÃO DA API ====================
+
+// Buscar credenciais da API (apenas admin)
+router.get('/api-credentials', authenticateToken, isAdmin, async (req, res) => {
+  try {
+    const [settings] = await db.query(
+      'SELECT setting_key, setting_value FROM api_settings WHERE setting_key IN (?, ?)',
+      ['api_email', 'api_password']
+    );
+    
+    const credentials = {
+      api_email: '',
+      api_password: ''
+    };
+    
+    settings.forEach(setting => {
+      credentials[setting.setting_key] = setting.setting_value;
+    });
+    
+    res.json(credentials);
+  } catch (error) {
+    console.error('Erro ao buscar credenciais da API:', error);
+    res.status(500).json({ msg: 'Erro no servidor ao buscar credenciais da API.' });
+  }
+});
+
+// Atualizar credenciais da API (apenas admin)
+router.put('/api-credentials', authenticateToken, isAdmin, async (req, res) => {
+  const { api_email, api_password } = req.body;
+
+  if (!api_email || !api_password) {
+    return res.status(400).json({ msg: 'Email e senha são obrigatórios.' });
+  }
+
+  try {
+    const connection = await db.getConnection();
+    await connection.beginTransaction();
+
+    // Atualizar email
+    await connection.query(
+      'INSERT INTO api_settings (setting_key, setting_value, description) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE setting_value = ?',
+      ['api_email', api_email, 'Email para autenticação na API externa', api_email]
+    );
+
+    // Atualizar senha
+    await connection.query(
+      'INSERT INTO api_settings (setting_key, setting_value, description) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE setting_value = ?',
+      ['api_password', api_password, 'Senha para autenticação na API externa', api_password]
+    );
+
+    await connection.commit();
+    connection.release();
+
+    res.json({ msg: 'Credenciais da API atualizadas com sucesso!' });
+  } catch (error) {
+    console.error('Erro ao atualizar credenciais da API:', error);
+    res.status(500).json({ msg: 'Erro no servidor ao atualizar credenciais da API.' });
+  }
+});
+
 export default router;

@@ -21,7 +21,7 @@ const ApiSettings: React.FC = () => {
   const fetchCredentials = async () => {
     setIsLoading(true);
     try {
-      const response = await api.get('/admin/api-settings');
+      const response = await api.get('/settings/api-credentials');
       setCredentials(response.data);
     } catch (error) {
       console.error('Erro ao buscar credenciais:', error);
@@ -45,7 +45,7 @@ const ApiSettings: React.FC = () => {
     setIsSaving(true);
     setMessage(null);
     try {
-      await api.put('/admin/api-settings', credentials);
+      await api.put('/settings/api-credentials', credentials);
       setMessage({ type: 'success', text: 'Credenciais da API atualizadas com sucesso!' });
     } catch (error: any) {
       console.error('Erro ao salvar credenciais:', error);
