@@ -1,7 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Play, Pause, Car, FileText, ShieldCheck, User, Search, ChevronUp, ChevronDown } from 'lucide-react';
-import api from '../../services/api'; // Importa a instância do Axios
+import { Plus, Edit, Trash2, Play, Pause, Car, FileText, ShieldCheck, User, Search, GripVertical } from 'lucide-react';
+import api from '../../services/api';
 import AdminModal from './AdminModal';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface Consultation {
   id: number;
@@ -14,14 +31,81 @@ interface Consultation {
   display_order?: number;
 }
 
+// Componente para item arrastável
+interface SortableItemProps {
+  consultation: Consultation;
+  onEdit: () => void;
+  onDelete: () => void;
+  onToggleActive: () => void;
+  iconMap: any;
+}
+
+const SortableItem: React.FC<SortableItemProps> = ({ consultation, onEdit, onDelete, onToggleActive, iconMap }) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: consultation.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  const IconComponent = iconMap[consultation.icon || 'Search'] || iconMap.Search;
+
+  return (
+    <tr ref={setNodeRef} style={style} className="border-b hover:bg-gray-50">
+      <td className="py-3 px-4 text-center">
+        <button
+          {...attributes}
+          {...listeners}
+          className="cursor-grab active:cursor-grabbing p-1 hover:bg-gray-100 rounded"
+          title="Arrastar para reordenar"
+        >
+          <GripVertical size={18} className="text-gray-400" />
+        </button>
+      </td>
+      <td className="py-3 px-4 font-medium">{consultation.name}</td>
+      <td className="py-3 px-4">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(consultation.price)}</td>
+      <td className="py-3 px-4 text-center">{consultation.is_new ? 'Sim' : 'Não'}</td>
+      <td className="py-3 px-4 text-center">
+        <span className={`px-2 py-1 text-xs font-semibold rounded-full ${consultation.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+          {consultation.is_active ? 'Ativo' : 'Inativo'}
+        </span>
+      </td>
+      <td className="py-3 px-4 text-right">
+        <div className="flex gap-4 justify-end">
+          <button onClick={onToggleActive} title={consultation.is_active ? 'Pausar' : 'Ativar'}>
+            {consultation.is_active ? <Pause size={18} className="text-yellow-600 hover:text-yellow-800" /> : <Play size={18} className="text-green-600 hover:text-green-800" />}
+          </button>
+          <button onClick={onEdit} title="Editar" className="text-blue-600 hover:text-blue-800"><Edit size={18} /></button>
+          <button onClick={onDelete} title="Excluir" className="text-red-600 hover:text-red-800"><Trash2 size={18} /></button>
+        </div>
+      </td>
+    </tr>
+  );
+};
+
 const ConsultationManagement: React.FC = () => {
   const [consultations, setConsultations] = useState<Consultation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
   const [currentConsultation, setCurrentConsultation] = useState<Partial<Consultation>>({});
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   const availableIcons = {
     Car,
@@ -92,40 +176,25 @@ const ConsultationManagement: React.FC = () => {
     }
   };
 
-  const handleMoveUp = async (index: number) => {
-    if (index === 0) return; // Já está no topo
-    
-    const newConsultations = [...consultations];
-    const temp = newConsultations[index];
-    newConsultations[index] = newConsultations[index - 1];
-    newConsultations[index - 1] = temp;
-    
-    // Atualizar display_order
-    try {
-      await api.put(`/consultations/${newConsultations[index].id}/order`, { display_order: index + 1 });
-      await api.put(`/consultations/${newConsultations[index - 1].id}/order`, { display_order: index });
-      setConsultations(newConsultations);
-    } catch (error) {
-      console.error('Erro ao reordenar:', error);
-      fetchConsultations(); // Recarregar em caso de erro
-    }
-  };
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
 
-  const handleMoveDown = async (index: number) => {
-    if (index === consultations.length - 1) return; // Já está no final
-    
-    const newConsultations = [...consultations];
-    const temp = newConsultations[index];
-    newConsultations[index] = newConsultations[index + 1];
-    newConsultations[index + 1] = temp;
-    
-    // Atualizar display_order
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = consultations.findIndex((c) => c.id === active.id);
+    const newIndex = consultations.findIndex((c) => c.id === over.id);
+
+    const newConsultations = arrayMove(consultations, oldIndex, newIndex);
+    setConsultations(newConsultations);
+
+    // Atualizar display_order no backend
     try {
-      await api.put(`/consultations/${newConsultations[index].id}/order`, { display_order: index + 1 });
-      await api.put(`/consultations/${newConsultations[index + 1].id}/order`, { display_order: index + 2 });
-      setConsultations(newConsultations);
+      const updates = newConsultations.map((consultation, index) =>
+        api.put(`/consultations/${consultation.id}/order`, { display_order: index + 1 })
+      );
+      await Promise.all(updates);
     } catch (error) {
-      console.error('Erro ao reordenar:', error);
+      console.error('Erro ao atualizar ordem:', error);
       fetchConsultations(); // Recarregar em caso de erro
     }
   };
@@ -184,61 +253,34 @@ const ConsultationManagement: React.FC = () => {
               </div>
             </form>
           </AdminModal>
-          <table className="min-w-full bg-white">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="py-3 px-4 text-center">Ordem</th>
-                <th className="py-3 px-4 text-left">Nome</th>
-                <th className="py-3 px-4 text-left">Preço</th>
-                <th className="py-3 px-4 text-center">Tag 'NOVO'</th>
-                <th className="py-3 px-4 text-center">Status</th>
-                <th className="py-3 px-4 text-right">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {consultations.map((consult, index) => (
-                <tr key={consult.id} className="border-b">
-                  <td className="py-3 px-4 text-center">
-                    <div className="flex gap-1 justify-center">
-                      <button 
-                        onClick={() => handleMoveUp(index)} 
-                        disabled={index === 0}
-                        title="Mover para cima"
-                        className={`p-1 rounded ${index === 0 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-100'}`}
-                      >
-                        <ChevronUp size={18} />
-                      </button>
-                      <button 
-                        onClick={() => handleMoveDown(index)} 
-                        disabled={index === consultations.length - 1}
-                        title="Mover para baixo"
-                        className={`p-1 rounded ${index === consultations.length - 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-100'}`}
-                      >
-                        <ChevronDown size={18} />
-                      </button>
-                    </div>
-                  </td>
-                  <td className="py-3 px-4 font-medium">{consult.name}</td>
-                  <td className="py-3 px-4">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(consult.price)}</td>
-                  <td className="py-3 px-4 text-center">{consult.is_new ? 'Sim' : 'Não'}</td>
-                  <td className="py-3 px-4 text-center">
-                    <span className={`px-2 py-1 text-xs font-semibold rounded-full ${consult.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                      {consult.is_active ? 'Ativo' : 'Inativo'}
-                    </span>
-                  </td>
-                  <td className="py-3 px-4 text-right">
-                    <div className="flex gap-4 justify-end">
-                      <button onClick={() => handleToggleActive(consult)} title={consult.is_active ? 'Pausar' : 'Ativar'}>
-                        {consult.is_active ? <Pause size={18} className="text-yellow-600 hover:text-yellow-800" /> : <Play size={18} className="text-green-600 hover:text-green-800" />}
-                      </button>
-                      <button onClick={() => handleOpenModal('edit', consult)} title="Editar" className="text-blue-600 hover:text-blue-800"><Edit size={18} /></button>
-                      <button onClick={() => handleDelete(consult.id)} title="Excluir" className="text-red-600 hover:text-red-800"><Trash2 size={18} /></button>
-                    </div>
-                  </td>
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <table className="min-w-full bg-white">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="py-3 px-4 text-center w-16">Ordem</th>
+                  <th className="py-3 px-4 text-left">Nome</th>
+                  <th className="py-3 px-4 text-left">Preço</th>
+                  <th className="py-3 px-4 text-center">Tag 'NOVO'</th>
+                  <th className="py-3 px-4 text-center">Status</th>
+                  <th className="py-3 px-4 text-right">Ações</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <SortableContext items={consultations.map(c => c.id)} strategy={verticalListSortingStrategy}>
+                <tbody>
+                  {consultations.map((consult) => (
+                    <SortableItem
+                      key={consult.id}
+                      consultation={consult}
+                      onEdit={() => handleOpenModal('edit', consult)}
+                      onDelete={() => handleDelete(consult.id)}
+                      onToggleActive={() => handleToggleActive(consult)}
+                      iconMap={availableIcons}
+                    />
+                  ))}
+                </tbody>
+              </SortableContext>
+            </table>
+          </DndContext>
         </div>
       )}
     </div>
