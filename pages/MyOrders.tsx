@@ -1,7 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Plus, MessageSquare, Filter } from 'lucide-react';
 
 const MyOrders: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleNovoPedido = () => {
+    navigate('/consulta/crlve');
+  };
+
   return (
     <div className="space-y-6">
       <h1 className="text-xl font-bold text-gray-800">Meus Pedidos</h1>
@@ -19,7 +26,10 @@ const MyOrders: React.FC = () => {
             </select>
           </div>
           <div className="flex flex-col sm:flex-row gap-2">
-            <button className="flex items-center justify-center gap-2 w-full sm:w-auto bg-[#000042] text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all text-sm">
+            <button 
+              onClick={handleNovoPedido}
+              className="flex items-center justify-center gap-2 w-full sm:w-auto bg-[#000042] text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all text-sm"
+            >
               <Plus size={16} />
               <span>Novo Pedido</span>
             </button>
