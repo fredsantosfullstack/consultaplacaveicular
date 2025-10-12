@@ -41,12 +41,12 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ title, slug, descri
         
         {tag && <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{tag}</span>}
         
-        <a 
-          href={`/consulta/${slug}`}
-          className="bg-transparent border-2 border-[#000042] text-[#000042] font-bold py-1.5 px-4 rounded-md hover:bg-[#000042] hover:text-white transition-colors duration-300 text-sm text-center"
+        <Link 
+          to={`/consulta/${slug}`}
+          className="bg-transparent border-2 border-[#000042] text-[#000042] font-bold py-1.5 px-4 rounded-md hover:bg-[#000042] hover:text-white transition-colors duration-300 text-sm text-center inline-block"
         >
           Consultar
-        </a>
+        </Link>
       </div>
     </div>
   );
