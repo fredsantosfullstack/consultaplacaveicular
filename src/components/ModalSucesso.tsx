@@ -3,10 +3,9 @@ import { Check } from 'lucide-react';
 interface ModalSucessoProps {
   isOpen: boolean;
   onClose: () => void;
-  onViewPDF: () => void;
 }
 
-export default function ModalSucesso({ isOpen, onClose, onViewPDF }: ModalSucessoProps) {
+export default function ModalSucesso({ isOpen, onClose }: ModalSucessoProps) {
   if (!isOpen) return null;
 
   return (
@@ -25,24 +24,16 @@ export default function ModalSucesso({ isOpen, onClose, onViewPDF }: ModalSucess
 
           {/* Mensagem */}
           <p className="text-gray-600 mb-6">
-            Consulta realizada com sucesso! O PDF está pronto para visualização.
+            Consulta realizada com sucesso! O PDF está disponível abaixo.
           </p>
 
-          {/* Botões */}
-          <div className="flex gap-3 w-full">
-            <button
-              onClick={onClose}
-              className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium"
-            >
-              Fechar
-            </button>
-            <button
-              onClick={onViewPDF}
-              className="flex-1 px-4 py-2 bg-[#000042] text-white rounded-lg hover:bg-[#000052] transition-colors font-medium"
-            >
-              Ver PDF
-            </button>
-          </div>
+          {/* Botão OK */}
+          <button
+            onClick={onClose}
+            className="w-full px-6 py-3 bg-[#6366f1] text-white rounded-lg hover:bg-[#5558e3] transition-colors font-medium"
+          >
+            OK
+          </button>
         </div>
       </div>
     </div>

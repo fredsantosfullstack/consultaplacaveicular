@@ -96,11 +96,6 @@ export default function ConsultaForm({
     }
   };
 
-  const handleViewPDF = () => {
-    setModalSucesso(false);
-    setModalPDF(true);
-  };
-
   const handleDownloadPDF = () => {
     const link = document.createElement('a');
     link.href = pdfUrl;
@@ -228,7 +223,6 @@ export default function ConsultaForm({
       <ModalSucesso 
         isOpen={modalSucesso} 
         onClose={() => setModalSucesso(false)}
-        onViewPDF={handleViewPDF}
       />
       <ModalErro 
         isOpen={modalErro} 
