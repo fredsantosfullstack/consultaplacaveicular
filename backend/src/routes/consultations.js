@@ -213,14 +213,9 @@ router.get('/history', authenticateToken, async (req, res) => {
 
 // Rota de Proxy UNIFICADA COM AUTENTICAÇÃO e VERIFICAÇÃO DE SALDO
 router.post('/execute/:slug', authenticateToken, async (req, res) => {
-  let { slug } = req.params;
+  const { slug } = req.params;
   const data = req.body;
   const userId = req.user.id;
-
-  // Se for CRLV-E Turbo, construir slug com estado
-  if (slug === 'crlv-e-turbo' && data.estado) {
-    slug = `crlv-e-turbo-${data.estado.toLowerCase()}`;
-  }
 
   // Validação simples para garantir que o corpo não está vazio
   if (Object.keys(data).length === 0) {
@@ -232,7 +227,7 @@ router.post('/execute/:slug', authenticateToken, async (req, res) => {
   try {
     await connection.beginTransaction();
 
-    // 1. Buscar dados da consulta pelo slug
+    // 1. Buscar dados da consulta pelo slug ORIGINAL (sem estado)
     const [consultationRows] = await connection.query('SELECT id, name, price FROM consultation_types WHERE slug = ?', [slug]);
     
     if (consultationRows.length === 0) {
@@ -313,7 +308,13 @@ router.post('/execute/:slug', authenticateToken, async (req, res) => {
       'crlv-e-turbo-ac': 'consultar-crlv-ac',
     };
 
-    const apiEndpoint = slugToEndpoint[slug] || slug;
+    // Se for CRLV-E Turbo, construir slug com estado para a API externa
+    let apiSlug = slug;
+    if (slug === 'crlv-e-turbo' && data.estado) {
+      apiSlug = `crlv-e-turbo-${data.estado.toLowerCase()}`;
+    }
+
+    const apiEndpoint = slugToEndpoint[apiSlug] || apiSlug;
     
     const response = await axios.post(
       `https://portaldespachantes.online/${apiEndpoint}`,
