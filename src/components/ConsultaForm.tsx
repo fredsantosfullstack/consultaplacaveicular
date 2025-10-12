@@ -1,5 +1,5 @@
 import { useState, ReactNode } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Download } from 'lucide-react';
 import api from '../services/api';
 import ModalSucesso from './ModalSucesso';
 import ModalErro from './ModalErro';
@@ -68,12 +68,8 @@ export default function ConsultaForm({
       setPdfUrl(url);
       setPdfFileName(`${slug}-${formData.placa || 'consulta'}.pdf`);
       
-      // Abrir PDF automaticamente após 1 segundo
+      // Mostrar modal de sucesso
       setModalSucesso(true);
-      setTimeout(() => {
-        setModalSucesso(false);
-        setModalPDF(true);
-      }, 1500);
     } catch (error: any) {
       if (error.response?.status === 402) {
         // Saldo insuficiente
@@ -103,6 +99,15 @@ export default function ConsultaForm({
   const handleViewPDF = () => {
     setModalSucesso(false);
     setModalPDF(true);
+  };
+
+  const handleDownloadPDF = () => {
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.download = pdfFileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -193,6 +198,29 @@ export default function ConsultaForm({
               </button>
             </div>
           </form>
+
+          {/* Botão Download PDF e Visualizador Inline */}
+          {pdfUrl && (
+            <div className="mt-6 space-y-4">
+              {/* Botão Download */}
+              <button
+                onClick={handleDownloadPDF}
+                className="w-full bg-[#4f46e5] text-white py-3 rounded-lg hover:bg-[#4338ca] transition-colors font-medium flex items-center justify-center gap-2"
+              >
+                <Download className="w-5 h-5" />
+                Download PDF
+              </button>
+
+              {/* Visualizador PDF Inline */}
+              <div className="border border-gray-300 rounded-lg overflow-hidden">
+                <iframe
+                  src={pdfUrl}
+                  className="w-full h-[600px]"
+                  title="Visualizador de PDF"
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
