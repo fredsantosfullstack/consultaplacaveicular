@@ -12,6 +12,18 @@ import ProfilePage from '../pages/ProfilePage';
 import ConsultationHistoryPage from '../pages/ConsultationHistoryPage';
 import { AuthProvider } from './contexts/AuthContext';
 
+// Páginas de Consulta
+import BaseNacional from './pages/consultas/BaseNacional';
+import BaseEstadual from './pages/consultas/BaseEstadual';
+import CodigoSegurancaPDF from './pages/consultas/CodigoSegurancaPDF';
+import AnoLicenciamento from './pages/consultas/AnoLicenciamento';
+import ConsultaCautelar from './pages/consultas/ConsultaCautelar';
+import ConsultaChassi from './pages/consultas/ConsultaChassi';
+import ConsultaComunicadoVenda from './pages/consultas/ConsultaComunicadoVenda';
+import ConsultaLeilao from './pages/consultas/ConsultaLeilao';
+import CrlvETurbo from './pages/consultas/CrlvETurbo';
+import GravameV2 from './pages/consultas/GravameV2';
+
 function App() {
   return (
     <AuthProvider>
@@ -28,7 +40,20 @@ function App() {
           <Route path="/consultas/:slug" element={<ConsultationPage />} />
           <Route path="/perfil" element={<ProfilePage />} />
           <Route path="/historico-consultas" element={<ConsultationHistoryPage />} />
-                    <Route path="/" element={<AuthPage />} /> {/* Rota padrão */} 
+          
+          {/* Rotas de Consultas Específicas */}
+          <Route path="/consulta/base-nacional" element={<BaseNacional />} />
+          <Route path="/consulta/base-estadual" element={<BaseEstadual />} />
+          <Route path="/consulta/codigo-seguranca-pdf" element={<CodigoSegurancaPDF />} />
+          <Route path="/consulta/ano-licenciamento-bin-nacional" element={<AnoLicenciamento />} />
+          <Route path="/consulta/consulta-cautelar" element={<ConsultaCautelar />} />
+          <Route path="/consulta/consulta-chassi" element={<ConsultaChassi />} />
+          <Route path="/consulta/consulta-comunicado-venda" element={<ConsultaComunicadoVenda />} />
+          <Route path="/consulta/consulta-leilao" element={<ConsultaLeilao />} />
+          <Route path="/consulta/crlv-e-turbo" element={<CrlvETurbo />} />
+          <Route path="/consulta/gravame-v2" element={<GravameV2 />} />
+          
+          <Route path="/" element={<AuthPage />} /> {/* Rota padrão */} 
         </Routes>
       </Router>
     </AuthProvider>
