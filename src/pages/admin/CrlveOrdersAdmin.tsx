@@ -36,7 +36,11 @@ interface CrlveSettings {
   is_active: boolean;
 }
 
-export default function CrlveOrdersAdmin() {
+interface CrlveOrdersAdminProps {
+  onBack?: () => void;
+}
+
+export default function CrlveOrdersAdmin({ onBack }: CrlveOrdersAdminProps) {
   const [activeTab, setActiveTab] = useState<'orders' | 'states' | 'settings'>('orders');
   const [orders, setOrders] = useState<Order[]>([]);
   const [states, setStates] = useState<State[]>([]);
@@ -158,12 +162,22 @@ export default function CrlveOrdersAdmin() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-800">Gerenciar Pedidos CRLV-E</h1>
-        {pendingCount > 0 && (
-          <div className="flex items-center gap-2 bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg">
-            <Bell className="w-5 h-5" />
-            <span className="font-semibold">{pendingCount} pedidos pendentes</span>
-          </div>
-        )}
+        <div className="flex items-center gap-4">
+          {pendingCount > 0 && (
+            <div className="flex items-center gap-2 bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg">
+              <Bell className="w-5 h-5" />
+              <span className="font-semibold">{pendingCount} pedidos pendentes</span>
+            </div>
+          )}
+          {onBack && (
+            <button
+              onClick={onBack}
+              className="text-sm font-semibold text-gray-600 hover:text-gray-800 flex items-center gap-2"
+            >
+              <span>←</span> Voltar para Consultas
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Tabs */}

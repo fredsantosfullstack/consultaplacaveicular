@@ -201,17 +201,7 @@ const ConsultationManagement: React.FC = () => {
   };
 
   if (showCrlveOrders) {
-    return (
-      <div>
-        <button
-          onClick={() => setShowCrlveOrders(false)}
-          className="mb-4 text-sm font-semibold text-gray-600 hover:text-gray-800 flex items-center gap-2"
-        >
-          <span>←</span> Voltar para Consultas
-        </button>
-        <CrlveOrdersAdmin />
-      </div>
-    );
+    return <CrlveOrdersAdmin onBack={() => setShowCrlveOrders(false)} />;
   }
 
   return (
