@@ -14,6 +14,7 @@ import apiKeysRoutes from './routes/api_keys.js';
 import reportsRoutes from './routes/reports.js';
 import paymentsRoutes from './routes/payments.js';
 import termsRoutes from './routes/terms.js';
+import notificationsRoutes from './routes/notifications.js';
 import db from './config/db.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -165,6 +166,7 @@ app.use('/api/api-keys', apiKeysRoutes);
 app.use('/api/reports', reportsRoutes);
 app.use('/api/payments', paymentsRoutes);
 app.use('/api/terms', termsRoutes);
+app.use('/api/notifications', notificationsRoutes);
 
 const startServer = async () => {
   try {
