@@ -137,7 +137,17 @@ const UserManagement: React.FC<UserManagementProps> = () => {
             <AdminModal isOpen={isModalOpen} onClose={handleCloseModal} title={modalMode === 'add' ? 'Adicionar Novo Usuário' : `Editar Usuário: ${currentUser.name}`}>
               <form onSubmit={handleSubmit} className="space-y-3">
                 <div className="flex flex-col items-center">
-                  <img src={avatarFile ? URL.createObjectURL(avatarFile) : (currentUser.avatar || `https://ui-avatars.com/api/?name=${currentUser.name || 'User'}&background=random`)} alt={currentUser.name} className="w-20 h-20 rounded-full mb-2 object-cover"/>
+                  <img 
+                    src={
+                      avatarFile 
+                        ? URL.createObjectURL(avatarFile) 
+                        : currentUser.avatar 
+                          ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${currentUser.avatar}` 
+                          : `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.name || 'User')}&background=random`
+                    } 
+                    alt={currentUser.name} 
+                    className="w-20 h-20 rounded-full mb-2 object-cover"
+                  />
                   <input type="file" id="avatar-upload" className="hidden" onChange={(e) => e.target.files && setAvatarFile(e.target.files[0])} accept="image/*" />
                   <div className="flex gap-2">
                     <label htmlFor="avatar-upload" className="cursor-pointer bg-gray-200 text-gray-800 text-sm font-bold py-2 px-4 rounded-lg hover:bg-gray-300">{modalMode === 'add' ? 'Adicionar Foto' : 'Alterar Foto'}</label>
@@ -235,7 +245,11 @@ const UserManagement: React.FC<UserManagementProps> = () => {
                         {filteredUsers.map(user => (
                             <tr key={user.id} className="border-b">
                                 <td className="py-3 px-4 flex items-center">
-                                    <img src={user.avatar || `https://ui-avatars.com/api/?name=${user.name}&background=random`} alt={user.name} className="w-8 h-8 rounded-full mr-3"/>
+                                    <img 
+                                      src={user.avatar ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${user.avatar}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=random`} 
+                                      alt={user.name} 
+                                      className="w-8 h-8 rounded-full mr-3 object-cover"
+                                    />
                                     <div>
                                         <p className="font-medium">{user.name}</p>
                                         <p className="text-sm text-gray-500">{user.email}</p>

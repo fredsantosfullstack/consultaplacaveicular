@@ -170,4 +170,54 @@ router.post('/:id/avatar', authenticateToken, isAdmin, upload.single('avatar'), 
   }
 });
 
+// Rota para usuário excluir seu próprio avatar
+router.delete('/avatar', authenticateToken, async (req, res) => {
+  try {
+    // Buscar avatar atual
+    const [users] = await db.query('SELECT avatar FROM users WHERE id = ?', [req.user.id]);
+    if (users.length > 0 && users[0].avatar) {
+      const avatarPath = path.join(__dirname, '../../public', users[0].avatar);
+      // Tentar deletar o arquivo físico
+      if (fs.existsSync(avatarPath)) {
+        fs.unlinkSync(avatarPath);
+      }
+    }
+
+    // Remover avatar do banco
+    await db.query('UPDATE users SET avatar = NULL WHERE id = ?', [req.user.id]);
+    res.json({ msg: 'Avatar excluído com sucesso!' });
+  } catch (error) {
+    console.error('Erro ao excluir avatar:', error);
+    res.status(500).json({ msg: 'Erro no servidor ao excluir avatar.' });
+  }
+});
+
+// Rota para admin excluir avatar de um usuário específico
+router.delete('/:id/avatar', authenticateToken, isAdmin, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Buscar avatar atual
+    const [users] = await db.query('SELECT avatar FROM users WHERE id = ?', [id]);
+    if (users.length === 0) {
+      return res.status(404).json({ msg: 'Usuário não encontrado.' });
+    }
+
+    if (users[0].avatar) {
+      const avatarPath = path.join(__dirname, '../../public', users[0].avatar);
+      // Tentar deletar o arquivo físico
+      if (fs.existsSync(avatarPath)) {
+        fs.unlinkSync(avatarPath);
+      }
+    }
+
+    // Remover avatar do banco
+    await db.query('UPDATE users SET avatar = NULL WHERE id = ?', [id]);
+    res.json({ msg: 'Avatar excluído com sucesso!' });
+  } catch (error) {
+    console.error(`Erro ao excluir avatar do usuário ${id}:`, error);
+    res.status(500).json({ msg: 'Erro no servidor ao excluir avatar.' });
+  }
+});
+
 export default router;
