@@ -15,6 +15,16 @@ import SignUp from './pages/SignUp';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import LoadingSpinner from './src/components/LoadingSpinner';
+import BaseNacional from './src/pages/consultas/BaseNacional';
+import BaseEstadual from './src/pages/consultas/BaseEstadual';
+import CodigoSegurancaPDF from './src/pages/consultas/CodigoSegurancaPDF';
+import AnoLicenciamento from './src/pages/consultas/AnoLicenciamento';
+import ConsultaCautelar from './src/pages/consultas/ConsultaCautelar';
+import ConsultaChassi from './src/pages/consultas/ConsultaChassi';
+import ConsultaComunicadoVenda from './src/pages/consultas/ConsultaComunicadoVenda';
+import ConsultaLeilao from './src/pages/consultas/ConsultaLeilao';
+import CrlvETurbo from './src/pages/consultas/CrlvETurbo';
+import GravameV2 from './src/pages/consultas/GravameV2';
 
 // Componente para proteger rotas que exigem autenticação e aplicar layout global
 const ProtectedRoute = () => {
@@ -70,6 +80,18 @@ function App() {
           <Route path="/tabela-precos" element={<PriceTable />} />
           <Route path="/recarga-creditos" element={<CreditRecharge />} />
           <Route path="/docs-api" element={<ApiDocs />} />
+
+          {/* Consultas */}
+          <Route path="/consulta/base-nacional" element={<BaseNacional />} />
+          <Route path="/consulta/base-estadual" element={<BaseEstadual />} />
+          <Route path="/consulta/codigo-seguranca-pdf" element={<CodigoSegurancaPDF />} />
+          <Route path="/consulta/ano-licenciamento-bin-nacional" element={<AnoLicenciamento />} />
+          <Route path="/consulta/consulta-cautelar" element={<ConsultaCautelar />} />
+          <Route path="/consulta/consulta-chassi" element={<ConsultaChassi />} />
+          <Route path="/consulta/consulta-comunicado-venda" element={<ConsultaComunicadoVenda />} />
+          <Route path="/consulta/consulta-leilao" element={<ConsultaLeilao />} />
+          <Route path="/consulta/crlv-e-turbo" element={<CrlvETurbo />} />
+          <Route path="/consulta/gravame-v2" element={<GravameV2 />} />
 
           {/* Rotas Protegidas para Admins (aninhadas) */}
           <Route element={<AdminRoute />}>
