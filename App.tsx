@@ -25,6 +25,7 @@ import ConsultaComunicadoVenda from './src/pages/consultas/ConsultaComunicadoVen
 import ConsultaLeilao from './src/pages/consultas/ConsultaLeilao';
 import CrlvETurbo from './src/pages/consultas/CrlvETurbo';
 import GravameV2 from './src/pages/consultas/GravameV2';
+import ProprietarioAtualV2 from './src/pages/consultas/ProprietarioAtualV2';
 
 // Componente para proteger rotas que exigem autenticação e aplicar layout global
 const ProtectedRoute = () => {
@@ -92,6 +93,7 @@ function App() {
           <Route path="/consulta/consulta-leilao" element={<ConsultaLeilao />} />
           <Route path="/consulta/crlv-e-turbo" element={<CrlvETurbo />} />
           <Route path="/consulta/gravame-v2" element={<GravameV2 />} />
+          <Route path="/consulta/proprietario-atual-v2" element={<ProprietarioAtualV2 />} />
 
           {/* Rotas Protegidas para Admins (aninhadas) */}
           <Route element={<AdminRoute />}>
