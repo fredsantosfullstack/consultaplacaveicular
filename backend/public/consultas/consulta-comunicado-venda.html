@@ -224,21 +224,18 @@ document.getElementById('consultaForm').addEventListener('submit', async functio
                 if (response.ok) {
                     const blob = await response.blob();
                     pdfBlobUrl = window.URL.createObjectURL(blob);
-                    pdfFileName = a.download = `consulta-comunicado-venda-${placa}.pdf`;
+                    pdfFileName = `consulta-comunicado-venda-${placa}.pdf`;
                     
-                    const newBalance = response.headers.get(\'X-New-Balance\');
+                    const newBalance = response.headers.get('X-New-Balance');
                     
                     // Mostra modal de sucesso
                     mostrarModalSucesso();
-                    message.className = 'message success';
-                    message.textContent = 'Download do PDF iniciado com sucesso!';
-                    message.style.display = 'block';
                 } else {
                     const errorData = await response.json();
-                    mostrarModalErro(message.textContent = errorData.msg || 'Erro ao processar consulta.';);
+                    mostrarModalErro(errorData.msg || 'Erro ao processar consulta.');
                 }
             } catch (error) {
-                mostrarModalErro(message.textContent = 'Erro de conexão. Tente novamente.';);
+                mostrarModalErro('Erro de conexão. Tente novamente.');
             } finally {
                 loading.style.display = 'none';
                 submitBtn.disabled = false;

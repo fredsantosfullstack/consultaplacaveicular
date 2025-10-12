@@ -651,26 +651,22 @@
                 } else if (response.ok) {
                     const blob = await response.blob();
                     pdfBlobUrl = window.URL.createObjectURL(blob);
-                    pdfFileName = a.download = `gravame-v2-${placa}.pdf`;
+                    pdfFileName = `gravame-v2-${placa}.pdf`;
                     
-                    const newBalance = response.headers.get(\'X-New-Balance\');
+                    const newBalance = response.headers.get('X-New-Balance');
                     
                     // Mostra modal de sucesso
                     mostrarModalSucesso();
-                    const newBalance = response.headers.get('X-New-Balance');
-                    message.className = 'message success';
-                    message.innerHTML = `Download do PDF iniciado com sucesso!${newBalance ? `<br>Novo saldo: R$ ${parseFloat(newBalance).toFixed(2)}` : ''}`;
-                    message.style.display = 'block';
                 } else if (response.status === 401) {
                     alert('Sessão expirada. Faça login novamente.');
                     localStorage.removeItem('token');
                     window.location.href = 'https://golden-veicular.vercel.app/';
                 } else {
                     const errorData = await response.json();
-                    mostrarModalErro(message.textContent = errorData.msg || 'Erro ao processar consulta.';);
+                    mostrarModalErro(errorData.msg || 'Erro ao processar consulta.');
                 }
             } catch (error) {
-                mostrarModalErro(message.textContent = 'Erro de conexão. Tente novamente.';);
+                mostrarModalErro('Erro de conexão. Tente novamente.');
             } finally {
                 loading.style.display = 'none';
                 submitBtn.disabled = false;
