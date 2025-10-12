@@ -13,6 +13,21 @@ const iconMap: { [key: string]: React.ElementType } = {
   Default: Search // Ícone padrão
 };
 
+const normalizeSlug = (slug?: string | null) => {
+  if (!slug) return '';
+  let cleaned = slug.trim();
+  cleaned = cleaned.replace(/^https?:\/\/[^/]+/i, '');
+  cleaned = cleaned.replace(/^\/+/g, '');
+  cleaned = cleaned.replace(/\.html$/i, '');
+  if (cleaned.startsWith('consultas/')) {
+    cleaned = cleaned.slice('consultas/'.length);
+  }
+  if (cleaned.startsWith('consulta/')) {
+    cleaned = cleaned.slice('consulta/'.length);
+  }
+  return cleaned;
+};
+
 interface ConsultationCardProps {
   title: string;
   slug: string;
@@ -23,7 +38,13 @@ interface ConsultationCardProps {
 }
 
 const ConsultationCard: React.FC<ConsultationCardProps> = ({ title, slug, description, icon: Icon, tag, price }) => {
-  
+  const normalizedSlug = normalizeSlug(slug);
+  const isDisabled = !normalizedSlug;
+  const linkClassName = [
+    'bg-transparent border-2 border-[#000042] text-[#000042] font-bold py-1.5 px-4 rounded-md transition-colors duration-300 text-sm text-center inline-block',
+    isDisabled ? 'pointer-events-none opacity-60' : 'hover:bg-[#000042] hover:text-white'
+  ].join(' ');
+
   return (
     <div className="bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow duration-300 overflow-hidden">
       <div className="bg-[#000042] text-white px-4 py-3 flex items-center gap-3 min-h-[70px]">
@@ -42,8 +63,9 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ title, slug, descri
         {tag && <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{tag}</span>}
         
         <Link 
-          to={`/consulta/${slug}`}
-          className="bg-transparent border-2 border-[#000042] text-[#000042] font-bold py-1.5 px-4 rounded-md hover:bg-[#000042] hover:text-white transition-colors duration-300 text-sm text-center inline-block"
+          to={normalizedSlug ? `/consulta/${normalizedSlug}` : '#'}
+          className={linkClassName}
+          aria-disabled={isDisabled}
         >
           Consultar
         </Link>
