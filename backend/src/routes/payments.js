@@ -200,4 +200,103 @@ router.get('/status/:paymentId', authenticateToken, async (req, res) => {
   }
 });
 
+// Rota para buscar histórico de transações do usuário logado
+router.get('/history', authenticateToken, async (req, res) => {
+  const userId = req.user.id;
+  const { status, limit = 50, offset = 0 } = req.query;
+
+  try {
+    let query = `
+      SELECT 
+        pt.id,
+        pt.asaas_payment_id,
+        pt.amount,
+        pt.credits,
+        pt.status,
+        pt.payment_method,
+        pt.created_at,
+        pt.paid_at,
+        pt.expires_at,
+        rp.name as plan_name
+      FROM payment_transactions pt
+      LEFT JOIN recharge_plans rp ON pt.plan_id = rp.id
+      WHERE pt.user_id = ?
+    `;
+
+    const params = [userId];
+
+    if (status && status !== 'all') {
+      query += ' AND pt.status = ?';
+      params.push(status);
+    }
+
+    query += ' ORDER BY pt.created_at DESC LIMIT ? OFFSET ?';
+    params.push(parseInt(limit), parseInt(offset));
+
+    const [transactions] = await db.query(query, params);
+
+    res.json({ transactions });
+
+  } catch (error) {
+    console.error('Erro ao buscar histórico:', error);
+    res.status(500).json({ msg: 'Erro ao buscar histórico.' });
+  }
+});
+
+// Rota para buscar histórico de TODAS as transações (apenas admin)
+router.get('/history/all', authenticateToken, async (req, res) => {
+  // Verificar se é admin
+  const [adminCheck] = await db.query('SELECT role FROM users WHERE id = ?', [req.user.id]);
+  if (adminCheck.length === 0 || adminCheck[0].role !== 'admin') {
+    return res.status(403).json({ msg: 'Acesso negado.' });
+  }
+
+  const { status, search, limit = 50, offset = 0 } = req.query;
+
+  try {
+    let query = `
+      SELECT 
+        pt.id,
+        pt.user_id,
+        pt.asaas_payment_id,
+        pt.amount,
+        pt.credits,
+        pt.status,
+        pt.payment_method,
+        pt.created_at,
+        pt.paid_at,
+        u.name as user_name,
+        u.email as user_email,
+        rp.name as plan_name
+      FROM payment_transactions pt
+      LEFT JOIN users u ON pt.user_id = u.id
+      LEFT JOIN recharge_plans rp ON pt.plan_id = rp.id
+      WHERE 1=1
+    `;
+
+    const params = [];
+
+    if (status && status !== 'all') {
+      query += ' AND pt.status = ?';
+      params.push(status);
+    }
+
+    if (search) {
+      query += ' AND (u.name LIKE ? OR u.email LIKE ?)';
+      params.push(`%${search}%`, `%${search}%`);
+    }
+
+    query += ' ORDER BY pt.created_at DESC LIMIT ? OFFSET ?';
+    params.push(parseInt(limit), parseInt(offset));
+
+    const [transactions] = await db.query(query, params);
+
+    res.json({ transactions });
+
+  } catch (error) {
+    console.error('Erro ao buscar histórico admin:', error);
+    res.status(500).json({ msg: 'Erro ao buscar histórico.' });
+  }
+});
+
 export default router;
