@@ -68,6 +68,13 @@ export default function ConsultaForm({
       setPdfUrl(url);
       setPdfFileName(`${slug}-${formData.placa || 'consulta'}.pdf`);
       
+      // Limpar campos do formulário
+      const clearedData: Record<string, string> = {};
+      campos.forEach(campo => {
+        clearedData[campo.name] = '';
+      });
+      setFormData(clearedData);
+      
       // Mostrar modal de sucesso
       setModalSucesso(true);
     } catch (error: any) {
