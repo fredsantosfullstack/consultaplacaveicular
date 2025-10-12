@@ -213,9 +213,14 @@ router.get('/history', authenticateToken, async (req, res) => {
 
 // Rota de Proxy UNIFICADA COM AUTENTICAÇÃO e VERIFICAÇÃO DE SALDO
 router.post('/execute/:slug', authenticateToken, async (req, res) => {
-  const { slug } = req.params;
+  let { slug } = req.params;
   const data = req.body;
   const userId = req.user.id;
+
+  // Se for CRLV-E Turbo, construir slug com estado
+  if (slug === 'crlv-e-turbo' && data.estado) {
+    slug = `crlv-e-turbo-${data.estado.toLowerCase()}`;
+  }
 
   // Validação simples para garantir que o corpo não está vazio
   if (Object.keys(data).length === 0) {
