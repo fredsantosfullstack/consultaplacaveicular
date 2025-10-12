@@ -61,15 +61,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (token: string, rememberMe = false) => {
+    console.log('🔐 Login - Salvando token...', { rememberMe, tokenLength: token.length });
     if (rememberMe) {
       localStorage.setItem('token', token);
+      console.log('✅ Token salvo no localStorage');
     } else {
       sessionStorage.setItem('token', token);
+      console.log('✅ Token salvo no sessionStorage');
     }
     // Garante que a próxima requisição já leve o token
     api.defaults.headers.common = (api.defaults.headers.common || {}) as any;
     (api.defaults.headers.common as any)['Authorization'] = `Bearer ${token}`;
     await fetchProfile();
+    console.log('✅ Login completo!');
   };
 
   const logout = () => {
