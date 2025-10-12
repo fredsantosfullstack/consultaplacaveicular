@@ -61,17 +61,18 @@ export default function CrlveOrdersAdmin() {
           api.get('/crlve-orders/admin/orders'),
           api.get('/crlve-orders/admin/pending-count')
         ]);
-        setOrders(ordersRes.data);
-        setPendingCount(countRes.data.count);
+        setOrders(ordersRes.data || []);
+        setPendingCount(countRes.data?.count || 0);
       } else if (activeTab === 'states') {
         const res = await api.get('/crlve-orders/admin/states');
-        setStates(res.data);
+        setStates(res.data || []);
       } else if (activeTab === 'settings') {
         const res = await api.get('/crlve-orders/admin/settings');
         setSettings(res.data);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao buscar dados:', error);
+      alert(`Erro ao carregar dados: ${error.response?.data?.msg || error.message}`);
     } finally {
       setLoading(false);
     }
