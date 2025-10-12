@@ -31,6 +31,8 @@ const allowedOrigins = [
   'http://localhost:5173',
   'https://golden-veicular.vercel.app',
   'https://dizapi.inf.br',
+  'https://goldenveicular.com.br',
+  'https://www.goldenveicular.com.br',
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
