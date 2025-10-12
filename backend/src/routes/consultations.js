@@ -311,6 +311,7 @@ router.post('/execute/:slug', authenticateToken, async (req, res) => {
       'proprietario-atual-restricoes': 'consultar-proprietario-atual-restricoes',
       'reemissao-atpv-e': 'consultar-reemissao-atpv-e',
       'verifica-autenticidade-crv': 'consultar-verifica-autenticidade-crv',
+      'crlve': 'crlv-e-turbo',
       // CRLV-E TURBO por estado
       'crlv-e-turbo-mg': 'consultar-crlv-mg',
       'crlv-e-turbo-to': 'consultar-crlv-to',
@@ -326,9 +327,9 @@ router.post('/execute/:slug', authenticateToken, async (req, res) => {
       'crlv-e-turbo-ac': 'consultar-crlv-ac',
     };
 
-    // Se for CRLV-E Turbo, construir slug com estado para a API externa
+    // Se for CRLV-E Turbo ou CRLVE, construir slug com estado para a API externa
     let apiSlug = slug;
-    if (slug === 'crlv-e-turbo' && data.estado) {
+    if ((slug === 'crlv-e-turbo' || slug === 'crlve') && data.estado) {
       apiSlug = `crlv-e-turbo-${data.estado.toLowerCase()}`;
     }
 

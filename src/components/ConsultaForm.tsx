@@ -13,6 +13,8 @@ interface ConsultaFormProps {
   slug: string;
   campos: CampoFormulario[];
   icon?: ReactNode;
+  avisoPersonalizado?: ReactNode;
+  textoBotao?: string;
 }
 
 interface CampoFormulario {
@@ -31,7 +33,9 @@ export default function ConsultaForm({
   preco, 
   slug, 
   campos,
-  icon 
+  icon,
+  avisoPersonalizado,
+  textoBotao = 'Consultar'
 }: ConsultaFormProps) {
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
@@ -130,6 +134,13 @@ export default function ConsultaForm({
       {/* Conteúdo */}
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-md p-6">
+          {/* Aviso Personalizado */}
+          {avisoPersonalizado && (
+            <div className="mb-6">
+              {avisoPersonalizado}
+            </div>
+          )}
+
           {/* Preço */}
           <div className="mb-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
             <p className="text-sm text-gray-600">Valor da consulta</p>
@@ -188,7 +199,7 @@ export default function ConsultaForm({
                     Processando...
                   </>
                 ) : (
-                  'Consultar'
+                  textoBotao
                 )}
               </button>
               <button
