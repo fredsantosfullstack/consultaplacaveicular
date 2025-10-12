@@ -37,7 +37,7 @@ router.post('/', authenticateToken, isAdmin, async (req, res) => {
 // Rota para buscar TODAS as consultas (para o painel admin)
 router.get('/all', authenticateToken, isAdmin, async (req, res) => {
   try {
-    const [consultations] = await db.query('SELECT * FROM consultation_types ORDER BY name ASC');
+    const [consultations] = await db.query('SELECT * FROM consultation_types ORDER BY display_order ASC, id ASC');
     res.json(consultations);
   } catch (error) {
     console.error('Erro ao buscar todas as consultas:', error);
@@ -48,7 +48,7 @@ router.get('/all', authenticateToken, isAdmin, async (req, res) => {
 // Rota para buscar todos os tipos de consulta ATIVAS (pública)
 router.get('/', async (req, res) => {
   try {
-    const [consultations] = await db.query('SELECT * FROM consultation_types WHERE is_active = TRUE ORDER BY name ASC');
+    const [consultations] = await db.query('SELECT * FROM consultation_types WHERE is_active = TRUE ORDER BY display_order ASC, id ASC');
     res.json(consultations);
   } catch (error) {
     console.error('Erro ao buscar tipos de consulta:', error);
@@ -96,6 +96,24 @@ router.delete('/:id', authenticateToken, isAdmin, async (req, res) => {
   } catch (error) {
     console.error(`Erro ao deletar consulta ${id}:`, error);
     res.status(500).json({ msg: 'Erro no servidor ao deletar consulta.' });
+  }
+});
+
+// Rota para atualizar a ordem de exibição de uma consulta (apenas admin)
+router.put('/:id/order', authenticateToken, isAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { display_order } = req.body;
+
+  if (display_order === undefined) {
+    return res.status(400).json({ msg: 'display_order é obrigatório.' });
+  }
+
+  try {
+    await db.query('UPDATE consultation_types SET display_order = ? WHERE id = ?', [display_order, id]);
+    res.json({ msg: 'Ordem atualizada com sucesso.', id, display_order });
+  } catch (error) {
+    console.error(`Erro ao atualizar ordem da consulta ${id}:`, error);
+    res.status(500).json({ msg: 'Erro no servidor ao atualizar ordem.' });
   }
 });
 
