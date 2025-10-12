@@ -215,7 +215,7 @@ export default function EmissaoCrlvE() {
                 <option value="">Selecione o Estado</option>
                 {states.map((state) => (
                   <option key={state.state_code} value={state.state_code}>
-                    {state.state_name} R$ {state.price.toFixed(2)}
+                    {state.state_name} R$ {parseFloat(state.price).toFixed(2)}
                   </option>
                 ))}
               </select>
