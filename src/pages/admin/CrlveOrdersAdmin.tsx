@@ -170,6 +170,7 @@ export default function CrlveOrdersAdmin() {
         <div className="border-b border-gray-200">
           <nav className="flex -mb-px">
             <button
+              type="button"
               onClick={() => setActiveTab('orders')}
               className={`px-6 py-3 text-sm font-medium border-b-2 ${
                 activeTab === 'orders'
@@ -180,6 +181,7 @@ export default function CrlveOrdersAdmin() {
               Pedidos ({orders.length})
             </button>
             <button
+              type="button"
               onClick={() => setActiveTab('states')}
               className={`px-6 py-3 text-sm font-medium border-b-2 ${
                 activeTab === 'states'
@@ -190,6 +192,7 @@ export default function CrlveOrdersAdmin() {
               Estados e Preços
             </button>
             <button
+              type="button"
               onClick={() => setActiveTab('settings')}
               className={`px-6 py-3 text-sm font-medium border-b-2 ${
                 activeTab === 'settings'
