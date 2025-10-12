@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Settings, BarChart, ArrowLeft, ClipboardList, CreditCard, Tags, DollarSign, FileText } from 'lucide-react';
+import { Users, Settings, BarChart, ArrowLeft, ClipboardList, CreditCard, Tags, DollarSign, FileText, Car } from 'lucide-react';
 import AdminCard from '../src/components/admin/AdminCard';
 import UserManagement from '../src/components/admin/UserManagement';
 import SiteSettings from '../src/components/admin/SiteSettings';
@@ -9,6 +9,7 @@ import RechargePlanManagement from '../src/components/admin/RechargePlanManageme
 import PriceTableManagement from '../src/components/admin/PriceTableManagement';
 import PaymentHistory from '../src/components/admin/PaymentHistory';
 import TermsManagement from '../src/components/admin/TermsManagement';
+import CrlveOrdersAdmin from '../src/pages/admin/CrlveOrdersAdmin';
 
 const AdminPage: React.FC = () => {
     const [activeSection, setActiveSection] = useState<string | null>(null);
@@ -58,6 +59,9 @@ const AdminPage: React.FC = () => {
                 break;
             case 'terms-management':
                 component = <TermsManagement />;
+                break;
+            case 'crlve-orders':
+                component = <CrlveOrdersAdmin />;
                 break;
             default:
                 component = <AdminDashboard onNavigate={handleNavigation} />;
@@ -131,6 +135,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => (
                 icon={<FileText className="w-8 h-8 text-[#000042]" />} 
                 title="Termos de Uso" 
                 onClick={() => onNavigate('terms-management')} 
+            />
+            <AdminCard 
+                icon={<Car className="w-8 h-8 text-[#000042]" />} 
+                title="Pedidos CRLV-E" 
+                onClick={() => onNavigate('crlve-orders')} 
             />
         </div>
     </div>
