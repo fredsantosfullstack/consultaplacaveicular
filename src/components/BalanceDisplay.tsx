@@ -5,7 +5,9 @@ const BalanceDisplay: React.FC = () => {
   const { profile } = useAuth();
 
   const formatBalance = (balance: number | undefined) => {
-    if (balance === undefined) return '...';
+    if (balance === undefined || balance === null || isNaN(balance)) {
+      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(0);
+    }
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(balance);
   };
 
