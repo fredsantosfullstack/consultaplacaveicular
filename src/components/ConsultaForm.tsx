@@ -58,7 +58,8 @@ export default function ConsultaForm({
 
     try {
       const response = await api.post(`/consultations/execute/${slug}`, formData, {
-        responseType: 'blob'
+        responseType: 'blob',
+        timeout: 60000 // 60 segundos
       });
 
       // Sucesso - criar URL do PDF
@@ -67,7 +68,12 @@ export default function ConsultaForm({
       setPdfUrl(url);
       setPdfFileName(`${slug}-${formData.placa || 'consulta'}.pdf`);
       
+      // Abrir PDF automaticamente após 1 segundo
       setModalSucesso(true);
+      setTimeout(() => {
+        setModalSucesso(false);
+        setModalPDF(true);
+      }, 1500);
     } catch (error: any) {
       if (error.response?.status === 402) {
         // Saldo insuficiente
