@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Play, Pause, Car, FileText, ShieldCheck, User, Search } from 'lucide-react';
+import { Plus, Edit, Trash2, Play, Pause, Car, FileText, ShieldCheck, User, Search, ChevronUp, ChevronDown } from 'lucide-react';
 import api from '../../services/api'; // Importa a instância do Axios
 import AdminModal from './AdminModal';
 
@@ -11,6 +11,7 @@ interface Consultation {
   price: number;
   is_new: boolean;
   is_active: boolean;
+  display_order?: number;
 }
 
 const ConsultationManagement: React.FC = () => {
@@ -91,6 +92,44 @@ const ConsultationManagement: React.FC = () => {
     }
   };
 
+  const handleMoveUp = async (index: number) => {
+    if (index === 0) return; // Já está no topo
+    
+    const newConsultations = [...consultations];
+    const temp = newConsultations[index];
+    newConsultations[index] = newConsultations[index - 1];
+    newConsultations[index - 1] = temp;
+    
+    // Atualizar display_order
+    try {
+      await api.put(`/consultations/${newConsultations[index].id}/order`, { display_order: index + 1 });
+      await api.put(`/consultations/${newConsultations[index - 1].id}/order`, { display_order: index });
+      setConsultations(newConsultations);
+    } catch (error) {
+      console.error('Erro ao reordenar:', error);
+      fetchConsultations(); // Recarregar em caso de erro
+    }
+  };
+
+  const handleMoveDown = async (index: number) => {
+    if (index === consultations.length - 1) return; // Já está no final
+    
+    const newConsultations = [...consultations];
+    const temp = newConsultations[index];
+    newConsultations[index] = newConsultations[index + 1];
+    newConsultations[index + 1] = temp;
+    
+    // Atualizar display_order
+    try {
+      await api.put(`/consultations/${newConsultations[index].id}/order`, { display_order: index + 1 });
+      await api.put(`/consultations/${newConsultations[index + 1].id}/order`, { display_order: index + 2 });
+      setConsultations(newConsultations);
+    } catch (error) {
+      console.error('Erro ao reordenar:', error);
+      fetchConsultations(); // Recarregar em caso de erro
+    }
+  };
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <div className="mb-6">
@@ -148,6 +187,7 @@ const ConsultationManagement: React.FC = () => {
           <table className="min-w-full bg-white">
             <thead className="bg-gray-50">
               <tr>
+                <th className="py-3 px-4 text-center">Ordem</th>
                 <th className="py-3 px-4 text-left">Nome</th>
                 <th className="py-3 px-4 text-left">Preço</th>
                 <th className="py-3 px-4 text-center">Tag 'NOVO'</th>
@@ -156,8 +196,28 @@ const ConsultationManagement: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {consultations.map(consult => (
+              {consultations.map((consult, index) => (
                 <tr key={consult.id} className="border-b">
+                  <td className="py-3 px-4 text-center">
+                    <div className="flex gap-1 justify-center">
+                      <button 
+                        onClick={() => handleMoveUp(index)} 
+                        disabled={index === 0}
+                        title="Mover para cima"
+                        className={`p-1 rounded ${index === 0 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-100'}`}
+                      >
+                        <ChevronUp size={18} />
+                      </button>
+                      <button 
+                        onClick={() => handleMoveDown(index)} 
+                        disabled={index === consultations.length - 1}
+                        title="Mover para baixo"
+                        className={`p-1 rounded ${index === consultations.length - 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-100'}`}
+                      >
+                        <ChevronDown size={18} />
+                      </button>
+                    </div>
+                  </td>
                   <td className="py-3 px-4 font-medium">{consult.name}</td>
                   <td className="py-3 px-4">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(consult.price)}</td>
                   <td className="py-3 px-4 text-center">{consult.is_new ? 'Sim' : 'Não'}</td>
