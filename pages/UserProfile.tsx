@@ -3,7 +3,7 @@ import { useAuth } from '../src/contexts/AuthContext';
 import api from '../src/services/api';
 import UserLayout from '../src/layouts/UserLayout';
 import FormField from '../src/components/common/FormField';
-import { Loader2, Edit, Save, X, Key, User, Mail, Phone, FileText, Building, Camera } from 'lucide-react';
+import { Loader2, Edit, Save, X, Key, User, Mail, Phone, FileText, Building, Camera, Trash2 } from 'lucide-react';
 
 // Modal de Alteração de Senha (incluído no mesmo arquivo para simplicidade)
 interface ChangePasswordModalProps {
@@ -142,6 +142,20 @@ const UserProfile: React.FC = () => {
     }
   };
 
+  const handleDeleteAvatar = async () => {
+    if (!window.confirm('Tem certeza que deseja excluir sua foto de perfil?')) return;
+    setIsUploading(true);
+    try {
+      await api.delete('/users/avatar');
+      updateProfile({ avatar: null });
+    } catch (error) {
+      console.error('Erro ao excluir foto:', error);
+      alert('Erro ao excluir a foto. Tente novamente.');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   const handleSave = async () => {
     setIsSaving(true);
     try {
@@ -185,9 +199,16 @@ const UserProfile: React.FC = () => {
               <img src={getAvatarUrl()} alt="Avatar" className="w-16 h-16 rounded-full object-cover border-2 border-white/20" />
               <input type="file" ref={fileInputRef} onChange={handleAvatarChange} className="hidden" accept="image/*" />
               {isEditing && (
-                <button onClick={handleAvatarClick} disabled={isUploading} className="absolute -bottom-1 -right-1 bg-yellow-400 p-1.5 rounded-full text-black hover:bg-yellow-500 transition-colors disabled:opacity-50">
-                  {isUploading ? <Loader2 className="animate-spin" size={12} /> : <Camera size={12} />}
-                </button>
+                <>
+                  <button onClick={handleAvatarClick} disabled={isUploading} className="absolute -bottom-1 -right-1 bg-yellow-400 p-1.5 rounded-full text-black hover:bg-yellow-500 transition-colors disabled:opacity-50">
+                    {isUploading ? <Loader2 className="animate-spin" size={12} /> : <Camera size={12} />}
+                  </button>
+                  {profile?.avatar && (
+                    <button onClick={handleDeleteAvatar} disabled={isUploading} className="absolute -bottom-1 -left-1 bg-red-500 p-1.5 rounded-full text-white hover:bg-red-600 transition-colors disabled:opacity-50" title="Excluir foto">
+                      <Trash2 size={12} />
+                    </button>
+                  )}
+                </>
               )}
             </div>
             <div>

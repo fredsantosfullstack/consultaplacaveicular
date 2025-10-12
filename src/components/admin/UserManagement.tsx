@@ -139,7 +139,23 @@ const UserManagement: React.FC<UserManagementProps> = () => {
                 <div className="flex flex-col items-center">
                   <img src={avatarFile ? URL.createObjectURL(avatarFile) : (currentUser.avatar || `https://ui-avatars.com/api/?name=${currentUser.name || 'User'}&background=random`)} alt={currentUser.name} className="w-20 h-20 rounded-full mb-2 object-cover"/>
                   <input type="file" id="avatar-upload" className="hidden" onChange={(e) => e.target.files && setAvatarFile(e.target.files[0])} accept="image/*" />
-                  <label htmlFor="avatar-upload" className="cursor-pointer bg-gray-200 text-gray-800 text-sm font-bold py-2 px-4 rounded-lg hover:bg-gray-300">{modalMode === 'add' ? 'Adicionar Foto' : 'Alterar Foto'}</label>
+                  <div className="flex gap-2">
+                    <label htmlFor="avatar-upload" className="cursor-pointer bg-gray-200 text-gray-800 text-sm font-bold py-2 px-4 rounded-lg hover:bg-gray-300">{modalMode === 'add' ? 'Adicionar Foto' : 'Alterar Foto'}</label>
+                    {modalMode === 'edit' && currentUser.avatar && (
+                      <button type="button" onClick={async () => {
+                        if (window.confirm('Tem certeza que deseja excluir a foto deste usuário?')) {
+                          try {
+                            await api.delete(`/users/${currentUser.id}/avatar`);
+                            setCurrentUser(prev => ({ ...prev, avatar: undefined }));
+                            fetchUsers();
+                          } catch (error) {
+                            console.error('Erro ao excluir foto:', error);
+                            alert('Erro ao excluir foto. Tente novamente.');
+                          }
+                        }
+                      }} className="bg-red-500 text-white text-sm font-bold py-2 px-4 rounded-lg hover:bg-red-600">Excluir Foto</button>
+                    )}
+                  </div>
                 </div>
 
                 <div>
