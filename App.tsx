@@ -26,6 +26,7 @@ import ConsultaLeilao from './src/pages/consultas/ConsultaLeilao';
 import CrlvETurbo from './src/pages/consultas/CrlvETurbo';
 import GravameV2 from './src/pages/consultas/GravameV2';
 import ProprietarioAtualV2 from './src/pages/consultas/ProprietarioAtualV2';
+import CsvRenainfRenajud from './src/pages/consultas/CsvRenainfRenajud';
 
 // Componente para proteger rotas que exigem autenticação e aplicar layout global
 const ProtectedRoute = () => {
@@ -94,6 +95,7 @@ function App() {
           <Route path="/consulta/crlv-e-turbo" element={<CrlvETurbo />} />
           <Route path="/consulta/gravame-v2" element={<GravameV2 />} />
           <Route path="/consulta/proprietario-atual-v2" element={<ProprietarioAtualV2 />} />
+          <Route path="/consulta/csv-renainf-renajud-recall-bin-proprietar" element={<CsvRenainfRenajud />} />
 
           {/* Rotas Protegidas para Admins (aninhadas) */}
           <Route element={<AdminRoute />}>
