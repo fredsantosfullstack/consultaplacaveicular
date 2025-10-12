@@ -13,6 +13,7 @@ import systemStatusRoutes from './routes/system_status.js';
 import apiKeysRoutes from './routes/api_keys.js';
 import reportsRoutes from './routes/reports.js';
 import paymentsRoutes from './routes/payments.js';
+import termsRoutes from './routes/terms.js';
 import db from './config/db.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -163,6 +164,7 @@ app.use('/api/system-status', systemStatusRoutes);
 app.use('/api/api-keys', apiKeysRoutes);
 app.use('/api/reports', reportsRoutes);
 app.use('/api/payments', paymentsRoutes);
+app.use('/api/terms', termsRoutes);
 
 const startServer = async () => {
   try {

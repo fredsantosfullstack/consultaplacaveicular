@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Settings, BarChart, ArrowLeft, ClipboardList, CreditCard, Tags, DollarSign } from 'lucide-react';
+import { Users, Settings, BarChart, ArrowLeft, ClipboardList, CreditCard, Tags, DollarSign, FileText } from 'lucide-react';
 import AdminCard from '../src/components/admin/AdminCard';
 import UserManagement from '../src/components/admin/UserManagement';
 import SiteSettings from '../src/components/admin/SiteSettings';
@@ -8,6 +8,7 @@ import ConsultationManagement from '../src/components/admin/ConsultationManageme
 import RechargePlanManagement from '../src/components/admin/RechargePlanManagement';
 import PriceTableManagement from '../src/components/admin/PriceTableManagement';
 import PaymentHistory from '../src/components/admin/PaymentHistory';
+import TermsManagement from '../src/components/admin/TermsManagement';
 
 const AdminPage: React.FC = () => {
     const [activeSection, setActiveSection] = useState<string | null>(null);
@@ -54,6 +55,9 @@ const AdminPage: React.FC = () => {
                 break;
             case 'payment-history':
                 component = <PaymentHistory />;
+                break;
+            case 'terms-management':
+                component = <TermsManagement />;
                 break;
             default:
                 component = <AdminDashboard onNavigate={handleNavigation} />;
@@ -122,6 +126,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => (
                 icon={<DollarSign className="w-8 h-8 text-[#000042]" />} 
                 title="Histórico de Pagamentos" 
                 onClick={() => onNavigate('payment-history')} 
+            />
+            <AdminCard 
+                icon={<FileText className="w-8 h-8 text-[#000042]" />} 
+                title="Termos de Uso" 
+                onClick={() => onNavigate('terms-management')} 
             />
         </div>
     </div>

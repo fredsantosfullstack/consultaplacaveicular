@@ -10,6 +10,7 @@ import {
   BookText,
   UserCog,
   Tags,
+  FileText,
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import CustomLogo from './CustomLogo';
@@ -90,6 +91,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggle, userRole, onLogout })
                 }}
               />
             )}
+            <NavItem icon={FileText} label="Termos de Uso" to="/termos-de-uso" onClick={toggle} />
             <li>
               <button 
                 onClick={() => { onLogout(); toggle(); }}
