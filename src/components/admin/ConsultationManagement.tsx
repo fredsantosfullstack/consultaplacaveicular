@@ -207,7 +207,7 @@ const ConsultationManagement: React.FC = () => {
           onClick={() => setShowCrlveOrders(false)}
           className="mb-4 text-sm font-semibold text-gray-600 hover:text-gray-800 flex items-center gap-2"
         >
-          ← Voltar para Consultas
+          <span>←</span> Voltar para Consultas
         </button>
         <CrlveOrdersAdmin />
       </div>
