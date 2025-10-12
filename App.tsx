@@ -69,7 +69,6 @@ function App() {
         <Route path="/cadastre-se" element={<SignUp />} />
         <Route path="/recuperar-senha" element={<ForgotPassword />} />
         <Route path="/resetar-senha" element={<ResetPassword />} />
-        <Route path="/termos-de-uso" element={<TermsOfUse />} />
 
         {/* Rotas Protegidas para Usuários Logados */}
         <Route element={<ProtectedRoute />}>
@@ -80,6 +79,7 @@ function App() {
           <Route path="/tabela-precos" element={<PriceTable />} />
           <Route path="/recarga-creditos" element={<CreditRecharge />} />
           <Route path="/docs-api" element={<ApiDocs />} />
+          <Route path="/termos-de-uso" element={<TermsOfUse />} />
 
           {/* Consultas */}
           <Route path="/consulta/base-nacional" element={<BaseNacional />} />
