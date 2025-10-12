@@ -235,5 +235,198 @@ git push origin main --force
 
 ---
 
-**Última Atualização**: 11/10/2025 21:30  
-**Status**: Iniciando migração para React
+**Última Atualização**: 11/10/2025 23:06  
+**Status**: ❌ PROBLEMA CRÍTICO - Páginas não abrem após clicar em Consultar
+
+---
+
+## 🚨 PROBLEMA ATUAL (23:06)
+
+### **Sintoma:**
+Quando usuário clica em "Consultar" nos cards do dashboard:
+- ❌ Página dá um "flash" (tenta carregar)
+- ❌ Volta imediatamente para o dashboard
+- ❌ Não abre a página de consulta personalizada
+
+### **Causa Identificada:**
+O `useEffect` no `ConsultaForm.tsx` está verificando token e **redirecionando IMEDIATAMENTE** antes da página renderizar.
+
+```typescript
+// LINHA 54-60 de ConsultaForm.tsx
+useEffect(() => {
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  if (!token) {
+    console.error('❌ Sem token! Redirecionando para login...');
+    navigate('/');  // ← REDIRECIONAMENTO IMEDIATO
+  }
+}, [navigate]);
+```
+
+### **Fluxo Atual (QUEBRADO):**
+```
+1. Usuário faz login ✅
+2. Token salvo no localStorage ✅
+3. Clica em "Consultar" ✅
+4. React Router navega para /consulta/base-nacional ✅
+5. ConsultaForm.tsx carrega ✅
+6. useEffect executa IMEDIATAMENTE ⚠️
+7. Verifica token... mas algo dá errado ❌
+8. navigate('/') executa ❌
+9. Volta para página inicial ❌
+10. Usuário vê apenas um "flash" ❌
+```
+
+### **Possíveis Causas do Token Não Ser Encontrado:**
+1. ❌ localStorage sendo limpo por algum código
+2. ❌ Token sendo verificado em contexto diferente (iframe, extensão)
+3. ❌ Race condition: useEffect executa antes do token estar disponível
+4. ❌ AuthContext fazendo logout automático por erro 401
+
+---
+
+## 📋 HISTÓRICO COMPLETO DA SESSÃO
+
+### **Fase 1: Migração para React (21:30 - 22:00)**
+- ✅ Criados 5 componentes React reutilizáveis
+- ✅ Criadas 10 páginas de consulta em React
+- ✅ Removidos HTMLs antigos do Railway
+- ✅ Adicionadas rotas no React Router
+
+### **Fase 2: Correção de Links (22:00 - 22:15)**
+- ❌ Problema: Cards redirecionavam para Railway
+- ✅ Solução: Trocado `href` para `/consulta/${slug}`
+- ✅ Solução: Trocado `<a>` por `<Link>` do React Router
+
+### **Fase 3: Tentativa de Proteção de Rotas (22:15 - 22:30)**
+- ❌ Problema: Páginas abriam sem autenticação
+- ✅ Criado componente `ProtectedRoute`
+- ❌ Resultado: Causou loops de redirecionamento
+- ✅ Revertido: Removido `ProtectedRoute`
+
+### **Fase 4: Verificação de Token no Componente (22:30 - 23:00)**
+- ✅ Adicionado `useEffect` no `ConsultaForm` para verificar token
+- ✅ Adicionados logs detalhados no login
+- ✅ Confirmado: Login funciona, token é salvo
+- ❌ Problema: Páginas dão "flash" e voltam
+
+### **Fase 5: Debug de Logs (23:00 - 23:06)**
+- ✅ Logs confirmam: Token salvo com sucesso
+- ✅ Logs confirmam: Login completo
+- ❌ Mas: Ao clicar em Consultar → flash → volta
+
+---
+
+## 🔍 ANÁLISE TÉCNICA
+
+### **Arquivos Modificados Hoje:**
+
+1. **`src/components/ConsultaForm.tsx`**
+   - Adicionado `useEffect` para verificar token
+   - **PROBLEMA**: Redireciona antes de renderizar
+
+2. **`src/contexts/AuthContext.tsx`**
+   - Adicionados logs detalhados no login
+   - Confirmado funcionando corretamente
+
+3. **`src/services/api.js`**
+   - Melhorados logs do interceptor
+   - Trocado erro por warning
+
+4. **`src/App.tsx`**
+   - Removido `ProtectedRoute` das rotas
+   - Rotas agora sem proteção
+
+5. **`pages/Dashboard.tsx`**
+   - Trocado `<a href>` por `<Link to>`
+   - Links corretos para rotas React
+
+---
+
+## 🎯 SOLUÇÃO NECESSÁRIA
+
+### **Opção 1: Remover Verificação de Token do useEffect**
+```typescript
+// REMOVER ISSO:
+useEffect(() => {
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  if (!token) {
+    navigate('/');
+  }
+}, [navigate]);
+```
+
+**Deixar** apenas o erro 401 do backend redirecionar se necessário.
+
+### **Opção 2: Adicionar Delay na Verificação**
+```typescript
+useEffect(() => {
+  // Aguarda 100ms para garantir que token está disponível
+  setTimeout(() => {
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    if (!token) {
+      navigate('/');
+    }
+  }, 100);
+}, [navigate]);
+```
+
+### **Opção 3: Usar AuthContext ao invés de localStorage**
+```typescript
+const { profile } = useAuth();
+
+useEffect(() => {
+  if (!profile) {
+    navigate('/');
+  }
+}, [profile, navigate]);
+```
+
+---
+
+## 📊 COMMITS DA SESSÃO
+
+```
+cebc308 - fix: remover ProtectedRoute e adicionar verificação de token diretamente no ConsultaForm
+86f3584 - debug: adicionar logs detalhados no processo de login
+e0d4500 - feat: adicionar ProtectedRoute para proteger páginas de consulta
+503f80b - fix: trocar <a> por <Link> nos cards para navegação SPA funcionar
+ba558de - fix: corrigir links dos cards para apontar para rotas React
+92a0e02 - chore: remover páginas HTML antigas do backend (migradas para React)
+beb5bb0 - feat: criar 10 páginas de consulta em React com componentes reutilizáveis
+124312f - fix: corrigir erros JavaScript em 8 páginas e remover 7 páginas não utilizadas
+```
+
+---
+
+## 🔑 INFORMAÇÕES IMPORTANTES
+
+### **Credenciais:**
+- Admin: admin@goldenveicular.com / admin123
+- Saldo: R$ 1.000,00
+
+### **URLs:**
+- Frontend: https://golden-veicular.vercel.app
+- Backend: https://golden-veicular-production.up.railway.app
+
+### **Rotas React Criadas:**
+- /consulta/base-nacional
+- /consulta/base-estadual
+- /consulta/codigo-seguranca-pdf
+- /consulta/ano-licenciamento-bin-nacional
+- /consulta/consulta-cautelar
+- /consulta/consulta-chassi
+- /consulta/consulta-comunicado-venda
+- /consulta/consulta-leilao
+- /consulta/crlv-e-turbo
+- /consulta/gravame-v2
+
+---
+
+## 🚨 PRÓXIMO PASSO RECOMENDADO
+
+**REMOVER** a verificação de token do `useEffect` em `ConsultaForm.tsx` e deixar apenas o tratamento de erro 401 do backend fazer o redirecionamento.
+
+**Motivo**: O `useEffect` está executando ANTES do componente renderizar, causando redirecionamento imediato.
+
+**Última Atualização**: 11/10/2025 23:06  
+**Status**: ❌ AGUARDANDO CORREÇÃO - Remover useEffect de verificação de token
