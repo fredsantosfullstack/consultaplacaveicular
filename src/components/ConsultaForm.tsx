@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import api from '../services/api';
 import ModalSucesso from './ModalSucesso';
@@ -12,7 +13,7 @@ interface ConsultaFormProps {
   preco: number;
   slug: string;
   campos: CampoFormulario[];
-  icon?: React.ReactNode;
+  icon?: ReactNode;
 }
 
 interface CampoFormulario {
@@ -33,6 +34,7 @@ export default function ConsultaForm({
   campos,
   icon 
 }: ConsultaFormProps) {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   
@@ -47,6 +49,15 @@ export default function ConsultaForm({
   const [saldoAtual, setSaldoAtual] = useState(0);
   const [pdfUrl, setPdfUrl] = useState('');
   const [pdfFileName, setPdfFileName] = useState('');
+
+  // Verifica token ao carregar
+  useEffect(() => {
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    if (!token) {
+      console.error('❌ Sem token! Redirecionando para login...');
+      navigate('/');
+    }
+  }, [navigate]);
 
   const handleInputChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));

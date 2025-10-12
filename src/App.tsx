@@ -42,17 +42,17 @@ function App() {
           <Route path="/perfil" element={<ProfilePage />} />
           <Route path="/historico-consultas" element={<ConsultationHistoryPage />} />
           
-          {/* Rotas de Consultas Específicas - Protegidas */}
-          <Route path="/consulta/base-nacional" element={<ProtectedRoute><BaseNacional /></ProtectedRoute>} />
-          <Route path="/consulta/base-estadual" element={<ProtectedRoute><BaseEstadual /></ProtectedRoute>} />
-          <Route path="/consulta/codigo-seguranca-pdf" element={<ProtectedRoute><CodigoSegurancaPDF /></ProtectedRoute>} />
-          <Route path="/consulta/ano-licenciamento-bin-nacional" element={<ProtectedRoute><AnoLicenciamento /></ProtectedRoute>} />
-          <Route path="/consulta/consulta-cautelar" element={<ProtectedRoute><ConsultaCautelar /></ProtectedRoute>} />
-          <Route path="/consulta/consulta-chassi" element={<ProtectedRoute><ConsultaChassi /></ProtectedRoute>} />
-          <Route path="/consulta/consulta-comunicado-venda" element={<ProtectedRoute><ConsultaComunicadoVenda /></ProtectedRoute>} />
-          <Route path="/consulta/consulta-leilao" element={<ProtectedRoute><ConsultaLeilao /></ProtectedRoute>} />
-          <Route path="/consulta/crlv-e-turbo" element={<ProtectedRoute><CrlvETurbo /></ProtectedRoute>} />
-          <Route path="/consulta/gravame-v2" element={<ProtectedRoute><GravameV2 /></ProtectedRoute>} />
+          {/* Rotas de Consultas Específicas */}
+          <Route path="/consulta/base-nacional" element={<BaseNacional />} />
+          <Route path="/consulta/base-estadual" element={<BaseEstadual />} />
+          <Route path="/consulta/codigo-seguranca-pdf" element={<CodigoSegurancaPDF />} />
+          <Route path="/consulta/ano-licenciamento-bin-nacional" element={<AnoLicenciamento />} />
+          <Route path="/consulta/consulta-cautelar" element={<ConsultaCautelar />} />
+          <Route path="/consulta/consulta-chassi" element={<ConsultaChassi />} />
+          <Route path="/consulta/consulta-comunicado-venda" element={<ConsultaComunicadoVenda />} />
+          <Route path="/consulta/consulta-leilao" element={<ConsultaLeilao />} />
+          <Route path="/consulta/crlv-e-turbo" element={<CrlvETurbo />} />
+          <Route path="/consulta/gravame-v2" element={<GravameV2 />} />
           
           <Route path="/" element={<AuthPage />} /> {/* Rota padrão */} 
         </Routes>
