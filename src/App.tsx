@@ -10,6 +10,7 @@ import RechargePage from '../pages/RechargePage';
 import ConsultationPage from '../pages/ConsultationPage';
 import ProfilePage from '../pages/ProfilePage';
 import ConsultationHistoryPage from '../pages/ConsultationHistoryPage';
+import TermsOfUse from '../pages/TermsOfUse';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -41,6 +42,7 @@ function App() {
           <Route path="/consultas/:slug" element={<ConsultationPage />} />
           <Route path="/perfil" element={<ProfilePage />} />
           <Route path="/historico-consultas" element={<ConsultationHistoryPage />} />
+          <Route path="/termos-de-uso" element={<TermsOfUse />} />
           
           {/* Rotas de Consultas Específicas */}
           <Route path="/consulta/base-nacional" element={<BaseNacional />} />
