@@ -136,11 +136,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => (
                 title="Termos de Uso" 
                 onClick={() => onNavigate('terms-management')} 
             />
-            <AdminCard 
-                icon={<Car className="w-8 h-8 text-[#000042]" />} 
-                title="Pedidos CRLV-E" 
-                onClick={() => onNavigate('crlve-orders')} 
-            />
         </div>
     </div>
 );

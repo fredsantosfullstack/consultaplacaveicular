@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Play, Pause, Car, FileText, ShieldCheck, User, Search, GripVertical } from 'lucide-react';
+import { Plus, Edit, Trash2, Play, Pause, Car, FileText, ShieldCheck, User, Search, GripVertical, Package } from 'lucide-react';
 import api from '../../services/api';
 import AdminModal from './AdminModal';
+import CrlveOrdersAdmin from '../../pages/admin/CrlveOrdersAdmin';
 import {
   DndContext,
   closestCenter,
@@ -93,12 +94,12 @@ const SortableItem: React.FC<SortableItemProps> = ({ consultation, onEdit, onDel
 
 const ConsultationManagement: React.FC = () => {
   const [consultations, setConsultations] = useState<Consultation[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
   const [currentConsultation, setCurrentConsultation] = useState<Partial<Consultation>>({});
+  const [showCrlveOrders, setShowCrlveOrders] = useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -199,11 +200,34 @@ const ConsultationManagement: React.FC = () => {
     }
   };
 
+  if (showCrlveOrders) {
+    return (
+      <div>
+        <button
+          onClick={() => setShowCrlveOrders(false)}
+          className="mb-4 text-sm font-semibold text-gray-600 hover:text-gray-800 flex items-center gap-2"
+        >
+          ← Voltar para Consultas
+        </button>
+        <CrlveOrdersAdmin />
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">Gerenciar Tipos de Consulta</h2>
-        <p className="text-gray-500 mt-1">Edite os tipos de consulta disponíveis para os usuários.</p>
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800">Gerenciar Tipos de Consulta</h2>
+          <p className="text-gray-500 mt-1">Edite os tipos de consulta disponíveis para os usuários.</p>
+        </div>
+        <button
+          onClick={() => setShowCrlveOrders(true)}
+          className="flex items-center gap-2 bg-[#000042] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors"
+        >
+          <Package size={18} />
+          Gerenciar Pedidos CRLV-E
+        </button>
       </div>
 
       {isLoading && <p>Carregando...</p>}
