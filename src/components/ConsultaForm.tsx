@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import { Loader2, Download } from 'lucide-react';
 import api from '../services/api';
 import ModalSucesso from './ModalSucesso';
@@ -9,7 +9,7 @@ import PDFViewer from './PDFViewer';
 interface ConsultaFormProps {
   titulo: string;
   descricao: string;
-  preco: number;
+  preco?: number; // Agora é opcional, será buscado do banco
   slug: string;
   campos: CampoFormulario[];
   icon?: ReactNode;
@@ -30,7 +30,7 @@ interface CampoFormulario {
 export default function ConsultaForm({ 
   titulo, 
   descricao, 
-  preco, 
+  preco: precoInicial, 
   slug, 
   campos,
   icon,
@@ -39,6 +39,8 @@ export default function ConsultaForm({
 }: ConsultaFormProps) {
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
+  const [preco, setPreco] = useState<number>(precoInicial || 0);
+  const [loadingPreco, setLoadingPreco] = useState(!precoInicial);
   
   // Modals
   const [modalSucesso, setModalSucesso] = useState(false);
@@ -51,6 +53,24 @@ export default function ConsultaForm({
   const [saldoAtual, setSaldoAtual] = useState(0);
   const [pdfUrl, setPdfUrl] = useState('');
   const [pdfFileName, setPdfFileName] = useState('');
+
+  // Buscar preço do banco de dados se não foi fornecido
+  useEffect(() => {
+    if (!precoInicial) {
+      const fetchPreco = async () => {
+        try {
+          const response = await api.get(`/consultations/details/${slug}`);
+          setPreco(parseFloat(response.data.price));
+        } catch (error) {
+          console.error('Erro ao buscar preço:', error);
+          setPreco(0);
+        } finally {
+          setLoadingPreco(false);
+        }
+      };
+      fetchPreco();
+    }
+  }, [slug, precoInicial]);
 
   const handleInputChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));

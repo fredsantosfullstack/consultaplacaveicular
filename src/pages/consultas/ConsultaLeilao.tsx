@@ -6,7 +6,6 @@ export default function ConsultaLeilao() {
     <ConsultaForm
       titulo="Consulta Leilão"
       descricao="Consulta informações sobre leilão do veículo"
-      preco={15.00}
       slug="consulta-leilao"
       icon={<Search className="w-8 h-8" />}
       campos={[
