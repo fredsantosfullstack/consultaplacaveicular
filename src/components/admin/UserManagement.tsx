@@ -65,9 +65,12 @@ const UserManagement: React.FC<UserManagementProps> = () => {
     const method = modalMode === 'add' ? 'post' : 'put';
     const url = modalMode === 'add' ? '/users' : `/users/${currentUser.id}`;
 
+    console.log('📤 Enviando dados:', { method, url, data: currentUser });
+
     try {
       // Salva os dados do usuário primeiro
       const { data: savedUser } = await api[method](url, currentUser);
+      console.log('✅ Resposta do servidor:', savedUser);
       const userId = savedUser.id || currentUser.id;
 
       // Se houver um arquivo de avatar, faz o upload
@@ -81,10 +84,12 @@ const UserManagement: React.FC<UserManagementProps> = () => {
         });
       }
 
+      alert('Usuário atualizado com sucesso!');
       handleCloseModal();
       fetchUsers();
-    } catch (error) {
-      console.error('Falha ao salvar usuário', error);
+    } catch (error: any) {
+      console.error('❌ Falha ao salvar usuário', error);
+      alert(`Erro ao salvar: ${error.response?.data?.msg || error.message}`);
     }
   };
 
