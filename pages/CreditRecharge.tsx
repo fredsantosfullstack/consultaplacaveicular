@@ -92,8 +92,10 @@ const CreditRecharge: React.FC = () => {
                     setPaymentStatus('confirmed');
                     clearInterval(interval);
                     
-                    // Atualizar saldo do usuário
+                    // Atualizar saldo do usuário - forçar atualização
+                    console.log('💰 Atualizando saldo do usuário...');
                     await refreshProfile();
+                    console.log('✅ Saldo atualizado!');
                     
                     // Resetar após 3 segundos
                     setTimeout(() => {
