@@ -68,7 +68,11 @@ export default function ConsultaForm({
 
   // Buscar preço do banco de dados se não foi fornecido via state ou prop
   useEffect(() => {
-    if (!precoFromState && !precoInicial) {
+    if (precoFromState !== undefined || precoInicial !== undefined) {
+      // Se já tem preço, desabilita loading imediatamente
+      setLoadingPreco(false);
+    } else {
+      // Só busca se não tiver preço
       const fetchPreco = async () => {
         try {
           const response = await api.get(`/consultations/details/${slug}`);
