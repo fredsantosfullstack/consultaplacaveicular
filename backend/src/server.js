@@ -38,8 +38,13 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Permite requisições sem 'origin' (ex: mobile apps, curl, Postman)
+    // Permite requisições sem 'origin' (ex: mobile apps, curl, Postman, Webhooks)
     if (!origin) return callback(null, true);
+    
+    // Permite origens do Asaas (webhooks)
+    if (origin && origin.includes('asaas.com')) {
+      return callback(null, true);
+    }
     
     if (allowedOrigins.indexOf(origin) !== -1) {
       return callback(null, true);
