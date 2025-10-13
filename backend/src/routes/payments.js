@@ -89,8 +89,21 @@ router.post('/create-charge', authenticateToken, async (req, res) => {
   }
 });
 
+// Rota de teste para verificar se o endpoint está acessível
+router.get('/webhook', (req, res) => {
+  res.status(200).json({ 
+    msg: 'Webhook endpoint está funcionando! Use POST para enviar dados.',
+    method: 'GET não é permitido para webhooks. Use POST.'
+  });
+});
+
 // Rota de Webhook para receber notificações do Asaas
 router.post('/webhook', async (req, res) => {
+  console.log('🔔 WEBHOOK ROUTE CHAMADA!');
+  console.log('Method:', req.method);
+  console.log('URL:', req.url);
+  console.log('Headers:', req.headers);
+  
   const webhookData = req.body;
   
   console.log('📩 Webhook recebido do Asaas:', JSON.stringify(webhookData, null, 2));
