@@ -165,7 +165,11 @@ export default function ConsultaForm({
           <div className="mb-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
             <p className="text-sm text-gray-600">Valor da consulta</p>
             <p className="text-2xl font-bold text-[#000042]">
-              R$ {preco.toFixed(2)}
+              {loadingPreco ? (
+                <span className="text-gray-400">Carregando...</span>
+              ) : (
+                `R$ ${preco.toFixed(2)}`
+              )}
             </p>
           </div>
 
@@ -210,13 +214,18 @@ export default function ConsultaForm({
             <div className="flex gap-3 pt-4">
               <button
                 type="submit"
-                disabled={loading}
+                disabled={loading || loadingPreco}
                 className="flex-1 bg-[#000042] text-white py-3 rounded-lg hover:bg-[#000052] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
                     Processando...
+                  </>
+                ) : loadingPreco ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Carregando preço...
                   </>
                 ) : (
                   textoBotao
