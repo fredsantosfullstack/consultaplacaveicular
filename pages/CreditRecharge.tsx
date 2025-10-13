@@ -183,7 +183,7 @@ const CreditRecharge: React.FC = () => {
                 <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
                 <h3 className="text-2xl font-bold text-green-700 mb-2">Pagamento Confirmado!</h3>
                 <p className="text-green-600">Seus créditos foram adicionados com sucesso.</p>
-                <p className="text-sm text-gray-600 mt-2">Novo saldo: R$ {profile?.balance?.toFixed(2)}</p>
+                <p className="text-sm text-gray-600 mt-2">Novo saldo: R$ {profile?.balance ? Number(profile.balance).toFixed(2) : '0.00'}</p>
               </div>
             ) : paymentStatus === 'error' ? (
               <div className="bg-red-50 border-2 border-red-500 rounded-xl p-6 text-center">
