@@ -6,7 +6,7 @@ export default function ConsultaComunicadoVenda() {
     <ConsultaForm
       titulo="Consulta Comunicado Venda"
       descricao="Verifica comunicado de venda"
-      preco={8.00}
+
       slug="consulta-comunicado-venda"
       icon={<FileText className="w-8 h-8" />}
       campos={[

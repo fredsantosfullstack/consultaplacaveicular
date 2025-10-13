@@ -6,7 +6,7 @@ export default function AnoLicenciamento() {
     <ConsultaForm
       titulo="Ano Licenciamento BIN Nacional"
       descricao="Consulta ano de licenciamento"
-      preco={7.00}
+
       slug="ano-licenciamento-bin-nacional"
       icon={<Calendar className="w-8 h-8" />}
       campos={[

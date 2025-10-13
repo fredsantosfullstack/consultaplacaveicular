@@ -6,7 +6,6 @@ export default function ProprietarioAtualV2() {
     <ConsultaForm
       titulo="Proprietário Atual V2"
       descricao="Consulta informações do proprietário atual do veículo"
-      preco={10.00}
       slug="proprietario-atual-v2"
       icon={<User className="w-8 h-8" />}
       campos={[

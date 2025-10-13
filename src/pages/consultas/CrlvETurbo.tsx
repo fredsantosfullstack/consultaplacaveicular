@@ -36,7 +36,6 @@ export default function CrlvETurbo() {
     <ConsultaForm
       titulo="CRLV-E TURBO"
       descricao="CRLV-E para múltiplos estados"
-      preco={5.00}
       slug="crlv-e-turbo"
       icon={<Zap className="w-8 h-8" />}
       campos={[

@@ -6,7 +6,7 @@ export default function GravameV2() {
     <ConsultaForm
       titulo="Gravame V2"
       descricao="Consulta de gravames e restrições financeiras"
-      preco={8.00}
+
       slug="gravame-v2"
       icon={<Lock className="w-8 h-8" />}
       campos={[

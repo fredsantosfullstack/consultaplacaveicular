@@ -6,7 +6,7 @@ export default function BaseNacional() {
     <ConsultaForm
       titulo="Base Nacional"
       descricao="Base oficial do DENATRAN"
-      preco={12.00}
+
       slug="base-nacional"
       icon={<Database className="w-8 h-8" />}
       campos={[
