@@ -39,12 +39,20 @@ export default function ConsultaForm({
   textoBotao = 'Consultar'
 }: ConsultaFormProps) {
   const location = useLocation();
-  const precoFromState = (location.state as any)?.price;
+  const precoFromState = typeof (location?.state as any)?.price === 'number' 
+    ? (location.state as any).price 
+    : undefined;
   
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
-  const [preco, setPreco] = useState<number>(precoFromState || precoInicial || 0);
-  const [loadingPreco, setLoadingPreco] = useState(!precoFromState && !precoInicial);
+  const [preco, setPreco] = useState<number>(
+    precoFromState !== undefined ? precoFromState : 
+    precoInicial !== undefined ? precoInicial : 
+    0
+  );
+  const [loadingPreco, setLoadingPreco] = useState(
+    precoFromState === undefined && precoInicial === undefined
+  );
   
   // Modals
   const [modalSucesso, setModalSucesso] = useState(false);
@@ -172,7 +180,7 @@ export default function ConsultaForm({
               {loadingPreco ? (
                 <span className="text-gray-400">Carregando...</span>
               ) : (
-                `R$ ${preco.toFixed(2)}`
+                `R$ ${(typeof preco === 'number' ? preco : 0).toFixed(2)}`
               )}
             </p>
           </div>
