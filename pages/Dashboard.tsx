@@ -64,6 +64,7 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ title, slug, descri
         
         <Link 
           to={normalizedSlug ? `/consulta/${normalizedSlug}` : '#'}
+          state={{ price }}
           className={linkClassName}
           aria-disabled={isDisabled}
         >

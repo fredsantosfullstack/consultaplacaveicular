@@ -1,4 +1,5 @@
 import { useState, useEffect, ReactNode } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Loader2, Download } from 'lucide-react';
 import api from '../services/api';
 import ModalSucesso from './ModalSucesso';
@@ -37,10 +38,13 @@ export default function ConsultaForm({
   avisoPersonalizado,
   textoBotao = 'Consultar'
 }: ConsultaFormProps) {
+  const location = useLocation();
+  const precoFromState = (location.state as any)?.price;
+  
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
-  const [preco, setPreco] = useState<number>(precoInicial || 0);
-  const [loadingPreco, setLoadingPreco] = useState(!precoInicial);
+  const [preco, setPreco] = useState<number>(precoFromState || precoInicial || 0);
+  const [loadingPreco, setLoadingPreco] = useState(!precoFromState && !precoInicial);
   
   // Modals
   const [modalSucesso, setModalSucesso] = useState(false);
@@ -54,9 +58,9 @@ export default function ConsultaForm({
   const [pdfUrl, setPdfUrl] = useState('');
   const [pdfFileName, setPdfFileName] = useState('');
 
-  // Buscar preço do banco de dados se não foi fornecido
+  // Buscar preço do banco de dados se não foi fornecido via state ou prop
   useEffect(() => {
-    if (!precoInicial) {
+    if (!precoFromState && !precoInicial) {
       const fetchPreco = async () => {
         try {
           const response = await api.get(`/consultations/details/${slug}`);
@@ -70,7 +74,7 @@ export default function ConsultaForm({
       };
       fetchPreco();
     }
-  }, [slug, precoInicial]);
+  }, [slug, precoInicial, precoFromState]);
 
   const handleInputChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
