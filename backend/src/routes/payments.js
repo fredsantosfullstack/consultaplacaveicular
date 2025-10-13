@@ -5,6 +5,33 @@ import asaasService from '../services/asaas.js';
 
 const router = express.Router();
 
+// Rota para verificar status do pagamento
+router.get('/status/:paymentId', async (req, res) => {
+  const { paymentId } = req.params;
+  
+  try {
+    const [transactions] = await db.query(
+      'SELECT status, paid_at FROM payment_transactions WHERE asaas_payment_id = ?',
+      [paymentId]
+    );
+    
+    if (transactions.length === 0) {
+      return res.status(404).json({ status: 'not_found' });
+    }
+    
+    const transaction = transactions[0];
+    
+    res.json({
+      status: transaction.status,
+      paidAt: transaction.paid_at,
+      confirmed: transaction.status === 'confirmed'
+    });
+  } catch (error) {
+    console.error('Erro ao verificar status:', error);
+    res.status(500).json({ msg: 'Erro ao verificar status do pagamento.' });
+  }
+});
+
 // Rota para criar uma nova cobrança
 router.post('/create-charge', authenticateToken, async (req, res) => {
   const { planId } = req.body;
