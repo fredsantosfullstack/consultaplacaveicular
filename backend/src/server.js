@@ -24,49 +24,13 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middlewares
-// Configuração de CORS dinâmica baseada no ambiente
-const allowedOrigins = [
-  'http://localhost:5174',
-  'http://localhost:5173',
-  'https://golden-veicular.vercel.app',
-  'https://dizapi.inf.br',
-  'https://goldenveicular.com.br',
-  'https://www.goldenveicular.com.br',
-  process.env.FRONTEND_URL
-].filter(Boolean);
+// WEBHOOK DO ASAAS - DEVE VIR ANTES DE TUDO!
+app.use(express.json({ limit: '10mb' })); // Necessário para ler o body
 
-app.use(cors({
-  origin: function (origin, callback) {
-    // Permite requisições sem 'origin' (ex: mobile apps, curl, Postman, Webhooks)
-    if (!origin) return callback(null, true);
-    
-    // Permite origens do Asaas (webhooks)
-    if (origin && origin.includes('asaas.com')) {
-      return callback(null, true);
-    }
-    
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      return callback(null, true);
-    }
-    
-    console.log('❌ CORS bloqueado para origem:', origin);
-    const msg = 'A política de CORS para este site não permite acesso da Origem especificada.';
-    return callback(new Error(msg), false);
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-New-Balance'],
-  exposedHeaders: ['X-New-Balance'], // Expor o header customizado
-}));
-app.use(express.json());
-
-console.log('🚀 WEBHOOK ROUTE REGISTERED AT: /api/payments/webhook');
-
-// WEBHOOK DO ASAAS - Deve vir ANTES de express.static para não ser bloqueado
 app.post('/api/payments/webhook', async (req, res) => {
-  console.log('🔔 WEBHOOK RECEBIDO DIRETAMENTE NO SERVER.JS! - VERSÃO ATUALIZADA');
+  console.log('🔔 WEBHOOK RECEBIDO! - ROTA PRIORITÁRIA');
   console.log('Method:', req.method);
+  console.log('Headers:', req.headers);
   console.log('Body:', JSON.stringify(req.body, null, 2));
   
   const webhookData = req.body;
@@ -106,12 +70,48 @@ app.post('/api/payments/webhook', async (req, res) => {
       console.log('✅ Crédito adicionado com sucesso! Usuário:', transaction.user_id, 'Créditos:', transaction.credits);
     }
     
-    res.status(200).json({ success: true, message: 'Webhook processado com sucesso!' });
+    return res.status(200).json({ success: true, message: 'Webhook processado com sucesso!' });
   } catch (error) {
     console.error('❌ Erro ao processar webhook:', error);
-    res.status(200).json({ success: true, message: 'Webhook recebido, mas houve erro no processamento' });
+    return res.status(200).json({ success: true, message: 'Webhook recebido, mas houve erro no processamento' });
   }
 });
+
+// Middlewares
+// Configuração de CORS dinâmica baseada no ambiente
+const allowedOrigins = [
+  'http://localhost:5174',
+  'http://localhost:5173',
+  'https://golden-veicular.vercel.app',
+  'https://dizapi.inf.br',
+  'https://goldenveicular.com.br',
+  'https://www.goldenveicular.com.br',
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Permite requisições sem 'origin' (ex: mobile apps, curl, Postman, Webhooks)
+    if (!origin) return callback(null, true);
+    
+    // Permite origens do Asaas (webhooks)
+    if (origin && origin.includes('asaas.com')) {
+      return callback(null, true);
+    }
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
+    }
+    
+    console.log('❌ CORS bloqueado para origem:', origin);
+    const msg = 'A política de CORS para este site não permite acesso da Origem especificada.';
+    return callback(new Error(msg), false);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-New-Balance'],
+  exposedHeaders: ['X-New-Balance'], // Expor o header customizado
+}));
 
 // Log para debug
 const publicPath = path.join(__dirname, '../public');
