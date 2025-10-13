@@ -61,9 +61,11 @@ app.use(cors({
 }));
 app.use(express.json());
 
+console.log('🚀 WEBHOOK ROUTE REGISTERED AT: /api/payments/webhook');
+
 // WEBHOOK DO ASAAS - Deve vir ANTES de express.static para não ser bloqueado
 app.post('/api/payments/webhook', async (req, res) => {
-  console.log('🔔 WEBHOOK RECEBIDO DIRETAMENTE NO SERVER.JS!');
+  console.log('🔔 WEBHOOK RECEBIDO DIRETAMENTE NO SERVER.JS! - VERSÃO ATUALIZADA');
   console.log('Method:', req.method);
   console.log('Body:', JSON.stringify(req.body, null, 2));
   
