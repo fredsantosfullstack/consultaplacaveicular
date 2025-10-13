@@ -61,6 +61,14 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// WEBHOOK DO ASAAS - Deve vir ANTES de express.static para não ser bloqueado
+app.post('/api/payments/webhook', (req, res) => {
+  console.log('🔔 WEBHOOK RECEBIDO DIRETAMENTE NO SERVER.JS!');
+  console.log('Method:', req.method);
+  console.log('Body:', req.body);
+  res.status(200).json({ success: true, message: 'Webhook recebido com sucesso!' });
+});
+
 // Log para debug
 const publicPath = path.join(__dirname, '../public');
 console.log('📁 Servindo arquivos estáticos de:', publicPath);
