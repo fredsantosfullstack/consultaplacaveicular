@@ -65,12 +65,7 @@ router.put('/avatar', authenticateToken, upload.single('avatar'), async (req, re
 // Rota para atualizar um usuário (apenas admin)
 router.put('/:id', authenticateToken, isAdmin, async (req, res) => {
   const { id } = req.params;
-  const { role, balance } = req.body;
-
-  // Validação básica
-  if (!role && balance === undefined) {
-    return res.status(400).json({ msg: 'Pelo menos um campo (role ou balance) deve ser fornecido.' });
-  }
+  const { name, email, password, role, balance, document_type, document_number, phone } = req.body;
 
   try {
     const [users] = await db.query('SELECT * FROM users WHERE id = ?', [id]);
@@ -80,13 +75,26 @@ router.put('/:id', authenticateToken, isAdmin, async (req, res) => {
 
     const userToUpdate = users[0];
     const updatedFields = {
+      name: name !== undefined ? name : userToUpdate.name,
+      email: email !== undefined ? email : userToUpdate.email,
       role: role !== undefined ? role : userToUpdate.role,
       balance: balance !== undefined ? parseFloat(balance) : userToUpdate.balance,
+      document_type: document_type !== undefined ? document_type : userToUpdate.document_type,
+      document_number: document_number !== undefined ? document_number : userToUpdate.document_number,
+      phone: phone !== undefined ? phone : userToUpdate.phone,
     };
+
+    // Se a senha foi fornecida, hash ela
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      updatedFields.password = await bcrypt.hash(password, salt);
+    }
 
     await db.query('UPDATE users SET ? WHERE id = ?', [updatedFields, id]);
 
-    res.json({ msg: 'Usuário atualizado com sucesso!', ...updatedFields });
+    // Retorna os dados atualizados (sem a senha)
+    const { password: _, ...userResponse } = updatedFields;
+    res.json({ msg: 'Usuário atualizado com sucesso!', id, ...userResponse });
 
   } catch (error) {
     console.error(`Erro ao atualizar usuário ${id}:`, error);
