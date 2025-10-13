@@ -62,11 +62,53 @@ app.use(cors({
 app.use(express.json());
 
 // WEBHOOK DO ASAAS - Deve vir ANTES de express.static para não ser bloqueado
-app.post('/api/payments/webhook', (req, res) => {
+app.post('/api/payments/webhook', async (req, res) => {
   console.log('🔔 WEBHOOK RECEBIDO DIRETAMENTE NO SERVER.JS!');
   console.log('Method:', req.method);
-  console.log('Body:', req.body);
-  res.status(200).json({ success: true, message: 'Webhook recebido com sucesso!' });
+  console.log('Body:', JSON.stringify(req.body, null, 2));
+  
+  const webhookData = req.body;
+  
+  try {
+    // Processar apenas eventos de pagamento confirmado
+    if (webhookData.event === 'PAYMENT_CONFIRMED' || webhookData.event === 'PAYMENT_RECEIVED') {
+      const paymentId = webhookData.payment.id;
+      
+      console.log('💰 Processando pagamento:', paymentId);
+      
+      // Buscar transação no banco
+      const [transactions] = await db.query(
+        'SELECT * FROM payment_transactions WHERE asaas_payment_id = ? AND status = "pending"',
+        [paymentId]
+      );
+      
+      if (transactions.length === 0) {
+        console.log('⚠️ Transação não encontrada ou já processada:', paymentId);
+        return res.status(200).json({ success: true, message: 'Transação já processada' });
+      }
+      
+      const transaction = transactions[0];
+      
+      // Adicionar créditos ao usuário
+      await db.query(
+        'UPDATE users SET balance = balance + ? WHERE id = ?',
+        [transaction.credits, transaction.user_id]
+      );
+      
+      // Atualizar status da transação
+      await db.query(
+        'UPDATE payment_transactions SET status = "confirmed", paid_at = NOW() WHERE id = ?',
+        [transaction.id]
+      );
+      
+      console.log('✅ Crédito adicionado com sucesso! Usuário:', transaction.user_id, 'Créditos:', transaction.credits);
+    }
+    
+    res.status(200).json({ success: true, message: 'Webhook processado com sucesso!' });
+  } catch (error) {
+    console.error('❌ Erro ao processar webhook:', error);
+    res.status(200).json({ success: true, message: 'Webhook recebido, mas houve erro no processamento' });
+  }
 });
 
 // Log para debug
