@@ -21,6 +21,7 @@ interface AuthContextType {
   logout: () => void;
   isLoading: boolean;
   updateProfile: (data: Partial<UserProfile>) => void;
+  refreshProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -91,12 +92,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setProfile(prev => prev ? { ...prev, ...data } : null);
   };
 
+  const refreshProfile = async () => {
+    console.log('🔄 Atualizando perfil do usuário...');
+    await fetchProfile();
+    console.log('✅ Perfil atualizado!');
+  };
+
   const value = {
     profile,
     login,
     logout,
     isLoading,
     updateProfile,
+    refreshProfile,
   };
 
 
