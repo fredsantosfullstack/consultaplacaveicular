@@ -26,11 +26,12 @@ const PORT = process.env.PORT || 3001;
 
 // WEBHOOK DO ASAAS - DEVE VIR ANTES DE TUDO!
 app.use(express.json({ limit: '10mb' })); // Necessário para ler o body
+app.use(express.urlencoded({ extended: true })); // Para form-data
 
-app.post('/api/payments/webhook', async (req, res) => {
-  console.log('🔔 WEBHOOK RECEBIDO! - ROTA PRIORITÁRIA');
-  console.log('Method:', req.method);
-  console.log('Headers:', req.headers);
+// Rota de teste simples
+app.all('/api/payments/webhook', async (req, res) => {
+  console.log('🔔 WEBHOOK RECEBIDO! - MÉTODO:', req.method);
+  console.log('Headers:', JSON.stringify(req.headers, null, 2));
   console.log('Body:', JSON.stringify(req.body, null, 2));
   
   const webhookData = req.body;
