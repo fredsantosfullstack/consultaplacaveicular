@@ -6,7 +6,6 @@ export default function BaseEstadual() {
     <ConsultaForm
       titulo="Base Estadual"
       descricao="Consulta base estadual"
-
       slug="base-estadual"
       icon={<MapPin className="w-8 h-8" />}
       campos={[

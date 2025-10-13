@@ -6,7 +6,6 @@ export default function CsvRenainfRenajud() {
     <ConsultaForm
       titulo="CSV - RENAINF - RENAJUD - RECALL - BIN - PROPRIETAR"
       descricao="Consulta completa com múltiplas informações: CSV, RENAINF, RENAJUD, RECALL, BIN e dados do proprietário"
-
       slug="csv-renainf-renajud-recall-bin-proprietar"
       icon={<FileSpreadsheet className="w-8 h-8" />}
       campos={[

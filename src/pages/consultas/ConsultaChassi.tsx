@@ -6,7 +6,6 @@ export default function ConsultaChassi() {
     <ConsultaForm
       titulo="Consulta Chassi"
       descricao="Consulta por número do chassi"
-
       slug="consulta-chassi"
       icon={<Hash className="w-8 h-8" />}
       campos={[

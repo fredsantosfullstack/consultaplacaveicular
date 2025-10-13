@@ -6,7 +6,6 @@ export default function CodigoSegurancaPDF() {
     <ConsultaForm
       titulo="Código de segurança PDF"
       descricao="Através da placa Retorna CRV DIGITAL"
-
       slug="codigo-seguranca-pdf"
       icon={<ShieldCheck className="w-8 h-8" />}
       campos={[

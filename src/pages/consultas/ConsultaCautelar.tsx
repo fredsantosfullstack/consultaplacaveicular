@@ -6,7 +6,6 @@ export default function ConsultaCautelar() {
     <ConsultaForm
       titulo="Consulta Cautelar"
       descricao="Verifica medidas cautelares"
-
       slug="consulta-cautelar"
       icon={<AlertTriangle className="w-8 h-8" />}
       campos={[
