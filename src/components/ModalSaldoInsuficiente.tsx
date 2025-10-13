@@ -50,19 +50,19 @@ export default function ModalSaldoInsuficiente({
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Saldo atual:</span>
               <span className="font-semibold text-gray-900">
-                R$ {saldoSeguro.toFixed(2)}
+                R$ {Number(saldoSeguro).toFixed(2)}
               </span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Valor da consulta:</span>
               <span className="font-semibold text-gray-900">
-                R$ {valorSeguro.toFixed(2)}
+                R$ {Number(valorSeguro).toFixed(2)}
               </span>
             </div>
             <div className="border-t border-gray-200 pt-2 flex justify-between text-sm">
               <span className="text-gray-600">Faltam:</span>
               <span className="font-bold text-red-600">
-                R$ {faltam.toFixed(2)}
+                R$ {Number(faltam).toFixed(2)}
               </span>
             </div>
           </div>
