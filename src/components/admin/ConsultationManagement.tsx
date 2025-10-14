@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit, Play, Pause, Car, FileText, ShieldCheck, User, Search, GripVertical, Package } from 'lucide-react';
+import { Plus, Edit, Play, Pause, Car, FileText, ShieldCheck, User, Search, GripVertical, Package, Settings } from 'lucide-react';
 import api from '../../services/api';
 import AdminModal from './AdminModal';
 import CrlveOrdersAdmin from '../../pages/admin/CrlveOrdersAdmin';
@@ -24,6 +24,7 @@ import { CSS } from '@dnd-kit/utilities';
 interface Consultation {
   id: number;
   name: string;
+  slug?: string;
   description?: string;
   icon?: string;
   price: number;
@@ -32,15 +33,24 @@ interface Consultation {
   display_order?: number;
 }
 
+interface CrlveTurboState {
+  id: number;
+  state_code: string;
+  state_name: string;
+  price: number;
+  is_active: boolean;
+}
+
 // Componente para item arrastável
 interface SortableItemProps {
   consultation: Consultation;
   onEdit: () => void;
   onToggleActive: () => void;
+  onManageStates?: () => void;
   iconMap: any;
 }
 
-const SortableItem: React.FC<SortableItemProps> = ({ consultation, onEdit, onToggleActive, iconMap }) => {
+const SortableItem: React.FC<SortableItemProps> = ({ consultation, onEdit, onToggleActive, onManageStates, iconMap }) => {
   const {
     attributes,
     listeners,
@@ -84,6 +94,11 @@ const SortableItem: React.FC<SortableItemProps> = ({ consultation, onEdit, onTog
             {consultation.is_active ? <Pause size={18} className="text-yellow-600 hover:text-yellow-800" /> : <Play size={18} className="text-green-600 hover:text-green-800" />}
           </button>
           <button onClick={onEdit} title="Editar" className="text-blue-600 hover:text-blue-800"><Edit size={18} /></button>
+          {consultation.slug === 'crlv-e-turbo' && onManageStates && (
+            <button onClick={onManageStates} title="Gerenciar Estados" className="text-purple-600 hover:text-purple-800">
+              <Settings size={18} />
+            </button>
+          )}
         </div>
       </td>
     </tr>
@@ -98,6 +113,10 @@ const ConsultationManagement: React.FC = () => {
   const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
   const [currentConsultation, setCurrentConsultation] = useState<Partial<Consultation>>({});
   const [showCrlveOrders, setShowCrlveOrders] = useState(false);
+  const [showStatesModal, setShowStatesModal] = useState(false);
+  const [crlveTurboStates, setCrlveTurboStates] = useState<CrlveTurboState[]>([]);
+  const [editingTurboState, setEditingTurboState] = useState<CrlveTurboState | null>(null);
+  const [showStateFormModal, setShowStateFormModal] = useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -163,6 +182,52 @@ const ConsultationManagement: React.FC = () => {
       await api.put(`/consultations/${consultation.id}`, { ...consultation, is_active: !consultation.is_active });
       fetchConsultations();
     } catch (error) {
+    }
+  };
+
+  const handleManageStates = async () => {
+    try {
+      const response = await api.get('/crlve-orders/admin/states');
+      setCrlveTurboStates(response.data || []);
+      setShowStatesModal(true);
+    } catch (error) {
+      console.error('Erro ao buscar estados:', error);
+      alert('Erro ao carregar estados.');
+    }
+  };
+
+  const handleSaveTurboState = async (state: Partial<CrlveTurboState>) => {
+    try {
+      await api.post('/crlve-orders/admin/states', state);
+      handleManageStates(); // Recarregar lista
+      setShowStateFormModal(false);
+      setEditingTurboState(null);
+    } catch (error) {
+      console.error('Erro ao salvar estado:', error);
+      alert('Erro ao salvar estado.');
+    }
+  };
+
+  const handleDeleteTurboState = async (code: string) => {
+    if (!confirm('Tem certeza que deseja deletar este estado?')) return;
+    try {
+      await api.delete(`/crlve-orders/admin/states/${code}`);
+      handleManageStates(); // Recarregar lista
+    } catch (error) {
+      console.error('Erro ao deletar estado:', error);
+      alert('Erro ao deletar estado.');
+    }
+  };
+
+  const handleToggleTurboState = async (state: CrlveTurboState) => {
+    try {
+      await api.post('/crlve-orders/admin/states', {
+        ...state,
+        is_active: !state.is_active
+      });
+      handleManageStates(); // Recarregar lista
+    } catch (error) {
+      console.error('Erro ao atualizar estado:', error);
     }
   };
 
@@ -276,6 +341,7 @@ const ConsultationManagement: React.FC = () => {
                       consultation={consult}
                       onEdit={() => handleOpenModal('edit', consult)}
                       onToggleActive={() => handleToggleActive(consult)}
+                      onManageStates={consult.slug === 'crlv-e-turbo' ? handleManageStates : undefined}
                       iconMap={availableIcons}
                     />
                   ))}
@@ -283,6 +349,149 @@ const ConsultationManagement: React.FC = () => {
               </SortableContext>
             </table>
           </DndContext>
+        </div>
+      )}
+
+      {/* Modal: Gerenciar Estados CRLV-E TURBO */}
+      {showStatesModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b p-6 flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-800">Gerenciar Estados - CRLV-E TURBO</h2>
+              <button
+                onClick={() => setShowStatesModal(false)}
+                className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
+              >
+                ×
+              </button>
+            </div>
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <p className="text-sm text-gray-600">{crlveTurboStates.length} estados cadastrados</p>
+                <button
+                  onClick={() => {
+                    setEditingTurboState({ id: 0, state_code: '', state_name: '', price: 0, is_active: true });
+                    setShowStateFormModal(true);
+                  }}
+                  className="bg-[#000042] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 flex items-center gap-2"
+                >
+                  <Plus size={18} />
+                  Adicionar Estado
+                </button>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {crlveTurboStates.map((state) => (
+                  <div key={state.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <h3 className="font-bold text-lg">{state.state_code}</h3>
+                        <p className="text-sm text-gray-600">{state.state_name}</p>
+                        <p className="text-xl font-bold text-[#000042] mt-2">R$ {Number(state.price).toFixed(2)}</p>
+                      </div>
+                      <button
+                        onClick={() => handleToggleTurboState(state)}
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                          state.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                        }`}
+                      >
+                        {state.is_active ? 'Ativo' : 'Inativo'}
+                      </button>
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          setEditingTurboState(state);
+                          setShowStateFormModal(true);
+                        }}
+                        className="flex-1 bg-blue-50 text-blue-600 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 flex items-center justify-center gap-1"
+                      >
+                        <Edit size={14} />
+                        Editar
+                      </button>
+                      <button
+                        onClick={() => handleDeleteTurboState(state.state_code)}
+                        className="flex-1 bg-red-50 text-red-600 px-3 py-2 rounded-lg text-sm font-medium hover:bg-red-100"
+                      >
+                        Excluir
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Formulário Estado */}
+      {showStateFormModal && editingTurboState && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[60]">
+          <div className="bg-white rounded-lg max-w-md w-full p-6">
+            <h2 className="text-xl font-bold mb-4">
+              {editingTurboState.id === 0 ? 'Adicionar Estado' : 'Editar Estado'}
+            </h2>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Código UF *</label>
+                <input
+                  type="text"
+                  value={editingTurboState.state_code}
+                  onChange={(e) => setEditingTurboState({ ...editingTurboState, state_code: e.target.value.toUpperCase() })}
+                  maxLength={2}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#000042] focus:border-transparent"
+                  placeholder="Ex: SP"
+                  disabled={editingTurboState.id !== 0}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Nome do Estado *</label>
+                <input
+                  type="text"
+                  value={editingTurboState.state_name}
+                  onChange={(e) => setEditingTurboState({ ...editingTurboState, state_name: e.target.value })}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#000042] focus:border-transparent"
+                  placeholder="Ex: São Paulo"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Preço (R$) *</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={editingTurboState.price}
+                  onChange={(e) => setEditingTurboState({ ...editingTurboState, price: parseFloat(e.target.value) || 0 })}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#000042] focus:border-transparent"
+                  placeholder="15.00"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={editingTurboState.is_active}
+                  onChange={(e) => setEditingTurboState({ ...editingTurboState, is_active: e.target.checked })}
+                  className="w-4 h-4 text-[#000042] focus:ring-[#000042]"
+                />
+                <label className="text-sm font-medium">Estado Ativo</label>
+              </div>
+              <div className="flex gap-3 pt-4">
+                <button
+                  onClick={() => handleSaveTurboState(editingTurboState)}
+                  className="flex-1 bg-[#000042] text-white py-2 rounded-lg hover:bg-opacity-90 font-medium"
+                >
+                  Salvar
+                </button>
+                <button
+                  onClick={() => {
+                    setShowStateFormModal(false);
+                    setEditingTurboState(null);
+                  }}
+                  className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300 font-medium"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
