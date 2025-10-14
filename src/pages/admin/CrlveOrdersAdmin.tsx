@@ -253,7 +253,7 @@ export default function CrlveOrdersAdmin({ onBack }: CrlveOrdersAdminProps) {
                           </td>
                           <td className="px-4 py-3 font-medium">{order.placa}</td>
                           <td className="px-4 py-3">{order.uf}</td>
-                          <td className="px-4 py-3">R$ {order.price.toFixed(2)}</td>
+                          <td className="px-4 py-3">R$ {Number(order.price).toFixed(2)}</td>
                           <td className="px-4 py-3">
                             <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(order.status)}`}>
                               {getStatusLabel(order.status)}
@@ -306,7 +306,7 @@ export default function CrlveOrdersAdmin({ onBack }: CrlveOrdersAdminProps) {
                         <div className="flex justify-between items-start mb-2">
                           <div>
                             <h3 className="font-semibold">{state.state_name} ({state.state_code})</h3>
-                            <p className="text-lg font-bold text-[#000042]">R$ {state.price.toFixed(2)}</p>
+                            <p className="text-lg font-bold text-[#000042]">R$ {Number(state.price).toFixed(2)}</p>
                           </div>
                           <span className={`px-2 py-1 rounded text-xs ${state.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
                             {state.is_active ? 'Ativo' : 'Inativo'}
