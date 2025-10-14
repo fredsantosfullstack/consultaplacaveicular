@@ -318,16 +318,9 @@ const ConsultationManagement: React.FC = () => {
                   onChange={(e) => setCurrentConsultation(prev => ({ ...prev, price: parseFloat(e.target.value) }))} 
                   step="0.01" 
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#000042] focus:border-[#000042] sm:text-sm" 
-                  disabled={currentConsultation.price_on_request}
-                  required={!currentConsultation.price_on_request}
+                  required
                 />
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-700">Preço sob consulta?</span>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" checked={currentConsultation.price_on_request || false} onChange={(e) => setCurrentConsultation(prev => ({ ...prev, price_on_request: e.target.checked, price: e.target.checked ? 0 : prev.price }))} className="sr-only peer" />
-                  <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-[#000042]/50 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#000042]"></div>
-                </label>
+                <p className="mt-1 text-xs text-gray-500">💡 Dica: Use R$ 0,00 para exibir "Consulte" no card</p>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-700">Marcar como 'NOVO'?</span>
