@@ -16,6 +16,7 @@ interface ConsultaFormProps {
   icon?: ReactNode;
   avisoPersonalizado?: ReactNode;
   textoBotao?: string;
+  estadosComPreco?: Array<{ state_code: string; price: number }>; // Para CRLV-E TURBO
 }
 
 interface CampoFormulario {
@@ -36,7 +37,8 @@ export default function ConsultaForm({
   campos,
   icon,
   avisoPersonalizado,
-  textoBotao = 'Consultar'
+  textoBotao = 'Consultar',
+  estadosComPreco
 }: ConsultaFormProps) {
   const location = useLocation();
   const precoFromState = typeof (location?.state as any)?.price === 'number' 
@@ -90,6 +92,16 @@ export default function ConsultaForm({
 
   const handleInputChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Se for o campo 'estado' e tiver estadosComPreco, atualiza o preço
+    if (name === 'estado' && estadosComPreco && estadosComPreco.length > 0) {
+      const estadoSelecionado = estadosComPreco.find(
+        e => e.state_code.toLowerCase() === value.toLowerCase()
+      );
+      if (estadoSelecionado) {
+        setPreco(Number(estadoSelecionado.price));
+      }
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

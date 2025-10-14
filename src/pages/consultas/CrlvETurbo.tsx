@@ -5,12 +5,14 @@ import { publicApi } from '../../services/api';
 
 export default function CrlvETurbo() {
   const [estados, setEstados] = useState<Array<{ value: string; label: string }>>([]);
+  const [estadosData, setEstadosData] = useState<Array<{ state_code: string; price: number }>>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchEstados = async () => {
       try {
         const response = await publicApi.get('/crlve-orders/states');
+        setEstadosData(response.data);
         const estadosFormatados = response.data.map((estado: any) => ({
           value: estado.state_code.toLowerCase(),
           label: `${estado.state_name} (${estado.state_code}) - ${Number(estado.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`
@@ -20,6 +22,7 @@ export default function CrlvETurbo() {
         console.error('Erro ao buscar estados:', error);
         // Fallback: lista vazia ou estados padrão
         setEstados([]);
+        setEstadosData([]);
       } finally {
         setLoading(false);
       }
@@ -41,6 +44,7 @@ export default function CrlvETurbo() {
       descricao="CRLV-E para múltiplos estados"
       slug="crlv-e-turbo"
       icon={<Zap className="w-8 h-8" />}
+      estadosComPreco={estadosData}
       campos={[
         {
           name: 'estado',
