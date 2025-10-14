@@ -35,10 +35,11 @@ interface ConsultationCardProps {
   icon: React.ElementType;
   tag?: string;
   price: number;
+  priceOnRequest?: boolean;
   states?: Array<{ state_code: string; state_name: string; price: number; is_active: boolean }>;
 }
 
-const ConsultationCard: React.FC<ConsultationCardProps> = ({ title, slug, description, icon: Icon, tag, price, states }) => {
+const ConsultationCard: React.FC<ConsultationCardProps> = ({ title, slug, description, icon: Icon, tag, price, priceOnRequest, states }) => {
   const normalizedSlug = normalizeSlug(slug);
   const isDisabled = !normalizedSlug;
   const linkClassName = [
@@ -73,8 +74,17 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ title, slug, descri
       </div>
       <div className="px-4 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
         <div className="text-left">
-          <p className="text-xs text-gray-500">Por apenas</p>
-          <p className="text-xl font-bold text-gray-800">{price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+          {priceOnRequest ? (
+            <>
+              <p className="text-xs text-gray-500">Valor</p>
+              <p className="text-lg font-bold text-[#000042]">Sob Consulta</p>
+            </>
+          ) : (
+            <>
+              <p className="text-xs text-gray-500">Por apenas</p>
+              <p className="text-xl font-bold text-gray-800">{price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+            </>
+          )}
         </div>
         
         {tag && <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{tag}</span>}
@@ -165,6 +175,7 @@ const Dashboard: React.FC = () => {
               icon={iconMap[consultation.icon] || iconMap.Default}
               tag={consultation.is_new ? 'NOVO' : undefined}
               price={consultation.price}
+              priceOnRequest={consultation.price_on_request}
               states={consultation.slug === 'crlv-e-turbo' ? crlveTurboStates : undefined}
             />
           ))}
