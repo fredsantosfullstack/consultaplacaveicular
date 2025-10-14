@@ -153,7 +153,7 @@ const ConsultationManagement: React.FC = () => {
 
   const handleOpenModal = (mode: 'add' | 'edit', consultation: Consultation | null = null) => {
     setModalMode(mode);
-    setCurrentConsultation(consultation || { name: '', description: '', price: 0, is_new: false, is_active: true });
+    setCurrentConsultation(consultation || { name: '', description: '', price: 0, price_on_request: false, is_new: false, is_active: true });
     setIsModalOpen(true);
   };
 
@@ -167,13 +167,17 @@ const ConsultationManagement: React.FC = () => {
     const method = modalMode === 'add' ? 'post' : 'put';
     const url = modalMode === 'add' ? '/consultations' : `/consultations/${currentConsultation.id}`;
 
+    console.log('📤 Enviando consulta:', currentConsultation);
+
     try {
-      await api[method](url, currentConsultation);
+      const response = await api[method](url, currentConsultation);
+      console.log('✅ Resposta do servidor:', response.data);
       handleCloseModal();
       fetchConsultations(); // Re-fetch para atualizar a lista
-    } catch (error) {
-      console.error('Falha ao salvar consulta', error);
-      // Adicionar feedback de erro para o usuário aqui
+    } catch (error: any) {
+      console.error('❌ Falha ao salvar consulta:', error);
+      console.error('Detalhes do erro:', error.response?.data);
+      alert(`Erro ao salvar: ${error.response?.data?.msg || error.message}`);
     }
   };
 
