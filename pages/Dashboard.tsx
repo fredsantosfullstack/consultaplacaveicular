@@ -75,10 +75,7 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ title, slug, descri
       <div className="px-4 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
         <div className="text-left">
           {priceOnRequest ? (
-            <>
-              <p className="text-xs text-gray-500">Valor</p>
-              <p className="text-lg font-bold text-[#000042]">Sob Consulta</p>
-            </>
+            <p className="text-2xl font-bold text-[#000042]">Consulte</p>
           ) : (
             <>
               <p className="text-xs text-gray-500">Por apenas</p>

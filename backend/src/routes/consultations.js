@@ -8,9 +8,9 @@ const router = express.Router();
 
 // Rota para criar uma nova consulta (apenas admin)
 router.post('/', authenticateToken, isAdmin, async (req, res) => {
-  const { name, slug, description, form_fields, icon, price, is_new } = req.body;
+  const { name, slug, description, form_fields, icon, price, price_on_request, is_new } = req.body;
 
-  if (!name || !slug || price === undefined) {
+  if (!name || !slug || (price === undefined && !price_on_request)) {
     return res.status(400).json({ msg: 'Nome, slug e preço são obrigatórios.' });
   }
 
@@ -21,7 +21,8 @@ router.post('/', authenticateToken, isAdmin, async (req, res) => {
       description,
       form_fields: JSON.stringify(form_fields || []),
       icon: icon || 'Search',
-      price,
+      price: price_on_request ? 0 : price,
+      price_on_request: !!price_on_request,
       is_new: !!is_new,
     };
 
@@ -59,9 +60,9 @@ router.get('/', async (req, res) => {
 // Rota para atualizar uma consulta (apenas admin)
 router.put('/:id', authenticateToken, isAdmin, async (req, res) => {
   const { id } = req.params;
-  const { name, slug, description, form_fields, icon, price, is_new, is_active } = req.body;
+  const { name, slug, description, form_fields, icon, price, price_on_request, is_new, is_active } = req.body;
 
-  if (!name || !slug || price === undefined) {
+  if (!name || !slug || (price === undefined && !price_on_request)) {
     return res.status(400).json({ msg: 'Nome, slug e preço são obrigatórios.' });
   }
 
@@ -72,7 +73,8 @@ router.put('/:id', authenticateToken, isAdmin, async (req, res) => {
       description,
       form_fields: JSON.stringify(form_fields || []),
       icon: icon || 'Search',
-      price,
+      price: price_on_request ? 0 : price,
+      price_on_request: !!price_on_request,
       is_new: !!is_new,
       is_active: is_active === undefined ? true : !!is_active
     };
