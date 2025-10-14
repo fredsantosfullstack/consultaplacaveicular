@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Play, Pause, Car, FileText, ShieldCheck, User, Search, GripVertical, Package } from 'lucide-react';
+import { Plus, Edit, Play, Pause, Car, FileText, ShieldCheck, User, Search, GripVertical, Package } from 'lucide-react';
 import api from '../../services/api';
 import AdminModal from './AdminModal';
 import CrlveOrdersAdmin from '../../pages/admin/CrlveOrdersAdmin';
@@ -36,12 +36,11 @@ interface Consultation {
 interface SortableItemProps {
   consultation: Consultation;
   onEdit: () => void;
-  onDelete: () => void;
   onToggleActive: () => void;
   iconMap: any;
 }
 
-const SortableItem: React.FC<SortableItemProps> = ({ consultation, onEdit, onDelete, onToggleActive, iconMap }) => {
+const SortableItem: React.FC<SortableItemProps> = ({ consultation, onEdit, onToggleActive, iconMap }) => {
   const {
     attributes,
     listeners,
@@ -85,7 +84,6 @@ const SortableItem: React.FC<SortableItemProps> = ({ consultation, onEdit, onDel
             {consultation.is_active ? <Pause size={18} className="text-yellow-600 hover:text-yellow-800" /> : <Play size={18} className="text-green-600 hover:text-green-800" />}
           </button>
           <button onClick={onEdit} title="Editar" className="text-blue-600 hover:text-blue-800"><Edit size={18} /></button>
-          <button onClick={onDelete} title="Excluir" className="text-red-600 hover:text-red-800"><Trash2 size={18} /></button>
         </div>
       </td>
     </tr>
@@ -159,15 +157,6 @@ const ConsultationManagement: React.FC = () => {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!window.confirm('Tem certeza que deseja excluir esta consulta?')) return;
-    try {
-      await api.delete(`/consultations/${id}`);
-      fetchConsultations();
-    } catch (error) {
-      console.error('Falha ao excluir consulta', error);
-    }
-  };
 
   const handleToggleActive = async (consultation: Consultation) => {
     try {
@@ -286,7 +275,6 @@ const ConsultationManagement: React.FC = () => {
                       key={consult.id}
                       consultation={consult}
                       onEdit={() => handleOpenModal('edit', consult)}
-                      onDelete={() => handleDelete(consult.id)}
                       onToggleActive={() => handleToggleActive(consult)}
                       iconMap={availableIcons}
                     />
