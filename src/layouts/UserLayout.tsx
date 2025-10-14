@@ -7,7 +7,6 @@ import WhatsAppButton from '../components/WhatsAppButton';
 const AppFooter: React.FC = () => (
   <footer className="bg-white border-t border-gray-200 px-6 py-3 text-xs text-gray-500">
     <div className="flex justify-between items-center">
-      <span>© 2025 Golden Veicular. E-mail: <span className="font-semibold text-gray-600">contato@goldenveicular.com.br</span></span>
       <span>
         Desenvolvido por{' '}
         <a 
@@ -19,6 +18,7 @@ const AppFooter: React.FC = () => (
           Agência DiPixel
         </a>
       </span>
+      <span>E-mail: <span className="font-semibold text-gray-600">contato@goldenveicular.com.br</span> | © 2025 Golden Veicular</span>
     </div>
   </footer>
 );
