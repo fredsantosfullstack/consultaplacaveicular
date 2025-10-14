@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Zap, Loader2 } from 'lucide-react';
 import ConsultaForm from '../../components/ConsultaForm';
-import api from '../../services/api';
+import { publicApi } from '../../services/api';
 
 export default function CrlvETurbo() {
   const [estados, setEstados] = useState<Array<{ value: string; label: string }>>([]);
@@ -10,7 +10,7 @@ export default function CrlvETurbo() {
   useEffect(() => {
     const fetchEstados = async () => {
       try {
-        const response = await api.get('/crlve-orders/states');
+        const response = await publicApi.get('/crlve-orders/states');
         const estadosFormatados = response.data.map((estado: any) => ({
           value: estado.state_code.toLowerCase(),
           label: `${estado.state_name} (${estado.state_code}) - ${Number(estado.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`
