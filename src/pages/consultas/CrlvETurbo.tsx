@@ -1,36 +1,39 @@
-import { Zap } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Zap, Loader2 } from 'lucide-react';
 import ConsultaForm from '../../components/ConsultaForm';
+import api from '../../services/api';
 
 export default function CrlvETurbo() {
-  const estados = [
-    { value: 'ac', label: 'Acre (AC)' },
-    { value: 'al', label: 'Alagoas (AL)' },
-    { value: 'ap', label: 'Amapá (AP)' },
-    { value: 'am', label: 'Amazonas (AM)' },
-    { value: 'ba', label: 'Bahia (BA)' },
-    { value: 'ce', label: 'Ceará (CE)' },
-    { value: 'df', label: 'Distrito Federal (DF)' },
-    { value: 'es', label: 'Espírito Santo (ES)' },
-    { value: 'go', label: 'Goiás (GO)' },
-    { value: 'ma', label: 'Maranhão (MA)' },
-    { value: 'mt', label: 'Mato Grosso (MT)' },
-    { value: 'ms', label: 'Mato Grosso do Sul (MS)' },
-    { value: 'mg', label: 'Minas Gerais (MG)' },
-    { value: 'pa', label: 'Pará (PA)' },
-    { value: 'pb', label: 'Paraíba (PB)' },
-    { value: 'pr', label: 'Paraná (PR)' },
-    { value: 'pe', label: 'Pernambuco (PE)' },
-    { value: 'pi', label: 'Piauí (PI)' },
-    { value: 'rj', label: 'Rio de Janeiro (RJ)' },
-    { value: 'rn', label: 'Rio Grande do Norte (RN)' },
-    { value: 'rs', label: 'Rio Grande do Sul (RS)' },
-    { value: 'ro', label: 'Rondônia (RO)' },
-    { value: 'rr', label: 'Roraima (RR)' },
-    { value: 'sc', label: 'Santa Catarina (SC)' },
-    { value: 'sp', label: 'São Paulo (SP)' },
-    { value: 'se', label: 'Sergipe (SE)' },
-    { value: 'to', label: 'Tocantins (TO)' }
-  ];
+  const [estados, setEstados] = useState<Array<{ value: string; label: string }>>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEstados = async () => {
+      try {
+        const response = await api.get('/crlve-orders/states');
+        const estadosFormatados = response.data.map((estado: any) => ({
+          value: estado.state_code.toLowerCase(),
+          label: `${estado.state_name} (${estado.state_code}) - ${Number(estado.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`
+        }));
+        setEstados(estadosFormatados);
+      } catch (error) {
+        console.error('Erro ao buscar estados:', error);
+        // Fallback: lista vazia ou estados padrão
+        setEstados([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEstados();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Loader2 className="animate-spin text-[#000042]" size={48} />
+      </div>
+    );
+  }
 
   return (
     <ConsultaForm
