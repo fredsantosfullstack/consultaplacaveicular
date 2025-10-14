@@ -35,15 +35,19 @@ interface ConsultationCardProps {
   icon: React.ElementType;
   tag?: string;
   price: number;
+  states?: Array<{ state_code: string; state_name: string; price: number; is_active: boolean }>;
 }
 
-const ConsultationCard: React.FC<ConsultationCardProps> = ({ title, slug, description, icon: Icon, tag, price }) => {
+const ConsultationCard: React.FC<ConsultationCardProps> = ({ title, slug, description, icon: Icon, tag, price, states }) => {
   const normalizedSlug = normalizeSlug(slug);
   const isDisabled = !normalizedSlug;
   const linkClassName = [
     'bg-transparent border-2 border-[#000042] text-[#000042] font-bold py-1.5 px-4 rounded-md transition-colors duration-300 text-sm text-center inline-block',
     isDisabled ? 'pointer-events-none opacity-60' : 'hover:bg-[#000042] hover:text-white'
   ].join(' ');
+
+  // Filtrar apenas estados ativos
+  const activeStates = states?.filter(s => s.is_active) || [];
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow duration-300 overflow-hidden">
@@ -52,7 +56,20 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ title, slug, descri
         <h3 className="font-semibold text-sm uppercase break-words">{title}</h3>
       </div>
       <div className="p-4 flex-grow">
-        <p className="text-xs text-gray-600 min-h-[40px]">{description}</p>
+        <p className="text-xs text-gray-600 mb-2">{description}</p>
+        {activeStates.length > 0 && (
+          <div className="mt-3 pt-3 border-t border-gray-200">
+            <p className="text-xs font-semibold text-gray-700 mb-2">Estados Disponíveis:</p>
+            <div className="grid grid-cols-2 gap-1 text-xs">
+              {activeStates.map((state) => (
+                <div key={state.state_code} className="flex justify-between items-center py-1">
+                  <span className="font-medium text-gray-700">{state.state_code}</span>
+                  <span className="text-[#000042] font-bold">{Number(state.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
       <div className="px-4 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
         <div className="text-left">
@@ -80,13 +97,18 @@ const Dashboard: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [crlveTurboStates, setCrlveTurboStates] = useState<any[]>([]);
   
   useEffect(() => {
     const fetchConsultations = async () => {
       setIsLoading(true);
       try {
-        const response = await api.get('/consultations');
-        setConsultations(response.data);
+        const [consultationsRes, statesRes] = await Promise.all([
+          api.get('/consultations'),
+          api.get('/crlve-orders/states').catch(() => ({ data: [] })) // Busca estados, se falhar retorna array vazio
+        ]);
+        setConsultations(consultationsRes.data);
+        setCrlveTurboStates(statesRes.data || []);
       } catch (err) {
         setError('Não foi possível carregar as consultas. Tente novamente mais tarde.');
         console.error(err);
@@ -143,6 +165,7 @@ const Dashboard: React.FC = () => {
               icon={iconMap[consultation.icon] || iconMap.Default}
               tag={consultation.is_new ? 'NOVO' : undefined}
               price={consultation.price}
+              states={consultation.slug === 'crlv-e-turbo' ? crlveTurboStates : undefined}
             />
           ))}
         </div>
