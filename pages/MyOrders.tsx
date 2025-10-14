@@ -116,7 +116,7 @@ const MyOrders: React.FC = () => {
               <span>Novo Pedido</span>
             </button>
             <a 
-              href="https://wa.me/5583998554839?text=Ol%C3%A1%2C%20vim%20pelo%20painel%20e%20preciso%20de%20suporte%21"
+              href="https://wa.me/5579991187607?text=Ol%C3%A1%2C%20vim%20pelo%20painel%20e%20preciso%20de%20suporte%21"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 w-full sm:w-auto bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition-all text-sm"
