@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Car, FileText, ShieldCheck, Search, User, Loader2, AlertTriangle } from 'lucide-react';
-import api from '../src/services/api';
+import api, { publicApi } from '../src/services/api';
 import { useAuth } from '../src/contexts/AuthContext';
 
 // Mapeamento de ícones para ser usado dinamicamente
@@ -105,7 +105,7 @@ const Dashboard: React.FC = () => {
       try {
         const [consultationsRes, statesRes] = await Promise.all([
           api.get('/consultations'),
-          api.get('/crlve-orders/states').catch(() => ({ data: [] })) // Busca estados, se falhar retorna array vazio
+          publicApi.get('/crlve-orders/states').catch(() => ({ data: [] })) // Busca estados, se falhar retorna array vazio
         ]);
         setConsultations(consultationsRes.data);
         setCrlveTurboStates(statesRes.data || []);
