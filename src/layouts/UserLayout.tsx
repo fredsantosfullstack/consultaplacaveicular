@@ -2,6 +2,7 @@ import React, { useState, ReactNode } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
+import WhatsAppButton from '../components/WhatsAppButton';
 
 const AppFooter: React.FC = () => (
   <footer className="bg-white border-t border-gray-200 px-6 py-3 text-xs text-gray-500">
@@ -47,6 +48,7 @@ const UserLayout: React.FC<UserLayoutProps> = ({ children }) => {
         </main>
         <AppFooter />
       </div>
+      <WhatsAppButton />
     </div>
   );
 };
