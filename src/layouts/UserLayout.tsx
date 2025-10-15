@@ -17,6 +17,7 @@ const AppFooter: React.FC = () => (
         >
           Agência DiPixel
         </a>
+        {' '}| (79) 98149-9282
       </span>
     </div>
   </footer>
