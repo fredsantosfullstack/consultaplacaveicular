@@ -45,16 +45,16 @@ const PriceTable: React.FC = () => {
         <h1 className="text-xl font-bold text-gray-800">Tabela de Preços</h1>
         <button
           onClick={handleShareTable}
-          className="flex items-center gap-2 px-4 py-2 bg-[#000042] text-white rounded-lg hover:bg-[#000066] transition-colors font-medium text-sm shadow-md"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-[#000042] text-white rounded-md hover:bg-[#000066] transition-colors font-medium text-xs shadow-sm"
         >
           {copied ? (
             <>
-              <Check size={18} />
-              Link Copiado!
+              <Check size={14} />
+              Copiado!
             </>
           ) : (
             <>
-              <Share2 size={18} />
+              <Share2 size={14} />
               Encaminhar Tabela
             </>
           )}
