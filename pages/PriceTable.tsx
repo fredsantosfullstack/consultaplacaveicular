@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Loader2, AlertTriangle } from 'lucide-react';
+import { Loader2, AlertTriangle, Share2, Check } from 'lucide-react';
 import api from '../src/services/api';
 
 interface PriceItem {
@@ -14,6 +14,7 @@ const PriceTable: React.FC = () => {
   const [items, setItems] = useState<PriceItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const fetchPriceTable = async () => {
@@ -31,9 +32,34 @@ const PriceTable: React.FC = () => {
     fetchPriceTable();
   }, []);
 
+  const handleShareTable = () => {
+    const publicUrl = `${window.location.origin}/tabela-precos-publica`;
+    navigator.clipboard.writeText(publicUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-bold text-gray-800">Tabela de Preços</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-bold text-gray-800">Tabela de Preços</h1>
+        <button
+          onClick={handleShareTable}
+          className="flex items-center gap-2 px-4 py-2 bg-[#000042] text-white rounded-lg hover:bg-[#000066] transition-colors font-medium text-sm shadow-md"
+        >
+          {copied ? (
+            <>
+              <Check size={18} />
+              Link Copiado!
+            </>
+          ) : (
+            <>
+              <Share2 size={18} />
+              Encaminhar Tabela
+            </>
+          )}
+        </button>
+      </div>
 
       {isLoading && (
         <div className="flex justify-center items-center p-10">

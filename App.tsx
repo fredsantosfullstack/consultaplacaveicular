@@ -8,6 +8,7 @@ import UserProfile from './pages/UserProfile';
 import ConsultationHistory from './pages/ConsultationHistory';
 import MyOrders from './pages/MyOrders';
 import PriceTable from './pages/PriceTable';
+import PublicPriceTable from './pages/PublicPriceTable';
 import CreditRecharge from './pages/CreditRecharge';
 import ApiDocs from './pages/ApiDocs';
 import TermsOfUse from './pages/TermsOfUse';
@@ -72,6 +73,7 @@ function App() {
         <Route path="/cadastre-se" element={<SignUp />} />
         <Route path="/recuperar-senha" element={<ForgotPassword />} />
         <Route path="/resetar-senha" element={<ResetPassword />} />
+        <Route path="/tabela-precos-publica" element={<PublicPriceTable />} />
 
         {/* Rotas Protegidas para Usuários Logados */}
         <Route element={<ProtectedRoute />}>
