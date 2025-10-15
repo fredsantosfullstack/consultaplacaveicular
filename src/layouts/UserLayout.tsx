@@ -18,7 +18,6 @@ const AppFooter: React.FC = () => (
           Agência DiPixel
         </a>
       </span>
-      <span>E-mail: <span className="font-semibold text-gray-600">contato@goldenveicular.com.br</span> | © 2025 Golden Veicular</span>
     </div>
   </footer>
 );

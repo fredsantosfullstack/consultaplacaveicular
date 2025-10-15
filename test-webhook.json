@@ -1,0 +1,7 @@
+{
+  "event": "PAYMENT_RECEIVED",
+  "payment": {
+    "id": "pay_0kocx1lt5ovikm",
+    "status": "RECEIVED"
+  }
+}
