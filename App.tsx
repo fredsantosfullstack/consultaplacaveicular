@@ -29,6 +29,7 @@ import GravameV2 from './src/pages/consultas/GravameV2';
 import ProprietarioAtualV2 from './src/pages/consultas/ProprietarioAtualV2';
 import CsvRenainfRenajud from './src/pages/consultas/CsvRenainfRenajud';
 import EmissaoCrlvE from './src/pages/consultas/EmissaoCrlvE';
+import ReemissaoAtpvE from './src/pages/consultas/ReemissaoAtpvE';
 
 // Componente para proteger rotas que exigem autenticação e aplicar layout global
 const ProtectedRoute = () => {
@@ -100,6 +101,7 @@ function App() {
           <Route path="/consulta/proprietario-atual-v2" element={<ProprietarioAtualV2 />} />
           <Route path="/consulta/csv-renainf-renajud-recall-bin-proprietar" element={<CsvRenainfRenajud />} />
           <Route path="/consulta/crlve" element={<EmissaoCrlvE />} />
+          <Route path="/consulta/reemissao-atpv-e" element={<ReemissaoAtpvE />} />
 
           {/* Rotas Protegidas para Admins (aninhadas) */}
           <Route element={<AdminRoute />}>

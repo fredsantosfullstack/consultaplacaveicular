@@ -311,7 +311,7 @@ router.post('/execute/:slug', authenticateToken, async (req, res) => {
       'crv-digital-agendado': 'consultar-crv-digital-agendado',
       'proprietario-atual-v2': 'consultar-placa-v2',
       'proprietario-atual-restricoes': 'consultar-proprietario-atual-restricoes',
-      'reemissao-atpv-e': 'consultar-reemissao-atpv-e',
+      'reemissao-atpv-e': 'consultar-atpve',
       'verifica-autenticidade-crv': 'consultar-verifica-autenticidade-crv',
       'crlve': 'crlv-e-turbo',
       // CRLV-E TURBO por estado
