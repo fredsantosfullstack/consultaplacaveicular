@@ -33,9 +33,12 @@ const MAINTENANCE_MODE = true;
 
 function App() {
   // Se o modo de manutenção estiver ativo, exibe apenas a página de manutenção
+  console.log('🔧 MAINTENANCE_MODE:', MAINTENANCE_MODE);
   if (MAINTENANCE_MODE) {
+    console.log('✅ Renderizando página de manutenção');
     return <Maintenance />;
   }
+  console.log('❌ Modo de manutenção desativado - renderizando app normal');
 
   return (
     <AuthProvider>
