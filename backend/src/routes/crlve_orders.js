@@ -82,10 +82,13 @@ router.get('/my-orders', authenticateToken, async (req, res) => {
   try {
     const [orders] = await db.query(
       `SELECT 
-        id, placa, renavam, cpf_cnpj, uf, price, status, created_at, updated_at
-       FROM crlve_orders 
-       WHERE user_id = ? 
-       ORDER BY created_at DESC`,
+        o.id, o.placa, o.renavam, o.cpf_cnpj, o.uf, o.price, o.status, 
+        o.pdf_url, o.created_at, o.updated_at,
+        u.name as user_name
+       FROM crlve_orders o
+       JOIN users u ON o.user_id = u.id
+       WHERE o.user_id = ? 
+       ORDER BY o.created_at DESC`,
       [user_id]
     );
     res.json(orders);
@@ -105,11 +108,11 @@ router.get('/admin/orders', authenticateToken, isAdmin, async (req, res) => {
     const [orders] = await db.query(
       `SELECT 
         o.id, o.placa, o.renavam, o.cpf_cnpj, o.uf, o.price, o.status, 
-        o.admin_notes, o.created_at, o.updated_at,
+        o.admin_notes, o.pdf_url, o.is_read, o.created_at, o.updated_at,
         u.name as user_name, u.email as user_email, u.phone as user_phone
        FROM crlve_orders o
        JOIN users u ON o.user_id = u.id
-       ORDER BY o.created_at DESC`
+       ORDER BY o.is_read ASC, o.created_at DESC`
     );
     res.json(orders);
   } catch (error) {
@@ -118,16 +121,40 @@ router.get('/admin/orders', authenticateToken, isAdmin, async (req, res) => {
   }
 });
 
-// Contar pedidos pendentes (para notificação)
-router.get('/admin/pending-count', authenticateToken, isAdmin, async (req, res) => {
+// Contar pedidos não lidos (para notificação)
+router.get('/admin/unread-count', authenticateToken, isAdmin, async (req, res) => {
   try {
     const [result] = await db.query(
-      "SELECT COUNT(*) as count FROM crlve_orders WHERE status = 'pendente'"
+      "SELECT COUNT(*) as count FROM crlve_orders WHERE is_read = FALSE"
     );
     res.json({ count: result[0].count });
   } catch (error) {
-    console.error('Erro ao contar pedidos pendentes:', error);
+    console.error('Erro ao contar pedidos não lidos:', error);
     res.status(500).json({ msg: 'Erro ao contar pedidos.' });
+  }
+});
+
+// Marcar pedido como lido (Admin)
+router.patch('/admin/orders/:id/mark-read', authenticateToken, isAdmin, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await db.query('UPDATE crlve_orders SET is_read = TRUE WHERE id = ?', [id]);
+    res.json({ msg: 'Pedido marcado como lido!' });
+  } catch (error) {
+    console.error('Erro ao marcar como lido:', error);
+    res.status(500).json({ msg: 'Erro ao marcar como lido.' });
+  }
+});
+
+// Marcar todos os pedidos como lidos (Admin)
+router.patch('/admin/orders/mark-all-read', authenticateToken, isAdmin, async (req, res) => {
+  try {
+    await db.query('UPDATE crlve_orders SET is_read = TRUE WHERE is_read = FALSE');
+    res.json({ msg: 'Todos os pedidos marcados como lidos!' });
+  } catch (error) {
+    console.error('Erro ao marcar todos como lidos:', error);
+    res.status(500).json({ msg: 'Erro ao marcar todos como lidos.' });
   }
 });
 
@@ -150,6 +177,27 @@ router.patch('/admin/orders/:id/status', authenticateToken, isAdmin, async (req,
   } catch (error) {
     console.error('Erro ao atualizar status:', error);
     res.status(500).json({ msg: 'Erro ao atualizar status.' });
+  }
+});
+
+// Atualizar URL do PDF (Admin)
+router.patch('/admin/orders/:id/pdf', authenticateToken, isAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { pdf_url } = req.body;
+
+  if (!pdf_url) {
+    return res.status(400).json({ msg: 'URL do PDF é obrigatória.' });
+  }
+
+  try {
+    await db.query(
+      'UPDATE crlve_orders SET pdf_url = ?, status = ? WHERE id = ?',
+      [pdf_url, 'concluido', id]
+    );
+    res.json({ msg: 'PDF adicionado e pedido marcado como concluído!' });
+  } catch (error) {
+    console.error('Erro ao adicionar PDF:', error);
+    res.status(500).json({ msg: 'Erro ao adicionar PDF.' });
   }
 });
 

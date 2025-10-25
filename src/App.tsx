@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Maintenance from '../pages/Maintenance';
 import AuthPage from '../pages/AuthPage';
 import ForgotPassword from '../pages/ForgotPassword';
 import ResetPassword from '../pages/ResetPassword';
@@ -26,7 +27,16 @@ import ConsultaLeilao from './pages/consultas/ConsultaLeilao';
 import CrlvETurbo from './pages/consultas/CrlvETurbo';
 import GravameV2 from './pages/consultas/GravameV2';
 
+// ⚠️ CONTROLE DE MANUTENÇÃO
+// Altere para 'false' para desativar o modo de manutenção
+const MAINTENANCE_MODE = true;
+
 function App() {
+  // Se o modo de manutenção estiver ativo, exibe apenas a página de manutenção
+  if (MAINTENANCE_MODE) {
+    return <Maintenance />;
+  }
+
   return (
     <AuthProvider>
       <Router>

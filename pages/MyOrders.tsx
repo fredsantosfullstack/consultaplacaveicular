@@ -13,6 +13,8 @@ interface Order {
   status: 'pendente' | 'em_andamento' | 'concluido' | 'cancelado';
   created_at: string;
   updated_at: string;
+  user_name?: string;
+  pdf_url?: string;
 }
 
 const MyOrders: React.FC = () => {
@@ -136,20 +138,22 @@ const MyOrders: React.FC = () => {
           </div>
         ) : (
           <table className="w-full text-left text-sm">
-            <thead className="bg-[#000042] text-white">
+            <thead className="bg-[#0066FF] text-white">
               <tr>
+                <th className="px-6 py-3 font-semibold">Cliente</th>
                 <th className="px-6 py-3 font-semibold">Placa</th>
                 <th className="px-6 py-3 font-semibold">Renavam</th>
-                <th className="px-6 py-3 font-semibold">UF</th>
-                <th className="px-6 py-3 font-semibold">Valor</th>
                 <th className="px-6 py-3 font-semibold">Status</th>
                 <th className="px-6 py-3 font-semibold">Data</th>
+                <th className="px-6 py-3 font-semibold">Documento</th>
+                <th className="px-6 py-3 font-semibold">UF</th>
+                <th className="px-6 py-3 font-semibold">Ação</th>
               </tr>
             </thead>
             <tbody>
               {filteredOrders.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="text-center py-16 text-gray-500">
+                  <td colSpan={8} className="text-center py-16 text-gray-500">
                     <p>Nenhum pedido encontrado.</p>
                     <p className="text-xs mt-1">Crie um novo pedido para começar.</p>
                   </td>
@@ -157,12 +161,9 @@ const MyOrders: React.FC = () => {
               ) : (
                 filteredOrders.map((order) => (
                   <tr key={order.id} className="border-b border-gray-200 hover:bg-gray-50">
+                    <td className="px-6 py-4 font-medium text-gray-900">{order.user_name || 'Você'}</td>
                     <td className="px-6 py-4 font-medium text-gray-900">{order.placa}</td>
                     <td className="px-6 py-4 text-gray-600">{order.renavam}</td>
-                    <td className="px-6 py-4 text-gray-600">{order.uf}</td>
-                    <td className="px-6 py-4 text-gray-900 font-medium">
-                      R$ {order.price.toFixed(2)}
-                    </td>
                     <td className="px-6 py-4">
                       <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
                         {getStatusLabel(order.status)}
@@ -170,6 +171,34 @@ const MyOrders: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 text-gray-600 text-xs">
                       {formatDate(order.created_at)}
+                    </td>
+                    <td className="px-6 py-4 text-gray-600">
+                      {order.pdf_url ? (
+                        <a 
+                          href={order.pdf_url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800 underline text-xs"
+                        >
+                          Ver PDF
+                        </a>
+                      ) : (
+                        <span className="text-gray-400 text-xs">Pendente</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 text-gray-600">{order.uf}</td>
+                    <td className="px-6 py-4">
+                      {order.status === 'concluido' && order.pdf_url ? (
+                        <a 
+                          href={order.pdf_url} 
+                          download
+                          className="text-xs bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition-colors inline-block"
+                        >
+                          Download
+                        </a>
+                      ) : (
+                        <span className="text-xs text-gray-400">-</span>
+                      )}
                     </td>
                   </tr>
                 ))
