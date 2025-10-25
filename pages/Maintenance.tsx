@@ -29,7 +29,7 @@ const Maintenance: React.FC = () => {
 
         {/* Rodapé */}
         <p className="text-center text-gray-500 text-sm mt-6">
-          © {new Date().getFullYear()} Golden Veicular
+          {new Date().getFullYear()} Golden Veicular - Sistema Suspenso
         </p>
       </div>
     </div>
