@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LandingPage from '../pages/LandingPage';
 import AuthPage from '../pages/AuthPage';
 import ForgotPassword from '../pages/ForgotPassword';
 import ResetPassword from '../pages/ResetPassword';
@@ -31,7 +32,12 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
+          {/* Landing Page - Página Inicial Pública */}
+          <Route path="/" element={<LandingPage />} />
+          
+          {/* Rotas de Autenticação */}
           <Route path="/login" element={<AuthPage />} />
+          <Route path="/cadastro" element={<AuthPage />} />
           <Route path="/cadastre-se" element={<AuthPage />} />
           <Route path="/recuperar-senha" element={<ForgotPassword />} />
           <Route path="/resetar-senha" element={<ResetPassword />} />

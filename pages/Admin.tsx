@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Settings, BarChart, ArrowLeft, ClipboardList, CreditCard, Tags, DollarSign, FileText, Car } from 'lucide-react';
+import { Users, Settings, BarChart, ArrowLeft, ClipboardList, CreditCard, Tags, DollarSign, FileText, Car, Layout } from 'lucide-react';
 import AdminCard from '../src/components/admin/AdminCard';
 import UserManagement from '../src/components/admin/UserManagement';
 import SiteSettings from '../src/components/admin/SiteSettings';
+import SiteBuilder from '../src/components/admin/SiteBuilder';
 import Reports from '../src/components/admin/Reports';
 import ConsultationManagement from '../src/components/admin/ConsultationManagement';
 import RechargePlanManagement from '../src/components/admin/RechargePlanManagement';
@@ -41,6 +42,9 @@ const AdminPage: React.FC = () => {
                 break;
             case 'site-settings':
                 component = <SiteSettings />;
+                break;
+            case 'site-builder':
+                component = <SiteBuilder />;
                 break;
             case 'reports':
                 component = <Reports />;
@@ -96,6 +100,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => (
     <div className="space-y-6">
         <h2 className="text-2xl font-bold text-gray-800">Painel do Administrador</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <AdminCard 
+                icon={<Layout className="w-8 h-8 text-[#076AC2]" />} 
+                title="Site Builder" 
+                onClick={() => onNavigate('site-builder')} 
+            />
             <AdminCard 
                 icon={<Users className="w-8 h-8 text-[#076AC2]" />} 
                 title="Gerenciar Usuários" 

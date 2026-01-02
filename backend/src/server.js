@@ -16,6 +16,7 @@ import paymentsRoutes from './routes/payments.js';
 import termsRoutes from './routes/terms.js';
 import notificationsRoutes from './routes/notifications.js';
 import crlveOrdersRoutes from './routes/crlve_orders.js';
+import cmsRoutes from './routes/cms.js';
 import db from './config/db.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -232,6 +233,7 @@ app.use('/api/payments', paymentsRoutes);
 app.use('/api/terms', termsRoutes);
 app.use('/api/notifications', notificationsRoutes);
 app.use('/api/crlve-orders', crlveOrdersRoutes);
+app.use('/api/cms', cmsRoutes);
 
 const startServer = async () => {
   try {
