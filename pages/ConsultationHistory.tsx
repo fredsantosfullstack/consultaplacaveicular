@@ -17,25 +17,25 @@ const ConsultationHistory: React.FC = () => {
       <div className="bg-white rounded-xl shadow-lg p-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
           <FilterField label="Tipo de Consulta">
-            <select className="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30">
+            <select className="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:bg-white focus:border-[#076AC2] focus:outline-none focus:ring-2 focus:ring-[#076AC2]/30">
               <option>Todos</option>
               {/* Adicionar outros tipos de consulta aqui */}
             </select>
           </FilterField>
           <FilterField label="Data Inicial">
-            <input type="date" className="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30" />
+            <input type="date" className="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:bg-white focus:border-[#076AC2] focus:outline-none focus:ring-2 focus:ring-[#076AC2]/30" />
           </FilterField>
           <FilterField label="Data Final">
-            <input type="date" className="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30" />
+            <input type="date" className="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:bg-white focus:border-[#076AC2] focus:outline-none focus:ring-2 focus:ring-[#076AC2]/30" />
           </FilterField>
           <FilterField label="Mostrar">
-            <select className="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30">
+            <select className="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:bg-white focus:border-[#076AC2] focus:outline-none focus:ring-2 focus:ring-[#076AC2]/30">
               <option>10</option>
               <option>25</option>
               <option>50</option>
             </select>
           </FilterField>
-          <button className="flex items-center justify-center gap-2 w-full bg-[#000042] text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-opacity-90 transition-all text-sm">
+          <button className="flex items-center justify-center gap-2 w-full bg-[#076AC2] text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-[#055a9f] transition-all text-sm">
             <Filter size={16} />
             <span>Filtrar</span>
           </button>
@@ -45,7 +45,7 @@ const ConsultationHistory: React.FC = () => {
       {/* Tabela de Resultados */}
       <div className="bg-white rounded-xl shadow-lg overflow-x-auto">
         <table className="w-full text-left text-sm">
-          <thead className="bg-[#000042] text-white">
+          <thead className="bg-[#076AC2] text-white">
             <tr>
               <th className="px-6 py-3 font-semibold">Placa</th>
               <th className="px-6 py-3 font-semibold">Tipo de Consulta</th>

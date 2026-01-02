@@ -63,7 +63,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ isOpen, onClo
           <FormField id="confirmPassword" label="Confirmar Nova Senha" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} icon={Key} required />
           <div className="flex justify-end gap-4 pt-4">
             <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors">Cancelar</button>
-            <button type="submit" disabled={isLoading} className="px-4 py-2 bg-[#000042] text-white rounded-lg hover:bg-opacity-90 transition-colors flex items-center gap-2 disabled:opacity-50">
+            <button type="submit" disabled={isLoading} className="px-4 py-2 bg-[#076AC2] text-white rounded-lg hover:bg-[#055a9f] transition-colors flex items-center gap-2 disabled:opacity-50">
               {isLoading && <Loader2 className="animate-spin" size={16} />} Alterar Senha
             </button>
           </div>
@@ -182,18 +182,18 @@ const UserProfile: React.FC = () => {
       const baseUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'https://golden-veicular-production.up.railway.app';
       return `${baseUrl}${profile.avatar}`;
     }
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(profile?.name || 'User')}&background=000042&color=fff&size=128`;
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(profile?.name || 'User')}&background=076AC2&color=fff&size=128`;
   };
 
   if (authLoading) {
-    return <div className="flex justify-center items-center p-10"><Loader2 className="animate-spin text-[#000042]" size={48} /></div>;
+    return <div className="flex justify-center items-center p-10"><Loader2 className="animate-spin text-[#076AC2]" size={48} /></div>;
   }
 
   return (
     <>
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         {/* Header compacto */}
-        <div className="bg-gradient-to-r from-[#000042] to-[#0a0a5c] p-3 text-white">
+        <div className="bg-gradient-to-r from-[#076AC2] to-[#055a9f] p-3 text-white">
           <div className="flex items-center gap-4">
             <div className="relative">
               <img src={getAvatarUrl()} alt="Avatar" className="w-16 h-16 rounded-full object-cover border-2 border-white/20" />
@@ -263,7 +263,7 @@ const UserProfile: React.FC = () => {
           {/* Botão Alterar Senha */}
           {!isEditing && (
             <div className="mt-8 pt-6 border-t border-gray-200">
-              <button onClick={() => setChangePasswordOpen(true)} className="flex items-center gap-2 bg-[#000042] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors text-sm font-medium">
+              <button onClick={() => setChangePasswordOpen(true)} className="flex items-center gap-2 bg-[#076AC2] text-white px-4 py-2 rounded-lg hover:bg-[#055a9f] transition-colors text-sm font-medium">
                 <Key size={14} /> Alterar Senha
               </button>
             </div>

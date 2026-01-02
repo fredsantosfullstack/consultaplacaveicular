@@ -77,7 +77,7 @@ export default function ModalSaldoInsuficiente({
             </button>
             <button
               onClick={handleRecarregar}
-              className="flex-1 px-4 py-2 bg-[#000042] text-white rounded-lg hover:bg-[#000052] transition-colors font-medium"
+              className="flex-1 px-4 py-2 bg-[#076AC2] text-white rounded-lg hover:bg-[#055a9f] transition-colors font-medium"
             >
               Recarregar Créditos
             </button>

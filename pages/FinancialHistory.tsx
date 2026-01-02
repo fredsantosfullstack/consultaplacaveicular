@@ -70,7 +70,7 @@ const FinancialHistory: React.FC = () => {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#000042]"
+          className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-[#076AC2]"
         >
           <option value="all">Todos os Status</option>
           <option value="confirmed">Confirmado</option>

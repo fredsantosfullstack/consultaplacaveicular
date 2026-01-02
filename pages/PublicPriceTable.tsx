@@ -37,12 +37,12 @@ const PublicPriceTable: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-[#000042]">Golden Veicular</h1>
+              <h1 className="text-2xl font-bold text-[#076AC2]">Consultaplacaveicular</h1>
               <p className="text-sm text-gray-600 mt-1">Tabela de Preços</p>
             </div>
             <a 
               href="/cadastre-se" 
-              className="hidden sm:inline-flex items-center px-4 py-2 bg-[#000042] text-white text-sm font-medium rounded-lg hover:bg-[#000066] transition-colors shadow-sm"
+              className="hidden sm:inline-flex items-center px-4 py-2 bg-[#076AC2] text-white text-sm font-medium rounded-lg hover:bg-[#055a9f] transition-colors shadow-sm"
             >
               Criar Conta Grátis
             </a>
@@ -55,7 +55,7 @@ const PublicPriceTable: React.FC = () => {
         {/* Loading */}
         {isLoading && (
           <div className="flex justify-center items-center p-10 bg-white rounded-xl shadow-sm">
-            <Loader2 className="animate-spin text-[#000042]" size={48} />
+            <Loader2 className="animate-spin text-[#076AC2]" size={48} />
           </div>
         )}
 
@@ -72,7 +72,7 @@ const PublicPriceTable: React.FC = () => {
           <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
             <div className="overflow-x-auto">
               <table className="w-full text-left">
-                <thead className="bg-[#000042] text-white">
+                <thead className="bg-[#076AC2] text-white">
                   <tr>
                     <th className="px-4 sm:px-6 py-3 sm:py-4 font-semibold text-sm">Serviço</th>
                     <th className="px-4 sm:px-6 py-3 sm:py-4 font-semibold text-right text-sm">Valor</th>
@@ -97,7 +97,7 @@ const PublicPriceTable: React.FC = () => {
         <div className="mt-6 sm:hidden">
           <a 
             href="/cadastre-se" 
-            className="block w-full text-center px-4 py-3 bg-[#000042] text-white text-sm font-semibold rounded-lg hover:bg-[#000066] transition-colors shadow-sm"
+            className="block w-full text-center px-4 py-3 bg-[#076AC2] text-white text-sm font-semibold rounded-lg hover:bg-[#055a9f] transition-colors shadow-sm"
           >
             Criar Conta Grátis
           </a>
@@ -120,7 +120,7 @@ const PublicPriceTable: React.FC = () => {
               href="https://agenciadipixel.com.br" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="font-bold text-gray-600 hover:text-[#000042]"
+              className="font-bold text-gray-600 hover:text-[#076AC2]"
             >
               Agência DiPixel
             </a>

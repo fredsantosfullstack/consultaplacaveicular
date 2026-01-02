@@ -102,7 +102,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ isOpen, onClo
             <button
               type="submit"
               disabled={isLoading}
-              className="px-4 py-2 bg-[#000042] text-white rounded-lg hover:bg-opacity-90 transition-colors flex items-center gap-2 disabled:opacity-50"
+              className="px-4 py-2 bg-[#076AC2] text-white rounded-lg hover:bg-[#055a9f] transition-colors flex items-center gap-2 disabled:opacity-50"
             >
               {isLoading && <Loader2 className="animate-spin" size={16} />}
               Alterar Senha
@@ -214,14 +214,14 @@ const ProfilePage: React.FC = () => {
     if (profile?.avatar) {
       return `http://localhost:3001${profile.avatar}`;
     }
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(profile?.name || 'User')}&background=000042&color=fff&size=128`;
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(profile?.name || 'User')}&background=076AC2&color=fff&size=128`;
   };
 
   if (authLoading) {
     return (
       <UserLayout>
         <div className="flex justify-center items-center p-10">
-          <Loader2 className="animate-spin text-[#000042]" size={48} />
+          <Loader2 className="animate-spin text-[#076AC2]" size={48} />
         </div>
       </UserLayout>
     );
@@ -231,7 +231,7 @@ const ProfilePage: React.FC = () => {
     <UserLayout>
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         {/* Header com Avatar e Informações Básicas */}
-        <div className="bg-gradient-to-r from-[#000042] to-[#0a0a5c] p-8 text-white">
+        <div className="bg-gradient-to-r from-[#076AC2] to-[#055a9f] p-8 text-white">
           <div className="flex items-center gap-6">
             <div className="relative">
               <img
@@ -271,7 +271,7 @@ const ProfilePage: React.FC = () => {
             {!isEditing ? (
               <button
                 onClick={() => setIsEditing(true)}
-                className="flex items-center gap-2 bg-[#000042] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors"
+                className="flex items-center gap-2 bg-[#076AC2] text-white px-4 py-2 rounded-lg hover:bg-[#055a9f] transition-colors"
               >
                 <Edit size={16} />
                 Editar Perfil
@@ -361,7 +361,7 @@ const ProfilePage: React.FC = () => {
           <div className="mt-8 pt-6 border-t border-gray-200">
             <button
               onClick={() => setChangePasswordOpen(true)}
-              className="flex items-center gap-2 bg-[#000042] text-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors"
+              className="flex items-center gap-2 bg-[#076AC2] text-white px-6 py-3 rounded-lg hover:bg-[#055a9f] transition-colors"
             >
               <Key size={18} />
               Alterar Senha

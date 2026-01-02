@@ -132,7 +132,7 @@ const CreditRecharge: React.FC = () => {
         </div>
 
         {isLoading ? (
-          <div className="flex justify-center items-center p-10"><Loader2 className="animate-spin text-[#000042]" size={48} /></div>
+          <div className="flex justify-center items-center p-10"><Loader2 className="animate-spin text-[#076AC2]" size={48} /></div>
         ) : error ? (
           <div className="text-center text-red-500 p-10">{error}</div>
         ) : (
@@ -141,7 +141,7 @@ const CreditRecharge: React.FC = () => {
               <div 
                 key={plan.id} 
                 onClick={() => handlePlanClick(plan)}
-                className={`relative border-2 rounded-xl text-center cursor-pointer transition-all duration-300 overflow-hidden ${selectedPlan?.id === plan.id ? 'border-[#000042] bg-blue-50 scale-105 shadow-lg' : 'border-gray-200 bg-white hover:border-gray-300'}`}>
+                className={`relative border-2 rounded-xl text-center cursor-pointer transition-all duration-300 overflow-hidden ${selectedPlan?.id === plan.id ? 'border-[#076AC2] bg-blue-50 scale-105 shadow-lg' : 'border-gray-200 bg-white hover:border-gray-300'}`}>
 
                 {Boolean(plan.is_popular) && (
                   <div className="absolute top-2.5 -right-9 bg-yellow-400 text-black text-[10px] font-bold px-8 py-0.5 transform rotate-45 z-10">
@@ -150,7 +150,7 @@ const CreditRecharge: React.FC = () => {
                 )}
                 
                 <div className="p-6">
-                  <p className="text-4xl font-extrabold text-[#000042]">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(plan.price)}</p>
+                  <p className="text-4xl font-extrabold text-[#076AC2]">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(plan.price)}</p>
                   <p className="text-sm font-normal text-green-600 mt-2">e receba {plan.credits} créditos</p>
                 </div>
               </div>
@@ -162,7 +162,7 @@ const CreditRecharge: React.FC = () => {
           <div className="pt-4">
             <button 
               onClick={handleGeneratePayment}
-              className="w-full flex items-center justify-center gap-2 bg-[#000042] text-white text-base font-bold py-3 rounded-lg hover:bg-opacity-90 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 disabled:bg-gray-400 disabled:cursor-not-allowed" 
+              className="w-full flex items-center justify-center gap-2 bg-[#076AC2] text-white text-base font-bold py-3 rounded-lg hover:bg-[#055a9f] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 disabled:bg-gray-400 disabled:cursor-not-allowed" 
               disabled={!selectedPlan || isProcessing}
             >
               {isProcessing ? (
@@ -224,7 +224,7 @@ const CreditRecharge: React.FC = () => {
                       />
                       <button 
                         onClick={copyToClipboard}
-                        className="bg-[#000042] text-white px-4 py-2 rounded hover:bg-opacity-90 flex items-center gap-2"
+                        className="bg-[#076AC2] text-white px-4 py-2 rounded hover:bg-[#055a9f] flex items-center gap-2"
                       >
                         {copied ? <CheckCircle className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                         {copied ? 'Copiado!' : 'Copiar'}

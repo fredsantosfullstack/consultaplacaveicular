@@ -35,26 +35,152 @@ function App() {
           <Route path="/cadastre-se" element={<AuthPage />} />
           <Route path="/recuperar-senha" element={<ForgotPassword />} />
           <Route path="/resetar-senha" element={<ResetPassword />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="/tabela-de-precos" element={<PriceTable />} />
-          <Route path="/recarga-creditos" element={<RechargePage />} />
-          <Route path="/consultas/:slug" element={<ConsultationPage />} />
-          <Route path="/perfil" element={<ProfilePage />} />
-          <Route path="/historico-consultas" element={<ConsultationHistoryPage />} />
-          <Route path="/termos-de-uso" element={<TermsOfUse />} />
-          
+          <Route
+            path="/dashboard"
+            element={(
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/admin"
+            element={(
+              <ProtectedRoute>
+                <AdminPage />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/tabela-de-precos"
+            element={(
+              <ProtectedRoute>
+                <PriceTable />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/recarga-creditos"
+            element={(
+              <ProtectedRoute>
+                <RechargePage />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/consultas/:slug"
+            element={(
+              <ProtectedRoute>
+                <ConsultationPage />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/perfil"
+            element={(
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/historico-consultas"
+            element={(
+              <ProtectedRoute>
+                <ConsultationHistoryPage />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/termos-de-uso"
+            element={(
+              <ProtectedRoute>
+                <TermsOfUse />
+              </ProtectedRoute>
+            )}
+          />
+
           {/* Rotas de Consultas Específicas */}
-          <Route path="/consulta/base-nacional" element={<BaseNacional />} />
-          <Route path="/consulta/base-estadual" element={<BaseEstadual />} />
-          <Route path="/consulta/codigo-seguranca-pdf" element={<CodigoSegurancaPDF />} />
-          <Route path="/consulta/ano-licenciamento-bin-nacional" element={<AnoLicenciamento />} />
-          <Route path="/consulta/consulta-cautelar" element={<ConsultaCautelar />} />
-          <Route path="/consulta/consulta-chassi" element={<ConsultaChassi />} />
-          <Route path="/consulta/consulta-comunicado-venda" element={<ConsultaComunicadoVenda />} />
-          <Route path="/consulta/consulta-leilao" element={<ConsultaLeilao />} />
-          <Route path="/consulta/crlv-e-turbo" element={<CrlvETurbo />} />
-          <Route path="/consulta/gravame-v2" element={<GravameV2 />} />
+          <Route
+            path="/consulta/base-nacional"
+            element={(
+              <ProtectedRoute>
+                <BaseNacional />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/consulta/base-estadual"
+            element={(
+              <ProtectedRoute>
+                <BaseEstadual />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/consulta/codigo-seguranca-pdf"
+            element={(
+              <ProtectedRoute>
+                <CodigoSegurancaPDF />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/consulta/ano-licenciamento-bin-nacional"
+            element={(
+              <ProtectedRoute>
+                <AnoLicenciamento />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/consulta/consulta-cautelar"
+            element={(
+              <ProtectedRoute>
+                <ConsultaCautelar />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/consulta/consulta-chassi"
+            element={(
+              <ProtectedRoute>
+                <ConsultaChassi />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/consulta/consulta-comunicado-venda"
+            element={(
+              <ProtectedRoute>
+                <ConsultaComunicadoVenda />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/consulta/consulta-leilao"
+            element={(
+              <ProtectedRoute>
+                <ConsultaLeilao />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/consulta/crlv-e-turbo"
+            element={(
+              <ProtectedRoute>
+                <CrlvETurbo />
+              </ProtectedRoute>
+            )}
+          />
+          <Route
+            path="/consulta/gravame-v2"
+            element={(
+              <ProtectedRoute>
+                <GravameV2 />
+              </ProtectedRoute>
+            )}
+          />
           
           <Route path="/" element={<AuthPage />} /> {/* Rota padrão */} 
         </Routes>

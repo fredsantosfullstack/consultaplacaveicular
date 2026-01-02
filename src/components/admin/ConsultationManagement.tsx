@@ -272,7 +272,7 @@ const ConsultationManagement: React.FC = () => {
         </div>
         <button
           onClick={() => setShowCrlveOrders(true)}
-          className="flex items-center gap-2 bg-[#000042] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors"
+          className="flex items-center gap-2 bg-[#076AC2] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors"
         >
           <Package size={18} />
           Gerenciar Pedidos CRLV-E
@@ -287,11 +287,11 @@ const ConsultationManagement: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nome da Consulta</label>
-                <input type="text" id="name" value={currentConsultation.name || ''} onChange={(e) => setCurrentConsultation(prev => ({ ...prev, name: e.target.value }))} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#000042] focus:border-[#000042] sm:text-sm" required />
+                <input type="text" id="name" value={currentConsultation.name || ''} onChange={(e) => setCurrentConsultation(prev => ({ ...prev, name: e.target.value }))} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#076AC2] focus:border-[#076AC2] sm:text-sm" required />
               </div>
               <div>
                 <label htmlFor="description" className="block text-sm font-medium text-gray-700">Descrição</label>
-                <textarea id="description" value={currentConsultation.description || ''} onChange={(e) => setCurrentConsultation(prev => ({ ...prev, description: e.target.value }))} rows={3} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#000042] focus:border-[#000042] sm:text-sm"></textarea>
+                <textarea id="description" value={currentConsultation.description || ''} onChange={(e) => setCurrentConsultation(prev => ({ ...prev, description: e.target.value }))} rows={3} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#076AC2] focus:border-[#076AC2] sm:text-sm"></textarea>
               </div>
               <div>
                 <label htmlFor="icon" className="block text-sm font-medium text-gray-700">Ícone</label>
@@ -301,7 +301,7 @@ const ConsultationManagement: React.FC = () => {
                       type="button"
                       key={name}
                       onClick={() => setCurrentConsultation(prev => ({ ...prev, icon: name }))}
-                      className={`p-2 rounded-full transition-colors duration-200 ${currentConsultation.icon === name ? 'bg-[#000042] text-white' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'}`}
+                      className={`p-2 rounded-full transition-colors duration-200 ${currentConsultation.icon === name ? 'bg-[#076AC2] text-white' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'}`}
                       title={name}
                     >
                       <IconComponent size={20} />
@@ -317,7 +317,7 @@ const ConsultationManagement: React.FC = () => {
                   value={currentConsultation.price || 0} 
                   onChange={(e) => setCurrentConsultation(prev => ({ ...prev, price: parseFloat(e.target.value) }))} 
                   step="0.01" 
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#000042] focus:border-[#000042] sm:text-sm" 
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#076AC2] focus:border-[#076AC2] sm:text-sm" 
                   required
                 />
                 <p className="mt-1 text-xs text-gray-500">💡 Dica: Use R$ 0,00 para exibir "Consulte" no card</p>
@@ -326,12 +326,12 @@ const ConsultationManagement: React.FC = () => {
                 <span className="text-sm font-medium text-gray-700">Marcar como 'NOVO'?</span>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" checked={currentConsultation.is_new || false} onChange={(e) => setCurrentConsultation(prev => ({ ...prev, is_new: e.target.checked }))} className="sr-only peer" />
-                  <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-[#000042]/50 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#000042]"></div>
+                  <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-[#076AC2]/50 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#076AC2]"></div>
                 </label>
               </div>
               <div className="flex justify-end pt-4">
                 <button type="button" onClick={handleCloseModal} className="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg mr-2 hover:bg-gray-300">Cancelar</button>
-                <button type="submit" className="bg-[#000042] text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90">Salvar</button>
+                <button type="submit" className="bg-[#076AC2] text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90">Salvar</button>
               </div>
             </form>
           </AdminModal>
@@ -387,7 +387,7 @@ const ConsultationManagement: React.FC = () => {
                     setEditingTurboState({ id: 0, state_code: '', state_name: '', price: 0, is_active: true });
                     setShowStateFormModal(true);
                   }}
-                  className="bg-[#000042] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 flex items-center gap-2"
+                  className="bg-[#076AC2] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 flex items-center gap-2"
                 >
                   <Plus size={18} />
                   Adicionar Estado
@@ -400,7 +400,7 @@ const ConsultationManagement: React.FC = () => {
                       <div>
                         <h3 className="font-bold text-lg">{state.state_code}</h3>
                         <p className="text-sm text-gray-600">{state.state_name}</p>
-                        <p className="text-xl font-bold text-[#000042] mt-2">R$ {Number(state.price).toFixed(2)}</p>
+                        <p className="text-xl font-bold text-[#076AC2] mt-2">R$ {Number(state.price).toFixed(2)}</p>
                       </div>
                       <button
                         onClick={() => handleToggleTurboState(state)}
@@ -452,7 +452,7 @@ const ConsultationManagement: React.FC = () => {
                   value={editingTurboState.state_code}
                   onChange={(e) => setEditingTurboState({ ...editingTurboState, state_code: e.target.value.toUpperCase() })}
                   maxLength={2}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#000042] focus:border-transparent"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
                   placeholder="Ex: SP"
                   disabled={editingTurboState.id !== 0}
                 />
@@ -463,7 +463,7 @@ const ConsultationManagement: React.FC = () => {
                   type="text"
                   value={editingTurboState.state_name}
                   onChange={(e) => setEditingTurboState({ ...editingTurboState, state_name: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#000042] focus:border-transparent"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
                   placeholder="Ex: São Paulo"
                 />
               </div>
@@ -474,7 +474,7 @@ const ConsultationManagement: React.FC = () => {
                   step="0.01"
                   value={editingTurboState.price}
                   onChange={(e) => setEditingTurboState({ ...editingTurboState, price: parseFloat(e.target.value) || 0 })}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#000042] focus:border-transparent"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
                   placeholder="15.00"
                 />
               </div>
@@ -483,14 +483,14 @@ const ConsultationManagement: React.FC = () => {
                   type="checkbox"
                   checked={editingTurboState.is_active}
                   onChange={(e) => setEditingTurboState({ ...editingTurboState, is_active: e.target.checked })}
-                  className="w-4 h-4 text-[#000042] focus:ring-[#000042]"
+                  className="w-4 h-4 text-[#076AC2] focus:ring-[#076AC2]"
                 />
                 <label className="text-sm font-medium">Estado Ativo</label>
               </div>
               <div className="flex gap-3 pt-4">
                 <button
                   onClick={() => handleSaveTurboState(editingTurboState)}
-                  className="flex-1 bg-[#000042] text-white py-2 rounded-lg hover:bg-opacity-90 font-medium"
+                  className="flex-1 bg-[#076AC2] text-white py-2 rounded-lg hover:bg-opacity-90 font-medium"
                 >
                   Salvar
                 </button>

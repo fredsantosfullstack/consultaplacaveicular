@@ -97,42 +97,42 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => (
         <h2 className="text-2xl font-bold text-gray-800">Painel do Administrador</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <AdminCard 
-                icon={<Users className="w-8 h-8 text-[#000042]" />} 
+                icon={<Users className="w-8 h-8 text-[#076AC2]" />} 
                 title="Gerenciar Usuários" 
                 onClick={() => onNavigate('user-management')} 
             />
             <AdminCard 
-                icon={<ClipboardList className="w-8 h-8 text-[#000042]" />} 
+                icon={<ClipboardList className="w-8 h-8 text-[#076AC2]" />} 
                 title="Gerenciar Consultas" 
                 onClick={() => onNavigate('consultation-management')} 
             />
             <AdminCard 
-                icon={<CreditCard className="w-8 h-8 text-[#000042]" />} 
+                icon={<CreditCard className="w-8 h-8 text-[#076AC2]" />} 
                 title="Gerenciar Planos" 
                 onClick={() => onNavigate('recharge-plan-management')} 
             />
             <AdminCard 
-                icon={<Tags className="w-8 h-8 text-[#000042]" />} 
+                icon={<Tags className="w-8 h-8 text-[#076AC2]" />} 
                 title="Tabela de Preços" 
                 onClick={() => onNavigate('price-table-management')} 
             />
             <AdminCard 
-                icon={<Settings className="w-8 h-8 text-[#000042]" />} 
+                icon={<Settings className="w-8 h-8 text-[#076AC2]" />} 
                 title="Configurações do Site" 
                 onClick={() => onNavigate('site-settings')} 
             />
             <AdminCard 
-                icon={<BarChart className="w-8 h-8 text-[#000042]" />} 
+                icon={<BarChart className="w-8 h-8 text-[#076AC2]" />} 
                 title="Relatórios" 
                 onClick={() => onNavigate('reports')} 
             />
             <AdminCard 
-                icon={<DollarSign className="w-8 h-8 text-[#000042]" />} 
+                icon={<DollarSign className="w-8 h-8 text-[#076AC2]" />} 
                 title="Histórico de Pagamentos" 
                 onClick={() => onNavigate('payment-history')} 
             />
             <AdminCard 
-                icon={<FileText className="w-8 h-8 text-[#000042]" />} 
+                icon={<FileText className="w-8 h-8 text-[#076AC2]" />} 
                 title="Termos de Uso" 
                 onClick={() => onNavigate('terms-management')} 
             />

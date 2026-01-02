@@ -52,7 +52,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ isOpen, onClo
           <input type="password" placeholder="Confirmar Nova Senha" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required className="w-full p-2 border rounded" />
           <div className="flex justify-end gap-4">
             <button type="button" onClick={onClose} className="bg-gray-200 px-4 py-2 rounded-lg">Cancelar</button>
-            <button type="submit" disabled={isLoading} className="bg-[#000042] text-white px-4 py-2 rounded-lg flex items-center">
+            <button type="submit" disabled={isLoading} className="bg-[#076AC2] text-white px-4 py-2 rounded-lg flex items-center">
               {isLoading && <Loader2 className="animate-spin mr-2" />} Salvar
             </button>
           </div>

@@ -45,7 +45,7 @@ const PriceTable: React.FC = () => {
         <h1 className="text-xl font-bold text-gray-800">Tabela de Preços</h1>
         <button
           onClick={handleShareTable}
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-[#000042] text-white rounded-md hover:bg-[#000066] transition-colors font-medium text-xs shadow-sm"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-[#076AC2] text-white rounded-md hover:bg-[#055a9f] transition-colors font-medium text-xs shadow-sm"
         >
           {copied ? (
             <>
@@ -63,7 +63,7 @@ const PriceTable: React.FC = () => {
 
       {isLoading && (
         <div className="flex justify-center items-center p-10">
-          <Loader2 className="animate-spin text-[#000042]" size={48} />
+          <Loader2 className="animate-spin text-[#076AC2]" size={48} />
         </div>
       )}
 
@@ -77,7 +77,7 @@ const PriceTable: React.FC = () => {
       {!isLoading && !error && (
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           <table className="w-full text-left text-sm">
-            <thead className="bg-[#000042] text-white">
+            <thead className="bg-[#076AC2] text-white">
               <tr>
                 <th className="px-6 py-4 font-semibold">Serviço</th>
                 <th className="px-6 py-4 font-semibold text-right">Valor</th>

@@ -1,4 +1,4 @@
-# 📋 Histórico Completo do Deploy - Golden Veicular
+# 📋 Histórico Completo do Deploy - Consultaplacaveicular
 
 **Data**: 11 de Outubro de 2025  
 **Projeto**: Sistema de Consultas Veiculares  
@@ -8,7 +8,7 @@
 
 ## 🎯 Objetivo
 
-Fazer deploy do projeto Golden Veicular para testes remotos usando:
+Fazer deploy do projeto Consultaplacaveicular para testes remotos usando:
 - **Frontend**: Vercel
 - **Backend**: Railway
 - **Banco de Dados**: Railway MySQL
@@ -20,7 +20,7 @@ Fazer deploy do projeto Golden Veicular para testes remotos usando:
 ```
 ┌─────────────────────────────────────────┐
 │         VERCEL (Frontend)               │
-│    https://golden-veicular.vercel.app   │
+│    https://consultaplacaveicular.vercel.app   │
 └──────────────┬──────────────────────────┘
                │
                │ API calls (VITE_API_URL)
@@ -191,7 +191,7 @@ VITE_API_URL=https://golden-veicular-production.up.railway.app/api
 
 ### 4.3. Teste de Login
 - Acessou `https://golden-veicular.vercel.app`
-- Login com `admin@goldenveicular.com.br` / `admin123`
+- Login com `admin@consultaplacaveicular.com.br` / `admin123`
 - ✅ Login bem-sucedido
 - ✅ Dashboard carregado
 - ✅ Sistema totalmente funcional
@@ -217,7 +217,7 @@ VITE_API_URL=https://golden-veicular-production.up.railway.app/api
 ## 🔐 Credenciais de Acesso
 
 ### Usuário Admin
-- **Email**: `admin@goldenveicular.com.br`
+- **Email**: `admin@consultaplacaveicular.com.br`
 - **Senha**: `admin123`
 - **Saldo Inicial**: 1000 créditos
 - **Role**: admin

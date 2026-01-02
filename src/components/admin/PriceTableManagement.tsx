@@ -89,7 +89,7 @@ const PriceTableManagement: React.FC = () => {
           <h2 className="text-2xl font-bold text-gray-800">Gerenciar Tabela de Preços</h2>
           <p className="text-gray-500 mt-1">Adicione, edite e remova os itens da tabela de preços.</p>
         </div>
-        <button onClick={() => handleOpenModal('add')} className="bg-[#000042] text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90 flex items-center gap-2">
+        <button onClick={() => handleOpenModal('add')} className="bg-[#076AC2] text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90 flex items-center gap-2">
           <Plus size={18} />
           Adicionar Item
         </button>
@@ -104,15 +104,15 @@ const PriceTableManagement: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nome do Serviço/Consulta</label>
-                <input type="text" id="name" value={currentItem.name || ''} onChange={(e) => setCurrentItem(prev => ({ ...prev, name: e.target.value }))} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#000042] focus:border-[#000042] sm:text-sm" required />
+                <input type="text" id="name" value={currentItem.name || ''} onChange={(e) => setCurrentItem(prev => ({ ...prev, name: e.target.value }))} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#076AC2] focus:border-[#076AC2] sm:text-sm" required />
               </div>
               <div>
                 <label htmlFor="price" className="block text-sm font-medium text-gray-700">Preço (R$)</label>
-                <input type="number" id="price" value={currentItem.price || 0} onChange={(e) => setCurrentItem(prev => ({ ...prev, price: parseFloat(e.target.value) }))} step="0.01" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#000042] focus:border-[#000042] sm:text-sm" required />
+                <input type="number" id="price" value={currentItem.price || 0} onChange={(e) => setCurrentItem(prev => ({ ...prev, price: parseFloat(e.target.value) }))} step="0.01" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#076AC2] focus:border-[#076AC2] sm:text-sm" required />
               </div>
               <div className="flex justify-end pt-4">
                 <button type="button" onClick={handleCloseModal} className="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg mr-2 hover:bg-gray-300">Cancelar</button>
-                <button type="submit" className="bg-[#000042] text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90">Salvar Item</button>
+                <button type="submit" className="bg-[#076AC2] text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90">Salvar Item</button>
               </div>
             </form>
           </AdminModal>

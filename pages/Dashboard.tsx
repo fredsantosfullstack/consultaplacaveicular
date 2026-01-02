@@ -43,8 +43,8 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ title, slug, descri
   const normalizedSlug = normalizeSlug(slug);
   const isDisabled = !normalizedSlug;
   const linkClassName = [
-    'bg-transparent border-2 border-[#000042] text-[#000042] font-bold py-1.5 px-4 rounded-md transition-colors duration-300 text-sm text-center inline-block',
-    isDisabled ? 'pointer-events-none opacity-60' : 'hover:bg-[#000042] hover:text-white'
+    'bg-transparent border-2 border-[#076AC2] text-[#076AC2] font-bold py-1.5 px-4 rounded-md transition-colors duration-300 text-sm text-center inline-block',
+    isDisabled ? 'pointer-events-none opacity-60' : 'hover:bg-[#055a9f] hover:text-white'
   ].join(' ');
 
   // Filtrar apenas estados ativos
@@ -52,7 +52,7 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ title, slug, descri
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow duration-300 overflow-hidden">
-      <div className="bg-[#000042] text-white px-4 py-3 flex items-center gap-3 min-h-[70px]">
+      <div className="bg-[#076AC2] text-white px-4 py-3 flex items-center gap-3 min-h-[70px]">
         <Icon className="w-5 h-5 flex-shrink-0" />
         <h3 className="font-semibold text-sm uppercase break-words">{title}</h3>
       </div>
@@ -65,7 +65,7 @@ const ConsultationCard: React.FC<ConsultationCardProps> = ({ title, slug, descri
               {activeStates.map((state) => (
                 <div key={state.state_code} className="flex justify-between items-center py-1">
                   <span className="font-medium text-gray-700">{state.state_code}</span>
-                  <span className="text-[#000042] font-bold">{Number(state.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                  <span className="text-[#076AC2] font-bold">{Number(state.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                 </div>
               ))}
             </div>
@@ -134,7 +134,7 @@ const Dashboard: React.FC = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center p-10">
-        <Loader2 className="animate-spin text-[#000042]" size={48} />
+        <Loader2 className="animate-spin text-[#076AC2]" size={48} />
       </div>
     );
   }
@@ -158,7 +158,7 @@ const Dashboard: React.FC = () => {
             placeholder="Pesquise por nome ou descrição..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full py-3 pl-10 pr-4 border-2 border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#000042]"
+            className="w-full py-3 pl-10 pr-4 border-2 border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#076AC2]"
           />
         </div>
 

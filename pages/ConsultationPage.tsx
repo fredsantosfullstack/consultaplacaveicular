@@ -106,14 +106,14 @@ const ConsultationPage: React.FC = () => {
                   id={field.name}
                   placeholder={field.placeholder}
                   required
-                  className="w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#000042]"
+                  className="w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#076AC2]"
                 />
               </div>
             ))}
             <button 
               type="submit" 
               disabled={isLoading}
-              className="w-full bg-[#000042] text-white font-bold py-3 rounded-md hover:bg-opacity-90 flex justify-center items-center"
+              className="w-full bg-[#076AC2] text-white font-bold py-3 rounded-md hover:bg-[#055a9f] flex justify-center items-center"
             >
               {isLoading ? <Loader2 className="animate-spin" /> : 'Realizar Consulta'}
             </button>

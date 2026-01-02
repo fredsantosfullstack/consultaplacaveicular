@@ -15,7 +15,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin text-[#000042] mx-auto mb-4" />
+          <Loader2 className="w-12 h-12 animate-spin text-[#076AC2] mx-auto mb-4" />
           <p className="text-gray-600">Verificando autenticação...</p>
         </div>
       </div>

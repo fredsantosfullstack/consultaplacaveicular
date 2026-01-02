@@ -62,7 +62,7 @@ const ResetPassword = () => {
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
                     <Lock className="h-5 w-5 text-gray-400" />
                   </div>
-                  <input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="w-full p-3 pl-12 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30 transition-all duration-300" placeholder="Sua nova senha" />
+                  <input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="w-full p-3 pl-12 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-[#076AC2] focus:outline-none focus:ring-2 focus:ring-[#076AC2]/30 transition-all duração-300" placeholder="Sua nova senha" />
                 </div>
               </div>
 
@@ -72,7 +72,7 @@ const ResetPassword = () => {
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
                     <Lock className="h-5 w-5 text-gray-400" />
                   </div>
-                  <input id="confirm-password" type="password" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="w-full p-3 pl-12 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30 transition-all duration-300" placeholder="Repita a nova senha" />
+                  <input id="confirm-password" type="password" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="w-full p-3 pl-12 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-[#076AC2] focus:outline-none focus:ring-2 focus:ring-[#076AC2]/30 transition-all duração-300" placeholder="Repita a nova senha" />
                 </div>
               </div>
 
@@ -80,7 +80,7 @@ const ResetPassword = () => {
               {message && <p className="bg-green-100 text-green-700 p-3 rounded-lg text-sm text-center font-medium">{message}</p>}
 
               <div>
-                <button type="submit" disabled={isLoading || !!message} className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-lg shadow-md text-base font-bold text-white bg-[#000042] hover:bg-opacity-90 disabled:bg-opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#000042]">
+                <button type="submit" disabled={isLoading || !!message} className="w-full flex justificar-center itens-center gap-2 py-3 px-4 border border-transparent rounded-lg shadow-md texto-base fonte-bold texto-branco bg-[#076AC2] hover:bg-[#055a9f] disabled:bg-opacity-50 disabled:cursor-not-allowed transition-all duração-300 transform hover:-translate-y-0.5 foco:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#076AC2]">
                   {isLoading ? 'Redefinindo...' : 'Redefinir Senha'}
                   {!isLoading && !message && <ArrowRight className="h-5 w-5" />}
                 </button>

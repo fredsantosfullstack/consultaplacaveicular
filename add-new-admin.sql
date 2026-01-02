@@ -1,9 +1,9 @@
 -- Script para adicionar novo usuário admin
 -- Email: kauanbruno139@gmail.com
--- Senha: Golden$$$$$2025
+-- Senha: Consulta$$$$$2025
 
 -- Primeiro, vamos criar o hash da senha usando bcrypt
--- O hash abaixo é para a senha: Golden$$$$$2025
+-- O hash abaixo é para a senha: Consulta$$$$$2025
 -- Hash gerado com bcrypt rounds=10: $2b$10$YourHashHere
 
 INSERT INTO users (name, email, password, role, balance, created_at)

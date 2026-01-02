@@ -25,7 +25,7 @@ CREATE_PAYMENT_TABLES.sql
 ### **2. Configurar Webhook no Asaas**
 1. Acesse: https://sandbox.asaas.com (ou produção)
 2. Vá em: **Configurações** → **Integrações** → **Webhooks**
-3. Adicione a URL: `https://goldenveicular.com.br/api/webhooks/asaas`
+3. Adicione a URL: `https://consultaplacaveicular.com.br/api/webhooks/asaas`
 4. Selecione os eventos:
    - ☑️ PAYMENT_CONFIRMED
    - ☑️ PAYMENT_RECEIVED
@@ -165,11 +165,11 @@ ASAAS_ENV=production
 
 ### **2. Configurar Domínio Real**
 ```env
-WEBHOOK_URL=https://goldenveicular.com.br/api/webhooks/asaas
+WEBHOOK_URL=https://consultaplacaveicular.com.br/api/webhooks/asaas
 ```
 
 ### **3. Configurar Webhook no Asaas Produção**
-- URL: `https://goldenveicular.com.br/api/webhooks/asaas`
+- URL: `https://consultaplacaveicular.com.br/api/webhooks/asaas`
 - Eventos: PAYMENT_CONFIRMED, PAYMENT_RECEIVED
 
 ---

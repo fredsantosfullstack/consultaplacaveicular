@@ -1,4 +1,5 @@
 import React from 'react';
+import { Wallet } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const BalanceDisplay: React.FC = () => {
@@ -12,9 +13,13 @@ const BalanceDisplay: React.FC = () => {
   };
 
   return (
-    <div className="bg-white px-4 py-2 rounded-lg">
-      <span className="text-gray-600">Saldo: </span>
-      <span className="font-bold text-lg text-[#000042]">{formatBalance(profile?.balance)}</span>
+    <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+      <p className="text-[0.72rem] font-semibold uppercase text-gray-500">
+        Saldo disponível
+      </p>
+      <p className="text-[1.55rem] font-bold leading-none text-[#076AC2]">
+        {formatBalance(profile?.balance)}
+      </p>
     </div>
   );
 };

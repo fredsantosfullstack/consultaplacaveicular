@@ -44,7 +44,7 @@ const ForgotPassword = () => {
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
                   <Mail className="h-5 w-5 text-gray-400" />
                 </div>
-                <input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="w-full p-3 pl-12 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30 transition-all duration-300" placeholder="seu@email.com" />
+                <input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="w-full p-3 pl-12 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-[#076AC2] focus:outline-none focus:ring-2 focus:ring-[#076AC2]/30 transition-all duration-300" placeholder="seu@email.com" />
               </div>
             </div>
 
@@ -52,7 +52,7 @@ const ForgotPassword = () => {
             {error && <p className="bg-red-100 text-red-700 p-3 rounded-lg text-sm text-center font-medium">{error}</p>}
 
             <div>
-              <button type="submit" disabled={isLoading || !!message} className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-lg shadow-md text-base font-bold text-white bg-[#000042] hover:bg-opacity-90 disabled:bg-opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#000042]">
+              <button type="submit" disabled={isLoading || !!message} className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-lg shadow-md text-base font-bold text-white bg-[#076AC2] hover:bg-[#055a9f] disabled:bg-opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#076AC2]">
                 {isLoading ? 'Enviando...' : 'Enviar Link'}
                 {!isLoading && !message && <ArrowRight className="h-5 w-5" />}
               </button>
@@ -62,7 +62,7 @@ const ForgotPassword = () => {
           <div className="mt-8 text-center text-sm">
             <p className="text-gray-600">
               Lembrou a senha?{' '}
-              <Link to="/login" className="font-bold text-[#000042] hover:text-[#D2AE6D] hover:underline">Faça login</Link>
+              <Link to="/login" className="font-bold text-[#076AC2] hover:text-[#055a9f] hover:underline">Faça login</Link>
             </p>
           </div>
         </div>

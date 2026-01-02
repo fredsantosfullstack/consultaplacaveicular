@@ -90,7 +90,7 @@ const RechargePlanManagement: React.FC = () => {
           <h2 className="text-2xl font-bold text-gray-800">Gerenciar Planos de Recarga</h2>
           <p className="text-gray-500 mt-1">Adicione, edite e remova os planos de recarga de créditos.</p>
         </div>
-        <button onClick={() => handleOpenModal('add')} className="bg-[#000042] text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90 flex items-center gap-2">
+        <button onClick={() => handleOpenModal('add')} className="bg-[#076AC2] text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90 flex items-center gap-2">
           <Plus size={18} />
           Adicionar Plano
         </button>
@@ -105,11 +105,11 @@ const RechargePlanManagement: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nome do Plano</label>
-                <input type="text" id="name" value={currentPlan.name || ''} onChange={(e) => setCurrentPlan(prev => ({ ...prev, name: e.target.value }))} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#000042] focus:border-[#000042] sm:text-sm" required />
+                <input type="text" id="name" value={currentPlan.name || ''} onChange={(e) => setCurrentPlan(prev => ({ ...prev, name: e.target.value }))} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#076AC2] focus:border-[#076AC2] sm:text-sm" required />
               </div>
               <div>
                 <label htmlFor="description" className="block text-sm font-medium text-gray-700">Descrição (Opcional)</label>
-                <textarea id="description" value={currentPlan.description || ''} onChange={(e) => setCurrentPlan(prev => ({ ...prev, description: e.target.value }))} rows={3} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#000042] focus:border-[#000042] sm:text-sm"></textarea>
+                <textarea id="description" value={currentPlan.description || ''} onChange={(e) => setCurrentPlan(prev => ({ ...prev, description: e.target.value }))} rows={3} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#076AC2] focus:border-[#076AC2] sm:text-sm"></textarea>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -123,25 +123,25 @@ const RechargePlanManagement: React.FC = () => {
                     setCurrentPlan(prev => ({ ...prev, price: priceValue, credits: priceValue }));
                   }}
                   step="0.01" 
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#000042] focus:border-[#000042] sm:text-sm" 
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#076AC2] focus:border-[#076AC2] sm:text-sm" 
                   required 
                 />
                 </div>
                 <div>
                   <label htmlFor="credits" className="block text-sm font-medium text-gray-700">Créditos Concedidos</label>
-                  <input type="number" id="credits" value={currentPlan.credits || 0} onChange={(e) => setCurrentPlan(prev => ({ ...prev, credits: parseInt(e.target.value, 10) }))} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#000042] focus:border-[#000042] sm:text-sm" required />
+                  <input type="number" id="credits" value={currentPlan.credits || 0} onChange={(e) => setCurrentPlan(prev => ({ ...prev, credits: parseInt(e.target.value, 10) }))} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#076AC2] focus:border-[#076AC2] sm:text-sm" required />
                 </div>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-700">Marcar como 'Popular'?</span>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" checked={currentPlan.is_popular || false} onChange={(e) => setCurrentPlan(prev => ({ ...prev, is_popular: e.target.checked }))} className="sr-only peer" />
-                  <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-[#000042]/50 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#000042]"></div>
+                  <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-[#076AC2]/50 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#076AC2]"></div>
                 </label>
               </div>
               <div className="flex justify-end pt-4">
                 <button type="button" onClick={handleCloseModal} className="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg mr-2 hover:bg-gray-300">Cancelar</button>
-                <button type="submit" className="bg-[#000042] text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90">Salvar Plano</button>
+                <button type="submit" className="bg-[#076AC2] text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90">Salvar Plano</button>
               </div>
             </form>
           </AdminModal>

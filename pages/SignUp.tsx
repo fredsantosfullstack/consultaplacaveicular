@@ -10,7 +10,7 @@ const InputField = ({ icon: Icon, type, ...props }) => (
       {...props} 
       type={type}
       autoComplete={type === 'password' ? 'new-password' : undefined}
-      className={`w-full p-3 ${Icon ? 'pl-12' : 'pl-4'} border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30 transition-all duration-300 ${type === 'password' ? '[&::-ms-reveal]:hidden [&::-ms-clear]:hidden [&::-webkit-credentials-auto-fill-button]:hidden [&::-webkit-contacts-auto-fill-button]:hidden' : ''}`} 
+      className={`w-full p-3 ${Icon ? 'pl-12' : 'pl-4'} border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-[#076AC2] focus:outline-none focus:ring-2 focus:ring-[#076AC2]/30 transition-all duration-300 ${type === 'password' ? '[&::-ms-reveal]:hidden [&::-ms-clear]:hidden [&::-webkit-credentials-auto-fill-button]:hidden [&::-webkit-contacts-auto-fill-button]:hidden' : ''}`} 
     />
   </div>
 );
@@ -54,7 +54,7 @@ const SignUp: React.FC = () => {
           <CheckCircle className="mx-auto h-16 w-16 text-green-500 mb-4" />
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Conta Criada com Sucesso!</h2>
           <p className="text-gray-600 mb-6">Você já pode fazer login na plataforma.</p>
-          <Link to="/login" className="w-full flex items-center justify-center gap-2 bg-[#000042] text-white font-bold py-3 px-6 rounded-lg hover:bg-opacity-90 transition-all transform hover:-translate-y-0.5">
+          <Link to="/login" className="w-full flex items-center justify-center gap-2 bg-[#076AC2] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#055a9f] transition-all transform hover:-translate-y-0.5">
             <ArrowLeft size={16} />
             <span>Ir para o Login</span>
           </Link>
@@ -78,7 +78,7 @@ const SignUp: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="relative">
-              <select value={documentType} onChange={e => setDocumentType(e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30 appearance-none">
+              <select value={documentType} onChange={e => setDocumentType(e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-[#076AC2] focus:outline-none focus:ring-2 focus:ring-[#076AC2]/30 appearance-none">
                 <option value="cpf">Pessoa Física (CPF)</option>
                 <option value="cnpj">Pessoa Jurídica (CNPJ)</option>
               </select>
@@ -97,7 +97,7 @@ const SignUp: React.FC = () => {
           </div>
 
           <div className="pt-2">
-            <button type="submit" disabled={isLoading} className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-md text-base font-bold text-white bg-[#000042] hover:bg-opacity-90 disabled:bg-opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#000042]">
+            <button type="submit" disabled={isLoading} className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-md text-base font-bold text-white bg-[#076AC2] hover:bg-[#055a9f] disabled:bg-opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#076AC2]">
               {isLoading ? 'Criando conta...' : 'Finalizar Cadastro'}
             </button>
           </div>
@@ -106,7 +106,7 @@ const SignUp: React.FC = () => {
         <div className="mt-6 text-center text-sm text-gray-600">
           <p>
             Já tem uma conta?{' '}
-            <Link to="/login" className="font-bold text-[#000042] hover:text-[#D2AE6D] hover:underline">Faça login</Link>
+            <Link to="/login" className="font-bold text-[#076AC2] hover:text-[#00A788] hover:underline">Faça login</Link>
           </p>
         </div>
       </div>

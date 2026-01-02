@@ -43,7 +43,7 @@ const LoginForm: React.FC = () => {
           value={email} 
           onChange={e => setEmail(e.target.value)} 
           required 
-          className="peer w-full bg-transparent border-b-2 border-white/30 pt-4 pb-1 text-white placeholder-transparent focus:border-blue-500 focus:outline-none"
+          className="peer w-full bg-transparent border-b-2 border-white/30 pt-4 pb-1 text-white placeholder-transparent focus:border-[#076AC2] focus:outline-none"
           placeholder="Email"
         />
         <label htmlFor="email" className="absolute left-0 -top-3.5 text-gray-300 text-sm transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:-top-3.5 peer-focus:text-sm">USERNAME</label>
@@ -56,20 +56,20 @@ const LoginForm: React.FC = () => {
           value={password} 
           onChange={e => setPassword(e.target.value)} 
           required 
-          className="peer w-full bg-transparent border-b-2 border-white/30 pt-4 pb-1 text-white placeholder-transparent focus:border-blue-500 focus:outline-none"
+          className="peer w-full bg-transparent border-b-2 border-white/30 pt-4 pb-1 text-white placeholder-transparent focus:border-[#076AC2] focus:outline-none"
           placeholder="Password"
         />
         <label htmlFor="password" className="absolute left-0 -top-3.5 text-gray-300 text-sm transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:-top-3.5 peer-focus:text-sm">PASSWORD</label>
       </div>
 
       <div className="flex items-center">
-        <input id="remember-me" type="checkbox" checked={rememberMe} onChange={e => setRememberMe(e.target.checked)} className="h-4 w-4 bg-transparent text-blue-500 border-white/30 rounded focus:ring-blue-500" />
+        <input id="remember-me" type="checkbox" checked={rememberMe} onChange={e => setRememberMe(e.target.checked)} className="h-4 w-4 bg-transparent text-[#076AC2] border-white/30 rounded focus:ring-[#076AC2]" />
         <label htmlFor="remember-me" className="ml-2 block text-sm">Keep me Signed in</label>
       </div>
 
       {error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
-      <button type="submit" disabled={isLoading} className="w-full py-3 px-4 bg-blue-600 rounded-full text-white font-semibold hover:bg-blue-700 disabled:bg-blue-400 transition-all duration-300 transform hover:scale-105">
+      <button type="submit" disabled={isLoading} className="w-full py-3 px-4 bg-[#076AC2] rounded-full text-white font-semibold hover:bg-[#055a9f] disabled:opacity-50 transition-all duration-300 transform hover:scale-105">
         {isLoading ? 'SIGNING IN...' : 'SIGN IN'}
       </button>
 

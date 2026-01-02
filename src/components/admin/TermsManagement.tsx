@@ -118,7 +118,7 @@ const TermsManagement: React.FC = () => {
       <div className="mb-4">
         <button
           onClick={() => handleOpenModal(null)}
-          className="bg-[#000042] text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90 flex items-center gap-2"
+          className="bg-[#076AC2] text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90 flex items-center gap-2"
         >
           <Plus size={18} />
           Adicionar Termo
@@ -191,7 +191,7 @@ const TermsManagement: React.FC = () => {
                   id="is_active"
                   checked={currentTerm.is_active || false}
                   onChange={(e) => setCurrentTerm({ ...currentTerm, is_active: e.target.checked })}
-                  className="h-4 w-4 text-[#000042] focus:ring-[#000042] border-gray-300 rounded"
+                  className="h-4 w-4 text-[#076AC2] focus:ring-[#076AC2] border-gray-300 rounded"
                 />
                 <label htmlFor="is_active" className="ml-2 block text-sm text-gray-700">
                   Ativar este termo (desativa os outros automaticamente)
@@ -208,7 +208,7 @@ const TermsManagement: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#000042] text-white rounded-lg hover:bg-opacity-90"
+                  className="px-4 py-2 bg-[#076AC2] text-white rounded-lg hover:bg-opacity-90"
                 >
                   {modalMode === 'add' ? 'Adicionar' : 'Salvar'}
                 </button>

@@ -32,13 +32,13 @@ const ConsultationHistoryPage: React.FC = () => {
   return (
     <UserLayout>
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <div className="bg-[#000042] text-white px-6 py-4">
+        <div className="bg-[#076AC2] text-white px-6 py-4">
           <h1 className="text-lg font-semibold">Histórico de Consultas</h1>
         </div>
         <div className="p-6">
           {isLoading ? (
             <div className="flex justify-center items-center py-10">
-              <Loader2 className="animate-spin text-[#000042]" size={32} />
+              <Loader2 className="animate-spin text-[#076AC2]" size={32} />
             </div>
           ) : history.length === 0 ? (
             <div className="text-center py-10">
@@ -49,7 +49,7 @@ const ConsultationHistoryPage: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="bg-[#000042] text-white text-sm whitespace-nowrap">
+                  <tr className="bg-[#076AC2] text-white text-sm whitespace-nowrap">
                     <th className="p-3">Placa</th>
                     <th className="p-3">Tipo de Consulta</th>
                     <th className="p-3">Data</th>
@@ -64,7 +64,7 @@ const ConsultationHistoryPage: React.FC = () => {
                       <td className="p-3">{item.consultation_type}</td>
                       <td className="p-3">{new Date(item.created_at).toLocaleString('pt-BR')}</td>
                       <td className="p-3"><span className={`px-2 py-1 text-xs font-semibold rounded-full ${item.status === 'CONCLUIDA' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>{item.status}</span></td>
-                      <td className="p-3"><button className="text-[#000042] hover:text-opacity-80"><FileDown size={18} /></button></td>
+                      <td className="p-3"><button className="text-[#076AC2] hover:text-[#055a9f]"><FileDown size={18} /></button></td>
                     </tr>
                   ))}
                 </tbody>

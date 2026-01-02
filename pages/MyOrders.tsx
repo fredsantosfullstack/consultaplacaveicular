@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, MessageSquare, Loader2 } from 'lucide-react';
+import { Plus, Loader2 } from 'lucide-react';
 import api from '../src/services/api';
 
 interface Order {
@@ -100,7 +100,7 @@ const MyOrders: React.FC = () => {
               id="status-filter" 
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-auto p-2 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:bg-white focus:border-[#000042] focus:outline-none focus:ring-2 focus:ring-[#000042]/30"
+              className="w-auto p-2 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:bg-white focus:border-[#076AC2] focus:outline-none focus:ring-2 focus:ring-[#076AC2]/30"
             >
               <option value="todos">Todos</option>
               <option value="pendente">Pendente</option>
@@ -109,24 +109,13 @@ const MyOrders: React.FC = () => {
               <option value="cancelado">Cancelado</option>
             </select>
           </div>
-          <div className="flex flex-col sm:flex-row gap-2">
-            <button 
-              onClick={handleNovoPedido}
-              className="flex items-center justify-center gap-2 w-full sm:w-auto bg-[#000042] text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all text-sm"
-            >
-              <Plus size={16} />
-              <span>Novo Pedido</span>
-            </button>
-            <a 
-              href="https://wa.me/5579991187607?text=Ol%C3%A1%2C%20vim%20pelo%20painel%20e%20preciso%20de%20suporte%21"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full sm:w-auto bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition-all text-sm"
-            >
-              <MessageSquare size={16} />
-              <span>Solicitar Suporte</span>
-            </a>
-          </div>
+          <button 
+            onClick={handleNovoPedido}
+            className="flex items-center justify-center gap-2 w-full sm:w-auto bg-[#076AC2] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#055a9f] transition-all text-sm"
+          >
+            <Plus size={16} />
+            <span>Novo Pedido</span>
+          </button>
         </div>
       </div>
 
@@ -134,11 +123,11 @@ const MyOrders: React.FC = () => {
       <div className="bg-white rounded-xl shadow-lg overflow-x-auto">
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <Loader2 className="w-8 h-8 animate-spin text-[#000042]" />
+            <Loader2 className="w-8 h-8 animate-spin text-[#076AC2]" />
           </div>
         ) : (
           <table className="w-full text-left text-sm">
-            <thead className="bg-[#0066FF] text-white">
+            <thead className="bg-[#076AC2] text-white">
               <tr>
                 <th className="px-6 py-3 font-semibold">Cliente</th>
                 <th className="px-6 py-3 font-semibold">Placa</th>

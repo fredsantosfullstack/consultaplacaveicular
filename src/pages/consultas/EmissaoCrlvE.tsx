@@ -92,7 +92,7 @@ export default function EmissaoCrlvE() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-[#000042]" />
+        <Loader2 className="w-8 h-8 animate-spin text-[#076AC2]" />
       </div>
     );
   }
@@ -114,7 +114,7 @@ export default function EmissaoCrlvE() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-[#000042] text-white py-6">
+      <div className="bg-[#076AC2] text-white py-6">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex items-center gap-3">
             <Car className="w-8 h-8" />
@@ -165,7 +165,7 @@ export default function EmissaoCrlvE() {
                 placeholder="ABC1234"
                 required
                 maxLength={7}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#000042] focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
               />
             </div>
 
@@ -181,7 +181,7 @@ export default function EmissaoCrlvE() {
                 placeholder="12345678901"
                 required
                 maxLength={11}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#000042] focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
               />
             </div>
 
@@ -197,7 +197,7 @@ export default function EmissaoCrlvE() {
                 placeholder="000.000.000-00"
                 required
                 maxLength={18}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#000042] focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
               />
             </div>
 
@@ -210,7 +210,7 @@ export default function EmissaoCrlvE() {
                 value={selectedUf}
                 onChange={(e) => setSelectedUf(e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#000042] focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
               >
                 <option value="">Selecione o Estado</option>
                 {states.map((state) => (

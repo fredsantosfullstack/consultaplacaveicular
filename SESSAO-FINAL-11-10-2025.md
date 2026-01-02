@@ -1,4 +1,4 @@
-# 🧠 Golden Veicular - Sessão Final de Correção
+# 🧠 Consultaplacaveicular - Sessão Final de Correção
 **Data**: 11 de Outubro de 2025  
 **Horário**: 18:00 - 21:30 (3h30min)
 
@@ -9,12 +9,12 @@
 ### **Causa Raiz:**
 Sistema possui **2 frontends diferentes** causando conflito de autenticação:
 
-1. **Frontend Vercel (React)**: `https://golden-veicular.vercel.app`
+1. **Frontend Vercel (React)**: `https://consultaplacaveicular.vercel.app`
    - ✅ Tem autenticação JWT
    - ✅ Token salvo no localStorage
    - ✅ Dashboard funcional
 
-2. **Frontend Railway (HTML)**: `https://golden-veicular-production.up.railway.app/consultas/*.html`
+2. **Frontend Railway (HTML)**: `https://consultaplacaveicular-production.up.railway.app/consultas/*.html`
    - ❌ Não tem acesso ao token do Vercel
    - ❌ Código JavaScript com erros de sintaxe
    - ❌ Consultas não funcionam
@@ -36,7 +36,7 @@ Login Vercel → Token salvo → Clica consulta → Abre HTML Railway → Token 
 
 ### **2. Banco de Dados MySQL Railway**
 - ✅ 5 tabelas criadas: users, consultation_types, consultation_history, credit_transactions, admin_settings
-- ✅ Admin criado: admin@goldenveicular.com / admin123
+- ✅ Admin criado: admin@consultaplacaveicular.com / admin123
 - ✅ Saldo admin: R$ 1.000,00
 - ✅ 17 tipos de consulta cadastrados
 
@@ -164,7 +164,7 @@ src/pages/consultas/
 ## 🔑 CREDENCIAIS
 
 ### **Admin:**
-- Email: `admin@goldenveicular.com`
+- Email: `admin@consultaplacaveicular.com`
 - Senha: `admin123`
 - Saldo: R$ 1.000,00
 
@@ -184,9 +184,9 @@ chaveAcesso: jDvvY1lNjQs9usyimnO8w55kYToIW8bqumiQBrO0cQbir8CLKFehYYxDD/YL2acH
 
 ## 🌐 URLs
 
-- **Frontend**: https://golden-veicular.vercel.app
-- **Backend**: https://golden-veicular-production.up.railway.app
-- **GitHub**: https://github.com/agenciadipixel/golden-veicular
+- **Frontend**: https://consultaplacaveicular.vercel.app
+- **Backend**: https://consultaplacaveicular-production.up.railway.app
+- **GitHub**: https://github.com/agenciadipixel/consultaplacaveicular
 
 ---
 
@@ -401,12 +401,12 @@ beb5bb0 - feat: criar 10 páginas de consulta em React com componentes reutiliz�
 ## 🔑 INFORMAÇÕES IMPORTANTES
 
 ### **Credenciais:**
-- Admin: admin@goldenveicular.com / admin123
+- Admin: admin@consultaplacaveicular.com / admin123
 - Saldo: R$ 1.000,00
 
 ### **URLs:**
-- Frontend: https://golden-veicular.vercel.app
-- Backend: https://golden-veicular-production.up.railway.app
+- Frontend: https://consultaplacaveicular.vercel.app
+- Backend: https://consultaplacaveicular-production.up.railway.app
 
 ### **Rotas React Criadas:**
 - /consulta/base-nacional

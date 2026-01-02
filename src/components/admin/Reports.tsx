@@ -30,7 +30,7 @@ const Reports: React.FC = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center p-20">
-        <Loader2 className="animate-spin text-[#000042]" size={48} />
+        <Loader2 className="animate-spin text-[#076AC2]" size={48} />
       </div>
     );
   }
@@ -44,17 +44,17 @@ const Reports: React.FC = () => {
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Dashboard de Relatórios</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <ReportCard 
-          icon={<Users size={32} className="text-[#000042]" />} 
+          icon={<Users size={32} className="text-[#076AC2]" />} 
           title="Total de Usuários"
           value={data.totalUsers}
         />
         <ReportCard 
-          icon={<DollarSign size={32} className="text-[#000042]" />} 
+          icon={<DollarSign size={32} className="text-[#076AC2]" />} 
           title="Faturamento Total"
           value={`R$ ${data.totalRevenue.toFixed(2).replace('.', ',')}`}
         />
         <ReportCard 
-          icon={<FileText size={32} className="text-[#000042]" />} 
+          icon={<FileText size={32} className="text-[#076AC2]" />} 
           title="Total de Consultas"
           value={data.totalConsultations}
         />

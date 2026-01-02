@@ -9,18 +9,21 @@ lerna-debug.log*
 
 # Dependencies
 node_modules
+node_modules/
+**/node_modules/
 
 # Build outputs
 dist
 dist-ssr
+build
 *.local
 
-# Environment variables
+# Environment variables (CRÍTICO - NÃO SUBIR)
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
 
 # Editor directories and files
 .vscode/*
@@ -38,6 +41,33 @@ Thumbs.db
 .DS_Store
 
 # Vercel
+# Deploy
 .vercel
+.netlify
 
-.vercel
+# Database backups
+*.sql.backup
+*.db
+*.sqlite
+
+# Uploads (arquivos de usuários)
+backend/public/uploads/*
+!backend/public/uploads/.gitkeep
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Cache
+.cache
+.parcel-cache
+.next
+.nuxt
+
+# Testing
+coverage
+.nyc_output
+
+# Temporary files
+*.tmp
+*.temp
+.temp/
+tmp/

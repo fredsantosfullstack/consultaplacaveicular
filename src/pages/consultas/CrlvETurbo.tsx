@@ -33,7 +33,7 @@ export default function CrlvETurbo() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <Loader2 className="animate-spin text-[#000042]" size={48} />
+        <Loader2 className="animate-spin text-[#076AC2]" size={48} />
       </div>
     );
   }

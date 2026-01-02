@@ -4,6 +4,7 @@ import App from './App';
 import './src/index.css';
 import './src/styles/optimized.css';
 import { BrowserRouter } from 'react-router-dom';
+import { SiteSettingsProvider } from './src/contexts/SiteSettingsContext';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -13,6 +14,8 @@ if (!rootElement) {
 const root = ReactDOM.createRoot(rootElement);
 root.render(
   <BrowserRouter>
-    <App />
+    <SiteSettingsProvider>
+      <App />
+    </SiteSettingsProvider>
   </BrowserRouter>
 );

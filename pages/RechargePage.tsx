@@ -82,17 +82,17 @@ const RechargePage: React.FC = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {plans.map(plan => (
-          <div key={plan.id} className={`bg-white rounded-lg shadow-lg p-6 flex flex-col text-center transition-transform transform hover:-translate-y-2 ${plan.is_popular ? 'border-4 border-[#000042]' : 'border-4 border-transparent'}`}>
-            {plan.is_popular && <div className="absolute top-0 -right-2 bg-[#000042] text-white text-xs font-bold px-3 py-1 rounded-full transform rotate-12">POPULAR</div>}
+          <div key={plan.id} className={`relative bg-white rounded-lg shadow-lg p-6 flex flex-col text-center transition-transform transform hover:-translate-y-2 ${plan.is_popular ? 'border-4 border-[#076AC2] shadow-xl' : 'border-4 border-transparent'}`}>
+            {plan.is_popular && <div className="absolute top-0 -right-2 bg-[#076AC2] text-white text-xs font-bold px-3 py-1 rounded-full transform rotate-12">POPULAR</div>}
             <h2 className="text-2xl font-bold text-gray-800">{plan.name}</h2>
-            <p className="text-5xl font-extrabold text-[#000042] my-4">{plan.credits}<span className="text-xl font-medium"> créditos</span></p>
+            <p className="text-5xl font-extrabold text-[#076AC2] my-4">{plan.credits}<span className="text-xl font-medium"> créditos</span></p>
             <p className="text-gray-500 mb-6 h-10">{plan.description}</p>
             <div className="mt-auto">
               <p className="text-lg font-semibold text-gray-600 mb-4">Por apenas <span className="text-2xl text-black">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(plan.price)}</span></p>
               <button 
                 onClick={() => handlePurchase(plan.id)}
                 disabled={isProcessing === plan.id}
-                className="w-full bg-[#000042] text-white font-bold py-3 rounded-lg hover:bg-opacity-90 flex justify-center items-center disabled:bg-gray-400"
+                className="w-full bg-[#076AC2] text-white font-bold py-3 rounded-lg hover:bg-[#055a9f] flex justify-center items-center disabled:bg-gray-400"
               >
                 {isProcessing === plan.id ? <Loader2 className="animate-spin" /> : 'Comprar Agora'}
               </button>
@@ -142,7 +142,7 @@ const PixPaymentScreen = ({ data }) => {
 
         <button 
           onClick={handleCopy}
-          className={`w-full font-bold py-3 rounded-lg transition-colors ${copied ? 'bg-green-500 text-white' : 'bg-[#000042] text-white hover:bg-opacity-90'}`}
+          className={`w-full font-bold py-3 rounded-lg transition-colors ${copied ? 'bg-green-500 text-white' : 'bg-[#076AC2] text-white hover:bg-[#055a9f]'}`}
         >
           {copied ? 'Copiado!' : 'Copiar Chave Pix'}
         </button>

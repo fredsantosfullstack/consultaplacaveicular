@@ -82,10 +82,13 @@ app.post('/api/payments/webhook', async (req, res) => {
 const allowedOrigins = [
   'http://localhost:5174',
   'http://localhost:5173',
-  'https://golden-veicular.vercel.app',
-  'https://dizapi.inf.br',
-  'https://goldenveicular.com.br',
-  'https://www.goldenveicular.com.br',
+  'http://127.0.0.1:5174',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:4173',
+  'http://localhost:4173',
+  'https://consultaplacaveicular.vercel.app',
+  'https://consultaplacaveicular.com.br',
+  'https://www.consultaplacaveicular.com.br',
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
@@ -99,11 +102,12 @@ app.use(cors({
       return callback(null, true);
     }
     
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    const isLocalhost = origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1');
+    if (isLocalhost || allowedOrigins.indexOf(origin) !== -1) {
       return callback(null, true);
     }
     
-    console.log('❌ CORS bloqueado para origem:', origin);
+    console.log(' CORS bloqueado para origem:', origin);
     const msg = 'A política de CORS para este site não permite acesso da Origem especificada.';
     return callback(new Error(msg), false);
   },
@@ -115,12 +119,12 @@ app.use(cors({
 
 // Log para debug
 const publicPath = path.join(__dirname, '../public');
-console.log('📁 Servindo arquivos estáticos de:', publicPath);
+console.log(' Servindo arquivos estáticos de:', publicPath);
 
 app.use(express.static(publicPath)); // Serve arquivos estáticos da pasta public
 
 // Rotas
-app.get('/', (req, res) => res.json({ message: 'API Golden Veicular está no ar!' }));
+app.get('/', (req, res) => res.json({ message: 'API Consultaplacaveicular está no ar!' }));
 
 // Rota para a página de consulta Base Estadual
 app.get('/consultas/base-estadual.html', (req, res) => {
@@ -239,7 +243,7 @@ const startServer = async () => {
     app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
   } catch (error) {
     console.error('❌ Falha na conexão com o banco de dados:', error);
-    process.exit(1); // Encerra o processo com erro
+    process.exitCode = 1; // Encerra o processo com erro
   }
 };
 

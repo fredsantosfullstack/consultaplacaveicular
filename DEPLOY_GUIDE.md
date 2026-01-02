@@ -1,4 +1,4 @@
-# 🚀 Guia de Deploy - Golden Veicular
+# 🚀 Guia de Deploy - Consultaplacaveicular
 
 ## Arquitetura do Deploy
 - **Frontend**: Vercel (React + Vite)
@@ -71,7 +71,7 @@ DB_USER=<MYSQL_USER do passo 1.2>
 DB_PASSWORD=<MYSQL_PASSWORD do passo 1.2>
 DB_NAME=<MYSQL_DATABASE do passo 1.2>
 PORT=3001
-JWT_SECRET=golden_veicular_jwt_secret_2025_super_seguro_123456789
+JWT_SECRET=consultaplacaveicular_jwt_secret_2025_super_seguro_123456789
 FRONTEND_URL=https://seu-app.vercel.app
 API_ACCESS_KEY=jDvvY1lNjQs9usyimnO8w55kYToIW8bqumiQBrO0cQbir8CLKFehYYxDD/YL2acH
 ASAAS_API_KEY=$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OmMxMjg2MjNkLTYyYWYtNDFkZC1hZTgzLWY1MDg0NjBhNWZhMzo6JGFhY2hfZTg3OTg1OTktYzg5ZS00Y2E5LWEyZTEtYjcxY2M2MTE1ZjM2
@@ -84,7 +84,7 @@ WEBHOOK_URL=https://seu-app.vercel.app/api/payments/webhook
 ### 2.4. Deploy
 1. Clique em **"Deploy"** ou aguarde o deploy automático
 2. Após conclusão, copie a URL pública (ex: `https://golden-backend-production.up.railway.app`)
-3. Teste acessando: `https://sua-url-railway.app` (deve retornar `{"message": "API Golden Veicular está no ar!"}`)
+3. Teste acessando: `https://sua-url-railway.app` (deve retornar `{"message": "API Consultaplacaveicular está no ar!"}`)
 
 ---
 
@@ -112,7 +112,7 @@ WEBHOOK_URL=https://seu-app.vercel.app/api/payments/webhook
 ### 3.4. Deploy
 1. Clique em **"Deploy"**
 2. Aguarde o build (2-3 minutos)
-3. Copie a URL gerada (ex: `https://golden-veicular.vercel.app`)
+3. Copie a URL gerada (ex: `https://consultaplacaveicular.vercel.app`)
 
 ### 3.5. Atualizar CORS no Backend
 1. Volte ao Railway → Serviço Backend → **"Variables"**
@@ -127,13 +127,13 @@ WEBHOOK_URL=https://seu-app.vercel.app/api/payments/webhook
 ### 4.1. Testar Backend
 ```bash
 curl https://sua-url-railway.app
-# Deve retornar: {"message": "API Golden Veicular está no ar!"}
+# Deve retornar: {"message": "API Consultaplacaveicular está no ar!"}
 ```
 
 ### 4.2. Testar Frontend
 1. Acesse `https://sua-url-vercel.app`
 2. Tente fazer login com:
-   - Email: `admin@goldenveicular.com.br`
+   - Email: `admin@consultaplacaveicular.com.br`
    - Senha: `admin123`
 
 ### 4.3. Testar Integração

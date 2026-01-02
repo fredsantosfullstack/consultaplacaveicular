@@ -25,12 +25,43 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
+const ensureSiteSettingsTable = async () => {
+  try {
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS site_settings (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        setting_key VARCHAR(100) NOT NULL UNIQUE,
+        setting_value TEXT,
+        description VARCHAR(255),
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        INDEX idx_site_settings_key (setting_key)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+    console.log('✅ Tabela site_settings verificada/criada com sucesso.');
+  } catch (error) {
+    console.error('❌ Erro ao garantir a existência da tabela site_settings:', error);
+  }
+};
+
+ensureSiteSettingsTable();
+
+const saveSiteSetting = async (key, value) => {
+  try {
+    await db.query(
+      'INSERT INTO site_settings (setting_key, setting_value) VALUES (?, ?) ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)',
+      [key, value]
+    );
+  } catch (error) {
+    console.error(`Erro ao salvar configuração ${key}:`, error);
+  }
+};
+
 // Configuração do Multer para o logo do menu
 const logoMenuStorage = multer.diskStorage({
   destination: uploadDir,
   filename: (req, file, cb) => {
     const extension = path.extname(file.originalname);
-    cb(null, `logo-golden-veicular-menu${extension}`); // Nome fixo
+    cb(null, `logo-consultaplacaveicular-menu${extension}`); // Nome fixo
   }
 });
 
@@ -41,7 +72,7 @@ const logoLoginStorage = multer.diskStorage({
   destination: uploadDir,
   filename: (req, file, cb) => {
     const extension = path.extname(file.originalname);
-    cb(null, `logo-golden-veicular-login${extension}`); // Nome fixo
+    cb(null, `logo-consultaplacaveicular-login${extension}`); // Nome fixo
   }
 });
 
@@ -58,34 +89,39 @@ const faviconStorage = multer.diskStorage({
 const uploadFavicon = multer({ storage: faviconStorage });
 
 // Rota para upload do logo do menu
-router.put('/logo-menu', authenticateToken, isAdmin, uploadLogoMenu.single('logo'), (req, res) => {
+router.put('/logo-menu', authenticateToken, isAdmin, uploadLogoMenu.single('logo'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ msg: 'Nenhum arquivo enviado.' });
   }
-  res.json({ msg: 'Logo do menu atualizado com sucesso!', path: `/assets/${req.file.filename}` });
+  const relativePath = `/assets/${req.file.filename}`;
+  await saveSiteSetting('logo_menu_url', relativePath);
+  res.json({ msg: 'Logo do menu atualizado com sucesso!', path: relativePath });
 });
 
 // Rota para upload do logo de login
-router.put('/logo-login', authenticateToken, isAdmin, uploadLogoLogin.single('logo'), (req, res) => {
+router.put('/logo-login', authenticateToken, isAdmin, uploadLogoLogin.single('logo'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ msg: 'Nenhum arquivo enviado.' });
   }
-  res.json({ msg: 'Logo de login atualizado com sucesso!', path: `/assets/${req.file.filename}` });
+  const relativePath = `/assets/${req.file.filename}`;
+  await saveSiteSetting('logo_login_url', relativePath);
+  res.json({ msg: 'Logo de login atualizado com sucesso!', path: relativePath });
 });
 
 // Rota para upload do favicon
-router.put('/favicon', authenticateToken, isAdmin, uploadFavicon.single('favicon'), (req, res) => {
+router.put('/favicon', authenticateToken, isAdmin, uploadFavicon.single('favicon'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ msg: 'Nenhum arquivo enviado.' });
   }
-  res.json({ msg: 'Favicon atualizado com sucesso!', path: `/${req.file.filename}` });
+  const relativePath = `/${req.file.filename}`;
+  await saveSiteSetting('favicon_url', relativePath);
+  res.json({ msg: 'Favicon atualizado com sucesso!', path: relativePath });
 });
 
-// Rota para buscar todas as configurações
+// Rota pública para buscar todas as configurações (sem autenticação)
 router.get('/', async (req, res) => {
   try {
     const [settings] = await db.query('SELECT * FROM site_settings');
-    // Transforma o array de objetos em um único objeto chave-valor
     const settingsMap = settings.reduce((acc, setting) => {
       acc[setting.setting_key] = setting.setting_value;
       return acc;

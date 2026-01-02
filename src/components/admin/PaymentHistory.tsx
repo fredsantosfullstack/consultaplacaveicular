@@ -80,7 +80,7 @@ const PaymentHistory: React.FC = () => {
             placeholder="Buscar por nome ou email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#000042]"
+            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#076AC2]"
           />
         </div>
         <div className="flex items-center gap-2">
@@ -88,7 +88,7 @@ const PaymentHistory: React.FC = () => {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#000042]"
+            className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#076AC2]"
           >
             <option value="all">Todos os Status</option>
             <option value="confirmed">Confirmado</option>

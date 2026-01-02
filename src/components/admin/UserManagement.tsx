@@ -119,7 +119,7 @@ const UserManagement: React.FC<UserManagementProps> = () => {
             </div>
 
             <div className="flex flex-col md:flex-row items-center justify-between mb-4 gap-4">
-                <button onClick={() => handleOpenModal(null)} className="bg-[#000042] text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90 flex items-center gap-2 w-full md:w-auto">
+                <button onClick={() => handleOpenModal(null)} className="bg-[#076AC2] text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90 flex items-center gap-2 w-full md:w-auto">
                     <Plus size={18} />
                     Adicionar Usuário
                 </button>
@@ -229,7 +229,7 @@ const UserManagement: React.FC<UserManagementProps> = () => {
                   <p className="text-xs text-gray-500">*Concede saldo diretamente ao usuário. Não gera cobrança.</p>
                   <div>
                     <button type="button" onClick={handleCloseModal} className="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg mr-2 hover:bg-gray-300">Cancelar</button>
-                    <button type="submit" className="bg-[#000042] text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90">Salvar</button>
+                    <button type="submit" className="bg-[#076AC2] text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90">Salvar</button>
                   </div>
                 </div>
               </form>

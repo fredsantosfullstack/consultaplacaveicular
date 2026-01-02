@@ -1,5 +1,5 @@
 -- ============================================
--- GOLDEN VEICULAR - SETUP COMPLETO DO BANCO
+-- CONSULTAPLACAVEICULAR - SETUP COMPLETO DO BANCO
 -- Railway MySQL Database
 -- ============================================
 
@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS admin_settings (
 INSERT INTO users (name, email, password, document_type, document_number, phone, balance, role, is_active) 
 VALUES (
   'Administrador',
-  'admin@goldenveicular.com',
+  'admin@consultaplacaveicular.com',
   '$2b$10$rZ5YhkKX8qN9vL3mJ2wXXeF5K8YhkKX8qN9vL3mJ2wXXeF5K8YhkK',
   'cpf',
   '00000000000',
@@ -133,8 +133,8 @@ ON DUPLICATE KEY UPDATE slug=slug;
 -- 8. INSERIR CONFIGURAÇÕES PADRÃO
 -- ============================================
 INSERT INTO admin_settings (setting_key, setting_value, description) VALUES
-('site_name', 'Golden Veicular', 'Nome do site'),
-('site_email', 'contato@goldenveicular.com', 'Email de contato'),
+('site_name', 'Consultaplacaveicular', 'Nome do site'),
+('site_email', 'contato@consultaplacaveicular.com', 'Email de contato'),
 ('site_phone', '(00) 0000-0000', 'Telefone de contato'),
 ('min_recharge', '10.00', 'Valor mínimo de recarga'),
 ('max_recharge', '10000.00', 'Valor máximo de recarga'),

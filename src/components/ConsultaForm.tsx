@@ -167,7 +167,7 @@ export default function ConsultaForm({
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-[#000042] text-white py-6">
+      <div className="bg-[#076AC2] text-white py-6">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex items-center gap-3">
             {icon && <div className="w-8 h-8">{icon}</div>}
@@ -192,7 +192,7 @@ export default function ConsultaForm({
           {/* Preço */}
           <div className="mb-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
             <p className="text-sm text-gray-600">Valor da consulta</p>
-            <p className="text-2xl font-bold text-[#000042]">
+            <p className="text-2xl font-bold text-[#076AC2]">
               {loadingPreco ? (
                 <span className="text-gray-400">Carregando...</span>
               ) : (
@@ -218,14 +218,14 @@ export default function ConsultaForm({
                     placeholder={campo.placeholder}
                     required={campo.required}
                     maxLength={campo.maxLength}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#000042] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
                   />
                 ) : (
                   <select
                     value={formData[campo.name] || ''}
                     onChange={(e) => handleInputChange(campo.name, e.target.value)}
                     required={campo.required}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#000042] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
                   >
                     <option value="">Selecione uma opção</option>
                     {campo.options?.map((opt) => (
@@ -243,7 +243,7 @@ export default function ConsultaForm({
               <button
                 type="submit"
                 disabled={loading || loadingPreco}
-                className="flex-1 bg-[#000042] text-white py-3 rounded-lg hover:bg-[#000052] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex-1 bg-[#076AC2] text-white py-3 rounded-lg hover:bg-[#055a9f] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>

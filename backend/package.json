@@ -1,7 +1,7 @@
 {
-  "name": "backend",
+  "name": "consultaplacaveicular-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "API Consultaplacaveicular",
   "main": "src/server.js",
   "type": "module",
   "scripts": {

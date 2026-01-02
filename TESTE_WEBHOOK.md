@@ -3,7 +3,7 @@
 ## ✅ CHECKLIST DE VERIFICAÇÃO:
 
 ### 1. **Webhook no Asaas:**
-- [ ] URL: `https://goldenveicular.com.br/api/payments/webhook`
+- [ ] URL: `https://consultaplacaveicular.com.br/api/payments/webhook`
 - [ ] Status: Ativado (verde)
 - [ ] Eventos: PAYMENT_RECEIVED + PAYMENT_CONFIRMED
 - [ ] Fila de sincronização: Sim
@@ -17,7 +17,7 @@
 
 Acesse no navegador:
 ```
-https://goldenveicular.com.br/api/payments/webhook
+https://consultaplacaveicular.com.br/api/payments/webhook
 ```
 
 Deve retornar erro 404 ou "Cannot GET" (normal, pois é POST)
@@ -26,7 +26,7 @@ Deve retornar erro 404 ou "Cannot GET" (normal, pois é POST)
 
 Acesse no navegador (substitua PAYMENT_ID):
 ```
-https://goldenveicular.com.br/api/payments/status/PAYMENT_ID
+https://consultaplacaveicular.com.br/api/payments/status/PAYMENT_ID
 ```
 
 Deve retornar JSON com status da transação
@@ -44,7 +44,7 @@ Deve retornar JSON com status da transação
    ↓
 4. Cliente paga PIX
    ↓ (5-10 segundos)
-5. Asaas envia webhook → https://goldenveicular.com.br/api/payments/webhook
+5. Asaas envia webhook → https://consultaplacaveicular.com.br/api/payments/webhook
    ↓
 6. Backend (server.js linha 65):
    - Recebe webhook
@@ -111,7 +111,7 @@ Body: { event: "PAYMENT_RECEIVED", payment: {...} }
 ### **Asaas (Webhooks):**
 ```
 Status: 200 (verde)
-URL: https://goldenveicular.com.br/api/payments/webhook
+URL: https://consultaplacaveicular.com.br/api/payments/webhook
 Resposta: { success: true, message: "Webhook processado com sucesso!" }
 ```
 

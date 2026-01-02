@@ -17,9 +17,9 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
         <button onClick={toggleSidebar} className="text-gray-600 hover:text-gray-800 lg:hidden">
           <MenuIcon className="w-6 h-6" />
         </button>
-        <h1 className="text-gray-800 hidden md:block ml-4 text-base">
-          <span className="font-normal">Bem-vindo(a), </span>
-          <span className="font-semibold">{profile?.name || 'Usuário'}</span>
+        <h1 className="hidden md:block ml-4 text-base">
+          <span className="font-normal text-gray-600">Bem-vindo(a), </span>
+          <span className="font-semibold text-[#076AC2]">{profile?.name || 'Usuário'}</span>
         </h1>
       </div>
       <div className="flex items-center space-x-4">

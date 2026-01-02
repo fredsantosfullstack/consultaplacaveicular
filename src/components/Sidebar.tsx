@@ -40,7 +40,7 @@ const NavItem: React.FC<NavItemProps> = ({ icon: Icon, label, to, onClick }) => 
         onClick={onClick}
         className={`flex items-center px-4 py-2.5 rounded-lg transition-colors duration-200 ${isActive ? 'bg-white/10' : 'hover:bg-white/5'}`}
       >
-        <Icon className="w-5 h-5 mr-3 text-[#D2AE6D]" />
+        <Icon className="w-5 h-5 mr-3 text-white" />
         <span className="font-medium text-sm">{label}</span>
       </Link>
     </li>
@@ -58,11 +58,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggle, userRole, onLogout })
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 w-64 h-full bg-[#000042] text-white z-30 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:translate-x-0 lg:relative`}
+        className={`fixed top-0 left-0 w-64 h-full bg-[#076AC2] text-white z-30 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:translate-x-0 lg:relative`}
       >
         <div className="pt-6 pb-4 px-4">
-          <div className="border-b border-white/20 pb-4 flex justify-center">
-          <CustomLogo type="menu" className="h-12" />
+          <div className="border-b border-white/20 pb-4 flex justify-start">
+            <CustomLogo type="menu" className="ml-1" />
           </div>
         </div>
         
@@ -97,7 +97,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggle, userRole, onLogout })
                 onClick={() => { onLogout(); toggle(); }}
                 className="w-full flex items-center px-4 py-2.5 rounded-lg text-white hover:bg-white/10 transition-colors duration-200"
               >
-                <LogOut className="w-5 h-5 mr-3" />
+                <LogOut className="w-5 h-5 mr-3 text-white" />
                 <span className="font-medium text-sm">Sair</span>
               </button>
             </li>

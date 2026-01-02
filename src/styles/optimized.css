@@ -1,5 +1,5 @@
 /* 
- * Estilos Otimizados - Golden Veicular
+ * Estilos Otimizados - Consultaplacaveicular
  * Foco em performance e design limpo
  */
 
@@ -48,14 +48,14 @@
 }
 
 .btn-primary-optimized {
-  background-color: #0f43aa;
+  background-color: #076AC2;
   color: white;
-  border-color: #0f43aa;
+  border-color: #076AC2;
 }
 
 .btn-primary-optimized:hover {
-  background-color: #0c3688;
-  border-color: #0c3688;
+  background-color: #055a9f;
+  border-color: #055a9f;
 }
 
 .btn-secondary-optimized {
@@ -71,11 +71,11 @@
 
 /* ===== GRADIENTES OTIMIZADOS ===== */
 .gradient-blue-optimized {
-  background: linear-gradient(135deg, #0f43aa 0%, #1e40af 100%);
+  background: linear-gradient(135deg, #076AC2 0%, #055a9f 100%);
 }
 
 .gradient-green-optimized {
-  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  background: linear-gradient(135deg, #00A788 0%, #008c73 100%);
 }
 
 .gradient-purple-optimized {
@@ -112,7 +112,7 @@
   width: 20px;
   height: 20px;
   border: 2px solid #f3f4f6;
-  border-top: 2px solid #0f43aa;
+  border-top: 2px solid #076AC2;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -171,8 +171,10 @@
 
 /* ===== CORES OTIMIZADAS ===== */
 :root {
-  --color-primary: #0f43aa;
-  --color-primary-hover: #0c3688;
+  --color-primary: #076AC2;
+  --color-primary-hover: #055a9f;
+  --color-secondary: #00A788;
+  --color-secondary-hover: #008c73;
   --color-gray-50: #fafafa;
   --color-gray-100: #f5f5f5;
   --color-gray-200: #e5e5e5;

@@ -52,7 +52,7 @@ const SignUpForm: React.FC = () => {
       <FormField id="email-signup" label="Seu melhor e-mail" type="email" value={email} onChange={e => setEmail(e.target.value)} icon={Mail} required />
       <FormField id="phone" label="(XX) XXXXX-XXXX" type="tel" value={phone} onChange={e => setPhone(e.target.value)} icon={Phone} required />
       <div className="flex gap-4">
-        <select onChange={(e) => setDocumentType(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/3 p-2.5">
+        <select onChange={(e) => setDocumentType(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#076AC2] focus:border-[#076AC2] block w-1/3 p-2.5">
           <option value="cpf">CPF</option>
           <option value="cnpj">CNPJ</option>
         </select>
@@ -67,7 +67,7 @@ const SignUpForm: React.FC = () => {
         É crime a inserção de dados falsos em sistema de informações, conforme o art. 313-A do Código Penal Brasileiro.
       </p>
 
-      <button type="submit" disabled={isLoading} className="w-full py-3 px-4 bg-blue-600 rounded-full text-white font-semibold hover:bg-blue-700 disabled:bg-blue-400 transition-all duration-300 transform hover:scale-105">
+      <button type="submit" disabled={isLoading} className="w-full py-3 px-4 bg-[#076AC2] rounded-full text-white font-semibold hover:bg-[#055a9f] disabled:opacity-50 transition-all duration-300 transform hover:scale-105">
         {isLoading ? 'SIGNING UP...' : 'SIGN UP'}
       </button>
     </form>

@@ -1,23 +1,20 @@
 import React from 'react';
+import { useSiteSettings } from '../contexts/SiteSettingsContext';
 
 const Footer: React.FC = () => {
+  const { settings } = useSiteSettings();
+
+  // Só exibir footer se houver mensagem
+  const message = settings?.footer_message;
+  
+  if (!message || message.trim() === '') {
+    return null;
+  }
+
   return (
-    <footer className="bg-white border-t border-gray-200 text-gray-700 text-sm h-12">
-      <div className="flex justify-between items-center h-full max-w-screen-xl mx-auto px-4">
-        <div>
-          &copy; 2025. Golden Veicular
-        </div>
-        <div className="text-center sm:text-right">
-          Desenvolvido por{' '}
-          <a
-            href="https://agenciadipixel.com.br"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-bold text-[#0f43aa] hover:underline"
-          >
-            Agência DiPixel
-          </a>
-        </div>
+    <footer className="h-12 border-t border-gray-200 bg-white text-sm text-gray-700">
+      <div className="mx-auto flex h-full max-w-screen-xl items-center justify-center px-4">
+        <div className="text-center">{message}</div>
       </div>
     </footer>
   );

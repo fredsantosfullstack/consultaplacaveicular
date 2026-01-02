@@ -189,7 +189,7 @@ export default function CrlveOrdersAdmin({ onBack }: CrlveOrdersAdminProps) {
               onClick={() => setActiveTab('orders')}
               className={`px-6 py-3 text-sm font-medium border-b-2 ${
                 activeTab === 'orders'
-                  ? 'border-[#000042] text-[#000042]'
+                  ? 'border-[#076AC2] text-[#076AC2]'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
@@ -200,7 +200,7 @@ export default function CrlveOrdersAdmin({ onBack }: CrlveOrdersAdminProps) {
               onClick={() => setActiveTab('states')}
               className={`px-6 py-3 text-sm font-medium border-b-2 ${
                 activeTab === 'states'
-                  ? 'border-[#000042] text-[#000042]'
+                  ? 'border-[#076AC2] text-[#076AC2]'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
@@ -211,7 +211,7 @@ export default function CrlveOrdersAdmin({ onBack }: CrlveOrdersAdminProps) {
               onClick={() => setActiveTab('settings')}
               className={`px-6 py-3 text-sm font-medium border-b-2 ${
                 activeTab === 'settings'
-                  ? 'border-[#000042] text-[#000042]'
+                  ? 'border-[#076AC2] text-[#076AC2]'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
@@ -223,7 +223,7 @@ export default function CrlveOrdersAdmin({ onBack }: CrlveOrdersAdminProps) {
         <div className="p-6">
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="w-8 h-8 animate-spin text-[#000042]" />
+              <Loader2 className="w-8 h-8 animate-spin text-[#076AC2]" />
             </div>
           ) : (
             <>
@@ -295,7 +295,7 @@ export default function CrlveOrdersAdmin({ onBack }: CrlveOrdersAdminProps) {
                         setEditingState({ id: 0, state_code: '', state_name: '', price: 0, is_active: true });
                         setShowStateModal(true);
                       }}
-                      className="bg-[#000042] text-white px-4 py-2 rounded-lg hover:bg-opacity-90"
+                      className="bg-[#076AC2] text-white px-4 py-2 rounded-lg hover:bg-opacity-90"
                     >
                       + Adicionar Estado
                     </button>
@@ -306,7 +306,7 @@ export default function CrlveOrdersAdmin({ onBack }: CrlveOrdersAdminProps) {
                         <div className="flex justify-between items-start mb-2">
                           <div>
                             <h3 className="font-semibold">{state.state_name} ({state.state_code})</h3>
-                            <p className="text-lg font-bold text-[#000042]">R$ {Number(state.price).toFixed(2)}</p>
+                            <p className="text-lg font-bold text-[#076AC2]">R$ {Number(state.price).toFixed(2)}</p>
                           </div>
                           <span className={`px-2 py-1 rounded text-xs ${state.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
                             {state.is_active ? 'Ativo' : 'Inativo'}
@@ -403,7 +403,7 @@ export default function CrlveOrdersAdmin({ onBack }: CrlveOrdersAdminProps) {
                   </div>
                   <button
                     type="submit"
-                    className="bg-[#000042] text-white px-6 py-2 rounded-lg hover:bg-opacity-90"
+                    className="bg-[#076AC2] text-white px-6 py-2 rounded-lg hover:bg-opacity-90"
                   >
                     Salvar Configurações
                   </button>
@@ -446,7 +446,7 @@ export default function CrlveOrdersAdmin({ onBack }: CrlveOrdersAdminProps) {
               <div className="flex gap-3">
                 <button
                   onClick={() => handleUpdateStatus(editingOrder.id, editingOrder.status, editingOrder.admin_notes || '')}
-                  className="flex-1 bg-[#000042] text-white py-2 rounded-lg hover:bg-opacity-90"
+                  className="flex-1 bg-[#076AC2] text-white py-2 rounded-lg hover:bg-opacity-90"
                 >
                   Salvar
                 </button>
@@ -513,7 +513,7 @@ export default function CrlveOrdersAdmin({ onBack }: CrlveOrdersAdminProps) {
               <div className="flex gap-3">
                 <button
                   onClick={() => handleSaveState(editingState)}
-                  className="flex-1 bg-[#000042] text-white py-2 rounded-lg hover:bg-opacity-90"
+                  className="flex-1 bg-[#076AC2] text-white py-2 rounded-lg hover:bg-opacity-90"
                 >
                   Salvar
                 </button>

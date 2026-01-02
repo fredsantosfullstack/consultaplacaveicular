@@ -58,7 +58,7 @@ const ApiSettings: React.FC = () => {
   if (isLoading) {
     return (
       <div className="bg-white p-6 rounded-lg shadow-md flex justify-center items-center min-h-[300px]">
-        <Loader2 className="animate-spin text-[#000042]" size={48} />
+        <Loader2 className="animate-spin text-[#076AC2]" size={48} />
       </div>
     );
   }
@@ -91,7 +91,7 @@ const ApiSettings: React.FC = () => {
             value={credentials.api_email}
             onChange={handleInputChange}
             placeholder="exemplo@email.com"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#000042] focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
             required
           />
           <p className="text-xs text-gray-500 mt-1">Email com créditos ilimitados na API externa</p>
@@ -111,7 +111,7 @@ const ApiSettings: React.FC = () => {
               value={credentials.api_password}
               onChange={handleInputChange}
               placeholder="••••••••"
-              className="w-full px-4 py-2 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#000042] focus:border-transparent"
+              className="w-full px-4 py-2 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
               required
             />
             <button
@@ -130,7 +130,7 @@ const ApiSettings: React.FC = () => {
         <button 
           onClick={handleSave}
           disabled={isSaving}
-          className="bg-[#000042] text-white font-bold py-2 px-6 rounded-lg flex items-center gap-2 hover:bg-opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="bg-[#076AC2] text-white font-bold py-2 px-6 rounded-lg flex items-center gap-2 hover:bg-opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSaving ? (
             <>

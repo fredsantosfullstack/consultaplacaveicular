@@ -99,7 +99,7 @@ export default function ReemissaoAtpvE() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-[#000042] text-white py-6">
+      <div className="bg-[#076AC2] text-white py-6">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex items-center gap-3">
             <FileText className="w-8 h-8" />
@@ -137,7 +137,7 @@ export default function ReemissaoAtpvE() {
           {/* Preço */}
           <div className="mb-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
             <p className="text-sm text-gray-600">Valor da consulta</p>
-            <p className="text-2xl font-bold text-[#000042]">
+            <p className="text-2xl font-bold text-[#076AC2]">
               {loadingPreco ? (
                 <span className="text-gray-400">Carregando...</span>
               ) : (
@@ -156,7 +156,7 @@ export default function ReemissaoAtpvE() {
               <select
                 value={tipoConsulta}
                 onChange={(e) => setTipoConsulta(e.target.value as 'placa' | 'chassi')}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#000042] focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
               >
                 <option value="placa">Placa</option>
                 <option value="chassi">Chassi</option>
@@ -177,7 +177,7 @@ export default function ReemissaoAtpvE() {
                     placeholder="ABC1D23"
                     required
                     maxLength={7}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#000042] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -191,7 +191,7 @@ export default function ReemissaoAtpvE() {
                     placeholder="12345678901"
                     required
                     maxLength={11}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#000042] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
                   />
                 </div>
               </>
@@ -210,7 +210,7 @@ export default function ReemissaoAtpvE() {
                   placeholder="9BWZZZ377VT004251"
                   required
                   maxLength={17}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#000042] focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
                 />
               </div>
             )}
@@ -220,7 +220,7 @@ export default function ReemissaoAtpvE() {
               <button
                 type="submit"
                 disabled={loading || loadingPreco}
-                className="flex-1 bg-[#000042] text-white py-3 rounded-lg hover:bg-[#000052] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex-1 bg-[#076AC2] text-white py-3 rounded-lg hover:bg-[#055a9f] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>
