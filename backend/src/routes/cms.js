@@ -1,8 +1,17 @@
 import express from 'express';
 import * as cmsController from '../controllers/cmsController.js';
-import { authenticateToken, isAdmin } from '../middleware/auth.js';
+import auth from '../middleware/auth.js';
 
 const router = express.Router();
+
+// Middleware para verificar se é admin
+const isAdmin = (req, res, next) => {
+  if (req.user && req.user.role === 'admin') {
+    next();
+  } else {
+    res.status(403).json({ msg: 'Acesso negado. Apenas administradores.' });
+  }
+};
 
 // ========================================
 // ROTAS PÚBLICAS (sem autenticação)
@@ -40,28 +49,28 @@ router.post('/contact', cmsController.submitContact);
 // ========================================
 
 // Configurações gerais
-router.put('/config', authenticateToken, isAdmin, cmsController.updateConfig);
+router.put('/config', auth, isAdmin, cmsController.updateConfig);
 
 // Hero section
-router.put('/hero', authenticateToken, isAdmin, cmsController.updateHero);
+router.put('/hero', auth, isAdmin, cmsController.updateHero);
 
 // Benefícios
-router.post('/benefits', authenticateToken, isAdmin, cmsController.createBenefit);
-router.put('/benefits/:id', authenticateToken, isAdmin, cmsController.updateBenefit);
-router.delete('/benefits/:id', authenticateToken, isAdmin, cmsController.deleteBenefit);
+router.post('/benefits', auth, isAdmin, cmsController.createBenefit);
+router.put('/benefits/:id', auth, isAdmin, cmsController.updateBenefit);
+router.delete('/benefits/:id', auth, isAdmin, cmsController.deleteBenefit);
 
 // Estatísticas
-router.put('/statistics/:id', authenticateToken, isAdmin, cmsController.updateStatistic);
+router.put('/statistics/:id', auth, isAdmin, cmsController.updateStatistic);
 
 // Serviços
-router.post('/services', authenticateToken, isAdmin, cmsController.createService);
-router.put('/services/:id', authenticateToken, isAdmin, cmsController.updateService);
-router.delete('/services/:id', authenticateToken, isAdmin, cmsController.deleteService);
+router.post('/services', auth, isAdmin, cmsController.createService);
+router.put('/services/:id', auth, isAdmin, cmsController.updateService);
+router.delete('/services/:id', auth, isAdmin, cmsController.deleteService);
 
 // Passos
-router.put('/steps/:id', authenticateToken, isAdmin, cmsController.updateStep);
+router.put('/steps/:id', auth, isAdmin, cmsController.updateStep);
 
 // Submissões de contato
-router.get('/contact-submissions', authenticateToken, isAdmin, cmsController.getContactSubmissions);
+router.get('/contact-submissions', auth, isAdmin, cmsController.getContactSubmissions);
 
 export default router;

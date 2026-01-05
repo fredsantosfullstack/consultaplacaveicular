@@ -6,11 +6,12 @@ import Services from '../src/components/landing/Services';
 import Steps from '../src/components/landing/Steps';
 import Contact from '../src/components/landing/Contact';
 import LandingFooter from '../src/components/landing/LandingFooter';
-import api from '../src/services/api';
+import { publicApi } from '../src/services/api';
 
 interface LandingData {
   config: {
     logo_url?: string;
+    footer_logo_url?: string;
     primary_color: string;
     secondary_color: string;
     whatsapp_number?: string;
@@ -28,6 +29,7 @@ interface LandingData {
     cta_whatsapp_text: string;
     background_gradient_from: string;
     background_gradient_to: string;
+    mockup_image_url?: string;
   };
   benefits: Array<{
     icon: string;
@@ -45,6 +47,7 @@ interface LandingData {
     price: number;
     features: string[];
     is_highlighted: boolean;
+    highlight_label?: string | null;
   }>;
   steps: Array<{
     icon: string;
@@ -66,8 +69,39 @@ const LandingPage: React.FC = () => {
   useEffect(() => {
     const fetchLandingData = async () => {
       try {
-        const response = await api.get('/cms/landing-page');
-        setData(response.data);
+        const response = await publicApi.get('/cms/landing-page');
+
+        const normalizedServices = (response.data.services || []).map((service: any) => {
+          let price = service.price;
+          if (typeof price !== 'number') {
+            const parsed = Number(price);
+            price = Number.isFinite(parsed) ? parsed : 0;
+          }
+
+          let features = service.features;
+          if (typeof features === 'string') {
+            try {
+              const parsed = JSON.parse(features);
+              features = Array.isArray(parsed) ? parsed : features.split('\n').filter(Boolean);
+            } catch {
+              features = features.split('\n').filter(Boolean);
+            }
+          }
+          if (!Array.isArray(features)) {
+            features = [];
+          }
+
+          return {
+            ...service,
+            price,
+            features
+          };
+        });
+
+        setData({
+          ...response.data,
+          services: normalizedServices
+        });
 
         // Atualizar SEO
         if (response.data.config.seo_title) {
@@ -147,6 +181,7 @@ const LandingPage: React.FC = () => {
         benefits={data.benefits}
         gradientFrom={data.hero.background_gradient_from}
         gradientTo={data.hero.background_gradient_to}
+        mockupImageUrl={data.hero.mockup_image_url}
       />
 
       {/* Statistics */}
@@ -171,6 +206,7 @@ const LandingPage: React.FC = () => {
       <LandingFooter
         links={data.footerLinks}
         siteName={data.config.seo_title}
+        footerLogoUrl={data.config.footer_logo_url}
       />
     </div>
   );

@@ -46,7 +46,7 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
         isScrolled ? 'bg-white shadow-lg' : 'bg-white/95 backdrop-blur-sm'
       }`}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1410px] mx-auto px-5 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex items-center">
@@ -80,7 +80,7 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
             </a>
             <a
               href="/cadastro"
-              className="px-6 py-2 bg-[#076AC2] text-white font-semibold rounded-lg hover:bg-[#055a9f] transition-all shadow-md hover:shadow-lg"
+              className="px-6 py-2 bg-[#52c41a] text-white font-semibold rounded-lg hover:bg-[#3fa813] transition-all shadow-md hover:shadow-lg"
             >
               Cadastrar Grátis
             </a>
@@ -99,7 +99,7 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
       {/* Menu Mobile */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white border-t border-gray-200 shadow-lg">
-          <nav className="container mx-auto px-4 py-4 space-y-4">
+          <nav className="max-w-[1410px] mx-auto px-5 py-4 space-y-4">
             {menuItems.map((item) => (
               <button
                 key={item.id}
@@ -118,7 +118,7 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
               </a>
               <a
                 href="/cadastro"
-                className="block w-full text-center px-6 py-3 bg-[#076AC2] text-white font-semibold rounded-lg hover:bg-[#055a9f] transition-all"
+                className="block w-full text-center px-6 py-3 bg-[#52c41a] text-white font-semibold rounded-lg hover:bg-[#3fa813] transition-all"
               >
                 Cadastrar Grátis
               </a>

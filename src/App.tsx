@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import LandingPage from '../pages/LandingPage';
 import AuthPage from '../pages/AuthPage';
 import ForgotPassword from '../pages/ForgotPassword';
@@ -12,6 +11,8 @@ import ConsultationPage from '../pages/ConsultationPage';
 import ProfilePage from '../pages/ProfilePage';
 import ConsultationHistoryPage from '../pages/ConsultationHistoryPage';
 import TermsOfUse from '../pages/TermsOfUse';
+import LGPDPage from '../pages/LGPD';
+import PrivacyPolicy from '../pages/PrivacyPolicy';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -30,8 +31,7 @@ import GravameV2 from './pages/consultas/GravameV2';
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
+      <Routes>
           {/* Landing Page - Página Inicial Pública */}
           <Route path="/" element={<LandingPage />} />
           
@@ -97,14 +97,9 @@ function App() {
               </ProtectedRoute>
             )}
           />
-          <Route
-            path="/termos-de-uso"
-            element={(
-              <ProtectedRoute>
-                <TermsOfUse />
-              </ProtectedRoute>
-            )}
-          />
+          <Route path="/termos-de-uso" element={<TermsOfUse />} />
+          <Route path="/privacidade" element={<PrivacyPolicy />} />
+          <Route path="/lgpd" element={<LGPDPage />} />
 
           {/* Rotas de Consultas Específicas */}
           <Route
@@ -187,10 +182,7 @@ function App() {
               </ProtectedRoute>
             )}
           />
-          
-          <Route path="/" element={<AuthPage />} /> {/* Rota padrão */} 
         </Routes>
-      </Router>
     </AuthProvider>
   );
 }

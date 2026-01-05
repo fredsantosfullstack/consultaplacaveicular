@@ -13,6 +13,7 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
   const [config, setConfig] = useState({
     logo_url: '',
     favicon_url: '',
+    footer_logo_url: '',
     primary_color: '#076AC2',
     secondary_color: '#4A90E2',
     whatsapp_number: '',
@@ -30,7 +31,8 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
     cta_primary_link: '',
     cta_whatsapp_text: '',
     background_gradient_from: '#667eea',
-    background_gradient_to: '#764ba2'
+    background_gradient_to: '#764ba2',
+    mockup_image_url: ''
   });
 
   const [benefits, setBenefits] = useState<any[]>([]);
@@ -226,6 +228,19 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
+                    URL do Logo Footer
+                  </label>
+                  <input
+                    type="text"
+                    value={config.footer_logo_url}
+                    onChange={(e) => setConfig({ ...config, footer_logo_url: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
+                    placeholder="https://exemplo.com/logo-footer.png"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Cor Primária
                   </label>
                   <div className="flex gap-2">
@@ -364,7 +379,7 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
                     value={hero.title}
                     onChange={(e) => setHero({ ...hero, title: e.target.value })}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
-                    placeholder="Plataforma 100% Online"
+                    placeholder="Consulte a placa e compre com mais segurança"
                   />
                 </div>
 
@@ -377,7 +392,7 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
                     value={hero.subtitle}
                     onChange={(e) => setHero({ ...hero, subtitle: e.target.value })}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
-                    placeholder="Consultas Veiculares"
+                    placeholder="Consultas veiculares online"
                   />
                 </div>
 
@@ -390,7 +405,7 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
                     onChange={(e) => setHero({ ...hero, description: e.target.value })}
                     rows={3}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent resize-none"
-                    placeholder="Mais do que dados: entregamos confiança..."
+                    placeholder="Descubra histórico e alertas importantes antes de fechar negócio. Resultado em poucos segundos."
                   />
                 </div>
 
@@ -404,7 +419,7 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
                       value={hero.cta_primary_text}
                       onChange={(e) => setHero({ ...hero, cta_primary_text: e.target.value })}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
-                      placeholder="Iniciar Consulta"
+                      placeholder="Consultar Placa"
                     />
                   </div>
 
@@ -433,6 +448,20 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
                       placeholder="Falar no WhatsApp"
                     />
                   </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    URL da Imagem do Mockup (MacBook)
+                  </label>
+                  <input
+                    type="text"
+                    value={hero.mockup_image_url}
+                    onChange={(e) => setHero({ ...hero, mockup_image_url: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
+                    placeholder="https://exemplo.com/mockup.png"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Deixe em branco para usar o mockup padrão do sistema</p>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-4">
@@ -561,6 +590,7 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
                       price: 0,
                       features: [],
                       is_highlighted: false,
+                      highlight_label: '',
                       display_order: services.length
                     };
                     setServices([...services, newService]);
@@ -650,6 +680,9 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
                           onChange={(e) => {
                             const updated = [...services];
                             updated[index].is_highlighted = e.target.checked;
+                            if (!e.target.checked) {
+                              updated[index].highlight_label = '';
+                            }
                             setServices(updated);
                           }}
                           className="w-4 h-4 text-[#076AC2] rounded focus:ring-[#076AC2]"
@@ -659,6 +692,25 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
                         </span>
                       </label>
                     </div>
+
+                    {service.is_highlighted && (
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Texto do selo destacado
+                        </label>
+                        <input
+                          type="text"
+                          value={service.highlight_label || ''}
+                          onChange={(e) => {
+                            const updated = [...services];
+                            updated[index].highlight_label = e.target.value;
+                            setServices(updated);
+                          }}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
+                          placeholder="Ex: Plano de crescimento"
+                        />
+                      </div>
+                    )}
 
                     <div className="flex gap-3">
                       <button

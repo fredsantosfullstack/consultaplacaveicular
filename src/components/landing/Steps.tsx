@@ -23,63 +23,57 @@ const Steps: React.FC<StepsProps> = ({ steps }) => {
   };
 
   return (
-    <section id="como-funciona" className="py-16 lg:py-24 bg-gray-50 scroll-mt-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Título da Seção */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-            Passo a Passo
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            É rápido e fácil! Veja como funciona nossa plataforma
-          </p>
+    <section id="como-funciona" className="py-20 bg-white scroll-mt-20">
+      <div className="max-w-[1410px] mx-auto px-5 sm:px-8 lg:px-12">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16">
+          <div className="space-y-3">
+            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900">
+              Fluxo em 3 etapas para subir sua operação sem atrito
+            </h2>
+            <p className="text-base text-slate-500 max-w-3xl">
+              Nossa equipe implementa integrações, faz o tuning antifraude e entrega dashboards prontos para decisão.
+            </p>
+          </div>
         </div>
 
-        {/* Steps */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {steps.map((step, index) => {
-            const Icon = getIcon(step.icon);
-            return (
-              <div key={index} className="relative">
-                {/* Linha conectora (apenas entre os cards, não no último) */}
-                {index < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-16 left-1/2 w-full h-0.5 bg-gradient-to-r from-[#076AC2] to-transparent z-0"></div>
-                )}
-
-                {/* Card */}
-                <div className="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 z-10">
-                  {/* Número do Passo */}
-                  <div className="absolute -top-4 -left-4 w-12 h-12 bg-[#076AC2] text-white rounded-full flex items-center justify-center font-bold text-xl shadow-lg">
-                    {index + 1}
+        <div className="relative">
+          <div className="hidden lg:block absolute left-8 right-8 top-16 border-t border-dashed border-slate-200"></div>
+          <div className="grid gap-8 md:grid-cols-3">
+            {steps.slice(0, 3).map((step, index) => {
+              const Icon = getIcon(step.icon);
+              return (
+                <div
+                  key={index}
+                  className="relative bg-slate-900 text-white rounded-3xl p-8 shadow-2xl shadow-slate-900/20 overflow-hidden"
+                >
+                  <div className="absolute -top-10 -right-10 w-28 h-28 bg-white/10 blur-3xl"></div>
+                  <div className="flex items-center gap-4 mb-6">
+                    <span className="flex items-center justify-center w-12 h-12 rounded-full bg-white/15 font-semibold">
+                      {index + 1}
+                    </span>
+                    <div className="p-3 rounded-2xl bg-white/10">
+                      <Icon className="w-6 h-6 text-emerald-300" />
+                    </div>
                   </div>
-
-                  {/* Ícone */}
-                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6 mx-auto">
-                    <Icon className="w-8 h-8 text-[#076AC2]" />
-                  </div>
-
-                  {/* Título */}
-                  <h3 className="text-xl font-bold text-gray-900 text-center mb-3">
-                    {step.title}
-                  </h3>
-
-                  {/* Descrição */}
-                  <p className="text-gray-600 text-center text-sm">
-                    {step.description}
-                  </p>
+                  <h3 className="text-xl font-semibold">{step.title}</h3>
+                  <p className="text-sm text-white/70 mt-3">{step.description}</p>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
 
-        {/* CTA Final */}
-        <div className="text-center mt-12">
+        <div className="mt-16 bg-slate-900 text-white rounded-[10px] p-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+          <div>
+            <h3 className="text-2xl font-bold max-w-2xl">
+              Nossa equipe configura fluxos, integrações e dashboards para você focar no cliente final.
+            </h3>
+          </div>
           <button
-            onClick={() => window.location.href = '/cadastro'}
-            className="inline-flex items-center justify-center px-8 py-4 bg-[#076AC2] hover:bg-[#055a9f] text-white font-bold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            onClick={() => (window.location.href = '/cadastro')}
+            className="inline-flex items-center justify-center px-10 py-4 rounded-[10px] bg-[#52c41a] text-white font-semibold shadow-xl hover:-translate-y-0.5 transition-transform text-lg hover:bg-[#3fa813]"
           >
-            Começar Agora Grátis
+            Quero ativar minha operação agora
           </button>
         </div>
       </div>

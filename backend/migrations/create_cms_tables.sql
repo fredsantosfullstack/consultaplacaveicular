@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS site_config (
   id INT PRIMARY KEY AUTO_INCREMENT,
   logo_url VARCHAR(500) DEFAULT NULL,
   favicon_url VARCHAR(500) DEFAULT NULL,
+  footer_logo_url VARCHAR(500) DEFAULT NULL,
   primary_color VARCHAR(7) DEFAULT '#076AC2',
   secondary_color VARCHAR(7) DEFAULT '#4A90E2',
   whatsapp_number VARCHAR(20) DEFAULT NULL,
@@ -96,6 +97,7 @@ CREATE TABLE IF NOT EXISTS site_services (
   description TEXT DEFAULT NULL,
   price DECIMAL(10,2) DEFAULT NULL,
   features JSON DEFAULT NULL,
+  highlight_label VARCHAR(120) DEFAULT NULL,
   is_highlighted BOOLEAN DEFAULT FALSE,
   is_active BOOLEAN DEFAULT TRUE,
   display_order INT DEFAULT 0,
@@ -106,13 +108,18 @@ CREATE TABLE IF NOT EXISTS site_services (
   INDEX idx_highlighted (is_highlighted)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Garante compatibilidade para bancos já existentes
+ALTER TABLE site_services 
+  ADD COLUMN IF NOT EXISTS highlight_label VARCHAR(120) DEFAULT NULL;
+
 -- Inserir serviços padrão
-INSERT INTO site_services (name, description, price, features, is_highlighted, display_order) VALUES
+INSERT INTO site_services (name, description, price, features, highlight_label, is_highlighted, display_order) VALUES
 (
   'Consulta PME Cadastur',
   'Consulta completa de veículo',
   19.90,
   JSON_ARRAY('Dados do veículo', 'Histórico de proprietários', 'Restrições', 'Débitos'),
+  'Plano de crescimento',
   TRUE,
   1
 ),
@@ -121,6 +128,7 @@ INSERT INTO site_services (name, description, price, features, is_highlighted, d
   'Documento digital do veículo',
   29.90,
   JSON_ARRAY('CRLV Digital', 'Válido nacionalmente', 'Download imediato', 'Sem burocracia'),
+  NULL,
   FALSE,
   2
 ),
@@ -129,6 +137,7 @@ INSERT INTO site_services (name, description, price, features, is_highlighted, d
   'Consulta em base nacional',
   39.90,
   JSON_ARRAY('Dados completos', 'Histórico detalhado', 'Restrições judiciais', 'Relatório PDF'),
+  NULL,
   FALSE,
   3
 )

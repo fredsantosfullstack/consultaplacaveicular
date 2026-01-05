@@ -1,4 +1,4 @@
-import db from '../config/database.js';
+import db from '../config/db.js';
 
 // ========================================
 // CONFIGURAÇÕES GERAIS
@@ -19,6 +19,7 @@ export const updateConfig = async (req, res) => {
     const {
       logo_url,
       favicon_url,
+      footer_logo_url,
       primary_color,
       secondary_color,
       whatsapp_number,
@@ -32,6 +33,7 @@ export const updateConfig = async (req, res) => {
       `UPDATE site_config SET 
         logo_url = ?,
         favicon_url = ?,
+        footer_logo_url = ?,
         primary_color = ?,
         secondary_color = ?,
         whatsapp_number = ?,
@@ -41,7 +43,7 @@ export const updateConfig = async (req, res) => {
         seo_keywords = ?,
         updated_at = NOW()
       WHERE id = 1`,
-      [logo_url, favicon_url, primary_color, secondary_color, whatsapp_number, whatsapp_message, seo_title, seo_description, seo_keywords]
+      [logo_url, favicon_url, footer_logo_url, primary_color, secondary_color, whatsapp_number, whatsapp_message, seo_title, seo_description, seo_keywords]
     );
 
     res.json({ msg: 'Configurações atualizadas com sucesso' });
@@ -75,7 +77,8 @@ export const updateHero = async (req, res) => {
       cta_primary_link,
       cta_whatsapp_text,
       background_gradient_from,
-      background_gradient_to
+      background_gradient_to,
+      mockup_image_url
     } = req.body;
 
     await db.query(
@@ -88,9 +91,10 @@ export const updateHero = async (req, res) => {
         cta_whatsapp_text = ?,
         background_gradient_from = ?,
         background_gradient_to = ?,
+        mockup_image_url = ?,
         updated_at = NOW()
       WHERE id = 1`,
-      [title, subtitle, description, cta_primary_text, cta_primary_link, cta_whatsapp_text, background_gradient_from, background_gradient_to]
+      [title, subtitle, description, cta_primary_text, cta_primary_link, cta_whatsapp_text, background_gradient_from, background_gradient_to, mockup_image_url]
     );
 
     res.json({ msg: 'Hero atualizado com sucesso' });
@@ -211,11 +215,11 @@ export const getServices = async (req, res) => {
 
 export const createService = async (req, res) => {
   try {
-    const { name, description, price, features, is_highlighted, display_order } = req.body;
+    const { name, description, price, features, is_highlighted, highlight_label, display_order } = req.body;
 
     const [result] = await db.query(
-      'INSERT INTO site_services (name, description, price, features, is_highlighted, display_order) VALUES (?, ?, ?, ?, ?, ?)',
-      [name, description, price, JSON.stringify(features), is_highlighted || false, display_order || 0]
+      'INSERT INTO site_services (name, description, price, features, is_highlighted, highlight_label, display_order) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [name, description, price, JSON.stringify(features), is_highlighted || false, highlight_label || null, display_order || 0]
     );
 
     res.json({ msg: 'Serviço criado com sucesso', id: result.insertId });
@@ -228,11 +232,11 @@ export const createService = async (req, res) => {
 export const updateService = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description, price, features, is_highlighted, display_order } = req.body;
+    const { name, description, price, features, is_highlighted, highlight_label, display_order } = req.body;
 
     await db.query(
-      'UPDATE site_services SET name = ?, description = ?, price = ?, features = ?, is_highlighted = ?, display_order = ? WHERE id = ?',
-      [name, description, price, JSON.stringify(features), is_highlighted, display_order, id]
+      'UPDATE site_services SET name = ?, description = ?, price = ?, features = ?, is_highlighted = ?, highlight_label = ?, display_order = ? WHERE id = ?',
+      [name, description, price, JSON.stringify(features), is_highlighted, highlight_label || null, display_order, id]
     );
 
     res.json({ msg: 'Serviço atualizado com sucesso' });
@@ -301,6 +305,7 @@ export const getFooterLinks = async (req, res) => {
     res.status(500).json({ msg: 'Erro ao buscar links do rodapé' });
   }
 };
+
 
 // ========================================
 // FORMULÁRIO DE CONTATO

@@ -11,17 +11,17 @@ interface StatisticsProps {
 
 const Statistics: React.FC<StatisticsProps> = ({ statistics }) => {
   return (
-    <section className="py-12 bg-gray-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+    <section className="py-14 bg-slate-900 text-white">
+      <div className="max-w-[1410px] mx-auto px-5 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {statistics.map((stat, index) => (
-            <div key={index} className="text-center">
-              <div className="text-4xl sm:text-5xl font-bold text-[#076AC2] mb-2">
-                {stat.number}
-              </div>
-              <div className="text-gray-600 font-medium">
+            <div key={index}>
+              <p className="text-sm uppercase tracking-[0.3em] text-white/60">
                 {stat.label}
-              </div>
+              </p>
+              <p className="text-4xl sm:text-5xl font-black tracking-tight mt-2">
+                {stat.number}
+              </p>
             </div>
           ))}
         </div>

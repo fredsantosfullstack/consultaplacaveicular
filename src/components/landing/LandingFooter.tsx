@@ -9,11 +9,39 @@ interface FooterLink {
 interface LandingFooterProps {
   links: FooterLink[];
   siteName: string;
+  footerLogoUrl?: string;
 }
 
-const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName }) => {
-  const menuLinks = links.filter(link => link.category === 'menu');
-  const legalLinks = links.filter(link => link.category === 'legal');
+const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLogoUrl }) => {
+  // Deduplicar links por URL E Label para evitar repetições indesejadas
+  const deduplicate = (list: FooterLink[]) => {
+    const seen = new Set<string>();
+    return list.filter(link => {
+      const key = `${link.label.toLowerCase().trim()}|${link.url.toLowerCase().trim()}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  };
+
+  const menuLinks = deduplicate(links.filter((link) => link.category === 'menu'));
+  const legalLinks = deduplicate(links.filter((link) => link.category === 'legal'));
+
+  // Adicionar links manuais se não existirem
+  const finalMenuLinks = [...menuLinks];
+  if (!finalMenuLinks.some(l => l.url === '/login' || l.url === '/cadastro')) {
+    finalMenuLinks.push({ label: 'Entrar', url: '/login', category: 'menu' });
+  }
+
+  const finalLegalLinks = [...legalLinks];
+  const addIfMissing = (label: string, url: string) => {
+    if (!finalLegalLinks.some(l => l.url === url || l.label === label)) {
+      finalLegalLinks.push({ label, url, category: 'legal' });
+    }
+  };
+
+  addIfMissing('Privacidade', '/privacidade');
+  addIfMissing('LGPD', '/lgpd');
 
   const scrollToSection = (url: string) => {
     if (url.startsWith('#')) {
@@ -35,74 +63,57 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName }) => {
   };
 
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid md:grid-cols-3 gap-8 mb-8">
-          {/* Coluna 1 - Sobre */}
-          <div>
-            <h3 className="text-xl font-bold mb-4">{siteName}</h3>
-            <p className="text-gray-400 text-sm">
-              Plataforma completa de consultas veiculares. Rápido, seguro e confiável.
+    <footer className="bg-slate-950 text-white">
+      <div className="max-w-[1410px] mx-auto px-5 sm:px-8 lg:px-12 py-12 space-y-10">
+        <div className="grid gap-10 md:grid-cols-[2fr,1fr,1fr]">
+          <div className="space-y-3">
+            {footerLogoUrl ? (
+              <img src={footerLogoUrl} alt={siteName} className="h-12 w-auto mb-2" />
+            ) : (
+              <h3 className="text-2xl font-semibold">{siteName}</h3>
+            )}
+            <p className="text-sm text-gray-400 leading-relaxed">
+              Plataforma profissional de consultas veiculares. Segurança, rapidez e confiabilidade para suas decisões.
             </p>
           </div>
 
-          {/* Coluna 2 - Links Rápidos */}
-          {menuLinks.length > 0 && (
-            <div>
-              <h3 className="text-lg font-bold mb-4">Links Rápidos</h3>
-              <ul className="space-y-2">
-                {menuLinks.map((link, index) => (
-                  <li key={index}>
-                    <button
-                      onClick={() => scrollToSection(link.url)}
-                      className="text-gray-400 hover:text-white transition-colors text-sm"
-                    >
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Consultas</h4>
+            <ul className="space-y-2 text-sm text-gray-400">
+              {finalMenuLinks.map((link, index) => (
+                <li key={`${link.url}-${index}`}>
+                  {link.url.startsWith('#') ? (
+                    <button onClick={() => scrollToSection(link.url)} className="hover:text-white transition-colors">
                       {link.label}
                     </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Coluna 3 - Legal */}
-          {legalLinks.length > 0 && (
-            <div>
-              <h3 className="text-lg font-bold mb-4">Legal</h3>
-              <ul className="space-y-2">
-                {legalLinks.map((link, index) => (
-                  <li key={index}>
-                    <a
-                      href={link.url}
-                      className="text-gray-400 hover:text-white transition-colors text-sm"
-                    >
+                  ) : (
+                    <a href={link.url} className="hover:text-white transition-colors">
                       {link.label}
                     </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Políticas</h4>
+            <ul className="space-y-2 text-sm text-gray-400">
+              {finalLegalLinks.map((link, index) => (
+                <li key={`${link.url}-${index}`}>
+                  <a href={link.url} className="hover:text-white transition-colors">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        {/* Linha divisória */}
-        <div className="border-t border-gray-800 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400 text-sm text-center md:text-left">
-              © {new Date().getFullYear()} {siteName}. Todos os direitos reservados.
-            </p>
-            <p className="text-gray-400 text-xs text-center md:text-right">
-              Desenvolvido por{' '}
-              <a
-                href="https://agenciadipixel.com.br"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-bold text-gray-300 hover:text-white transition-colors"
-              >
-                Agência DiPixel
-              </a>
-              {' '}| (79) 98149-9282
-            </p>
+        <div className="border-t border-slate-800 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+          <p>© 2026 — Todos os direitos reservados.</p>
+          <div className="text-center md:text-right">
+            <p>{siteName} — CNPJ 57.352.646/0001-55</p>
           </div>
         </div>
       </div>

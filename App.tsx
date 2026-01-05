@@ -30,6 +30,7 @@ import ProprietarioAtualV2 from './src/pages/consultas/ProprietarioAtualV2';
 import CsvRenainfRenajud from './src/pages/consultas/CsvRenainfRenajud';
 import EmissaoCrlvE from './src/pages/consultas/EmissaoCrlvE';
 import ReemissaoAtpvE from './src/pages/consultas/ReemissaoAtpvE';
+import LandingPage from './pages/LandingPage';
 
 // Componente para proteger rotas que exigem autenticação e aplicar layout global
 const ProtectedRoute = () => {
@@ -69,6 +70,9 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
+        {/* Landing Page pública */}
+        <Route path="/" element={<LandingPage />} />
+
         {/* Rotas Públicas */}
         <Route path="/login" element={<Login />} />
         <Route path="/cadastre-se" element={<SignUp />} />

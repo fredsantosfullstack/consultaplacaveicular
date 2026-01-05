@@ -17,6 +17,7 @@ interface HeroProps {
   }>;
   gradientFrom: string;
   gradientTo: string;
+  mockupImageUrl?: string;
 }
 
 const Hero: React.FC<HeroProps> = ({
@@ -30,7 +31,8 @@ const Hero: React.FC<HeroProps> = ({
   whatsappMessage,
   benefits,
   gradientFrom,
-  gradientTo
+  gradientTo,
+  mockupImageUrl
 }) => {
   const getIcon = (iconName: string) => {
     const icons: Record<string, any> = {
@@ -50,89 +52,109 @@ const Hero: React.FC<HeroProps> = ({
   };
 
   return (
-    <section 
-      className="relative min-h-[600px] flex items-center overflow-hidden"
+    <section
+      className="relative overflow-hidden"
       style={{
-        background: `linear-gradient(135deg, ${gradientFrom} 0%, ${gradientTo} 100%)`
+        backgroundColor: gradientFrom,
+        backgroundImage: `linear-gradient(135deg, ${gradientFrom} 0%, ${gradientTo} 100%)`
       }}
     >
-      {/* Overlay para melhor legibilidade */}
-      <div className="absolute inset-0 bg-black/10"></div>
-
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          
-          {/* Conteúdo Esquerdo */}
+      <div className="absolute inset-0 opacity-15">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/4 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
+      </div>
+      <div className="relative max-w-[1410px] mx-auto px-5 sm:px-8 lg:px-12 py-16 lg:py-24">
+        <div className="grid lg:grid-cols-[1.1fr,0.9fr] gap-12 items-center">
           <div className="text-white space-y-6">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+            <h1 className="text-5xl sm:text-6xl xl:text-7xl font-black leading-tight drop-shadow-lg text-white">
               {title}
             </h1>
-            
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold">
-              {subtitle}
-            </h2>
-            
-            <p className="text-lg sm:text-xl text-white/90 max-w-2xl">
+            <p className="text-2xl text-white/80 font-semibold">{subtitle}</p>
+            <p className="text-lg sm:text-xl text-white/85 max-w-2xl">
               {description}
             </p>
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row gap-4 pt-6">
               <a
                 href={ctaPrimaryLink}
-                className="inline-flex items-center justify-center px-8 py-4 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-3 px-12 py-8 bg-[#52c41a] text-white font-bold rounded-[10px] transition-all duration-300 shadow-lg hover:shadow-2xl hover:bg-[#3fa813] text-xl"
               >
-                {ctaPrimaryText}
+                Consultar Placa Agora
               </a>
-
               {whatsappNumber && (
                 <button
                   onClick={handleWhatsAppClick}
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-transparent border-2 border-white hover:bg-white hover:text-purple-600 text-white font-bold rounded-lg transition-all duration-300"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-white/60 text-white rounded-full font-semibold hover:bg-white/10 transition-all duration-300"
                 >
                   <MessageCircle size={20} />
                   {ctaWhatsappText}
                 </button>
               )}
             </div>
+            <div className="flex flex-wrap gap-6 pt-8 text-white/80">
+              {benefits.slice(0, 2).map((benefit, index) => {
+                const Icon = getIcon(benefit.icon);
+                return (
+                  <div key={index} className="flex items-center gap-3">
+                    <span className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10">
+                      <Icon className="w-5 h-5" />
+                    </span>
+                    <div>
+                      <p className="font-semibold text-white">{benefit.title}</p>
+                      <p className="text-sm text-white/70">{benefit.description}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Cards de Benefícios - Direita */}
-          <div className="space-y-4">
-            {benefits.map((benefit, index) => {
-              const Icon = getIcon(benefit.icon);
-              return (
-                <div
-                  key={index}
-                  className="bg-white/95 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <Icon className="w-6 h-6 text-purple-600" />
+          <div className="relative">
+            {/* MacBook Frame */}
+            <div className="relative mx-auto max-w-md">
+              {/* MacBook Body */}
+              <div className="bg-gradient-to-b from-gray-900 to-gray-800 rounded-2xl shadow-2xl overflow-hidden border-8 border-gray-900">
+                {/* Screen */}
+                <div className="bg-gradient-to-br from-blue-50 to-slate-50 aspect-video relative overflow-hidden">
+                  {/* Dashboard Content */}
+                  <div className="p-6 h-full flex flex-col justify-between">
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <p className="text-xs uppercase tracking-[0.2em] text-slate-500 font-semibold">Radar Inteligente</p>
+                          <p className="text-xl font-bold text-slate-900">+400 KPIs</p>
+                        </div>
+                        <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        {benefits.slice(0, 4).map((benefit, index) => {
+                          const Icon = getIcon(benefit.icon);
+                          return (
+                            <div key={index} className="p-2 rounded-lg bg-white border border-slate-200 shadow-sm">
+                              <Icon className="w-4 h-4 text-[#076AC2] mb-1" />
+                              <p className="text-xs font-semibold text-slate-900 line-clamp-1">{benefit.title}</p>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-bold text-gray-900 text-lg mb-1">
-                        {benefit.title}
-                      </h3>
-                      {benefit.description && (
-                        <p className="text-gray-600 text-sm">
-                          {benefit.description}
-                        </p>
-                      )}
+                    {/* Status Bar */}
+                    <div className="flex justify-between items-center text-xs text-slate-500 border-t border-slate-200 pt-2">
+                      <span>Sistema Online</span>
+                      <span>100% Seguro</span>
                     </div>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+              
+              {/* MacBook Bottom Bezel */}
+              <div className="bg-gradient-to-b from-gray-800 to-gray-900 h-6 rounded-b-2xl shadow-2xl border-8 border-t-0 border-gray-900 flex items-center justify-center">
+                <div className="w-24 h-1 bg-gray-700 rounded-full"></div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* Decoração de ondas no bottom */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-          <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0V120Z" fill="white"/>
-        </svg>
       </div>
     </section>
   );

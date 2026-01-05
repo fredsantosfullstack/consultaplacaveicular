@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Mail, Phone, Send, CheckCircle } from 'lucide-react';
-import api from '../../services/api';
+import { Mail, Phone, Send, CheckCircle, MessageSquare, Shield } from 'lucide-react';
+import { publicApi } from '../../services/api';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -27,9 +26,9 @@ const Contact: React.FC = () => {
     setErrorMessage('');
 
     try {
-      await api.post('/cms/contact', formData);
+      await publicApi.post('/cms/contact', formData);
       setSubmitStatus('success');
-      setFormData({ name: '', email: '', phone: '', message: '' });
+      setFormData({ name: '', email: '', message: '' });
       
       setTimeout(() => {
         setSubmitStatus('idle');
@@ -43,157 +42,150 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <section id="contato" className="py-16 lg:py-24 bg-white scroll-mt-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          {/* Título da Seção */}
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              Fale Conosco
-            </h2>
-            <p className="text-lg text-gray-600">
-              Entre em contato conosco. Responderemos o mais breve possível!
-            </p>
+    <section id="contato" className="py-20 bg-slate-50 scroll-mt-20">
+      <div className="max-w-[1410px] mx-auto px-5 sm:px-8 lg:px-12">
+        <div className="grid lg:grid-cols-[0.9fr,1.1fr] gap-10">
+          <div className="bg-slate-900 text-white rounded-[10px] p-10 space-y-8 shadow-2xl">
+            <div>
+              <h2 className="text-3xl font-bold">
+                Fale Conosco
+              </h2>
+              <p className="text-white/70 mt-3">
+                Estamos prontos para ajudar você com suas dúvidas e necessidades.
+              </p>
+            </div>
+            <div className="space-y-6">
+              <div className="flex items-start gap-4">
+                <span className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
+                  <Mail className="w-5 h-5 text-white" />
+                </span>
+                <div>
+                  <p className="text-sm uppercase tracking-[0.3em] text-white/60">E-mail</p>
+                  <p className="text-lg font-semibold">contato@consultaplacaveicular.com.br</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <span className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
+                  <Phone className="w-5 h-5 text-white" />
+                </span>
+                <div>
+                  <p className="text-sm uppercase tracking-[0.3em] text-white/60">Telefone</p>
+                  <p className="text-lg font-semibold">(79) 98149-9282</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <span className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
+                  <Shield className="w-5 h-5 text-white" />
+                </span>
+                <div>
+                  <p className="text-sm uppercase tracking-[0.3em] text-white/60">Conformidade</p>
+                  <p className="text-lg font-semibold">LGPD</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t border-white/20 pt-6">
+              <div className="flex items-start gap-3">
+                <Shield className="w-6 h-6 text-emerald-400 flex-shrink-0 mt-1" />
+                <div>
+                  <h4 className="font-semibold text-white mb-2">Conformidade LGPD</h4>
+                  <p className="text-sm text-white/80 leading-relaxed">
+                    Seus dados estão protegidos de acordo com a Lei Geral de Proteção de Dados.
+                  </p>
+                  <a href="/termos-de-uso" className="text-emerald-400 hover:text-emerald-300 text-sm font-semibold mt-3 inline-block transition-colors">
+                    Ver Termos de Uso
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12">
-            {/* Informações de Contato */}
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                  Entre em Contato
+          <div className="bg-white rounded-[10px] p-10 shadow-xl border border-slate-100">
+            {submitStatus === 'success' ? (
+              <div className="text-center py-8">
+                <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  Mensagem Enviada!
                 </h3>
-                <p className="text-gray-600 mb-8">
-                  Preencha o formulário ao lado ou entre em contato através dos nossos canais.
+                <p className="text-gray-600">
+                  Obrigado pelo contato. Responderemos em breve.
                 </p>
               </div>
-
-              <div className="space-y-4">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Mail className="w-6 h-6 text-[#076AC2]" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Email</h4>
-                    <p className="text-gray-600">contato@consultaplacaveicular.com.br</p>
-                  </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-semibold text-slate-700 mb-2">
+                    Seu nome *
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 border border-slate-200 rounded-[10px] focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
+                    placeholder="Ex: Marina Costa"
+                  />
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Phone className="w-6 h-6 text-[#076AC2]" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Telefone</h4>
-                    <p className="text-gray-600">(79) 98149-9282</p>
-                  </div>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-2">
+                    E-mail *
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 border border-slate-200 rounded-[10px] focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
+                    placeholder="seu@email.com"
+                  />
                 </div>
-              </div>
-            </div>
 
-            {/* Formulário */}
-            <div className="bg-gray-50 rounded-2xl p-8">
-              {submitStatus === 'success' ? (
-                <div className="text-center py-8">
-                  <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                    Mensagem Enviada!
-                  </h3>
-                  <p className="text-gray-600">
-                    Obrigado pelo contato. Responderemos em breve.
-                  </p>
+                <div>
+                  <label htmlFor="message" className="block text-sm font-semibold text-slate-700 mb-2">
+                    Mensagem *
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    rows={4}
+                    className="w-full px-4 py-3 border border-slate-200 rounded-[10px] focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all resize-none"
+                    placeholder="Ex: preciso gerar 5K consultas/dia com antifraude integrado"
+                  />
                 </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                      Nome Completo *
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent transition-all"
-                      placeholder="Seu nome"
-                    />
-                  </div>
 
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                      Email *
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent transition-all"
-                      placeholder="seu@email.com"
-                    />
+                {submitStatus === 'error' && (
+                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-[10px]">
+                    {errorMessage}
                   </div>
+                )}
 
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                      Telefone
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent transition-all"
-                      placeholder="(00) 00000-0000"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                      Mensagem *
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      required
-                      rows={4}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent transition-all resize-none"
-                      placeholder="Como podemos ajudar?"
-                    />
-                  </div>
-
-                  {submitStatus === 'error' && (
-                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-                      {errorMessage}
-                    </div>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-slate-900 text-white font-semibold rounded-[10px] transition-all duration-300 shadow-xl hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      Enviando...
+                    </>
+                  ) : (
+                    <>
+                      <Send size={20} />
+                      Enviar Mensagem
+                    </>
                   )}
-
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-[#076AC2] hover:bg-[#055a9f] text-white font-bold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        Enviando...
-                      </>
-                    ) : (
-                      <>
-                        <Send size={20} />
-                        Enviar Mensagem
-                      </>
-                    )}
-                  </button>
-                </form>
-              )}
-            </div>
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </div>
