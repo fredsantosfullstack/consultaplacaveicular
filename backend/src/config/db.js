@@ -1,8 +1,8 @@
-import mysql from 'mysql2';
+import mysql from 'mysql2/promise';
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
-  port: process.env.DB_PORT || 3306,
+  port: parseInt(process.env.DB_PORT) || 3306,
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_DATABASE || 'railway',
@@ -13,4 +13,4 @@ const pool = mysql.createPool({
   keepAliveInitialDelayMs: 0
 });
 
-export default pool.promise();
+export default pool;
