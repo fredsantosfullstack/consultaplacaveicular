@@ -127,6 +127,18 @@ app.use(express.static(publicPath)); // Serve arquivos estáticos da pasta publi
 // Rotas
 app.get('/', (req, res) => res.json({ message: 'API Consultaplacaveicular está no ar!' }));
 
+// Debug endpoint para verificar variáveis de ambiente
+app.get('/debug/env', (req, res) => {
+  res.json({
+    DB_HOST: process.env.DB_HOST,
+    DB_PORT: process.env.DB_PORT,
+    DB_USER: process.env.DB_USER,
+    DB_DATABASE: process.env.DB_DATABASE,
+    NODE_ENV: process.env.NODE_ENV,
+    FRONTEND_URL: process.env.FRONTEND_URL
+  });
+});
+
 // Rota para a página de consulta Base Estadual
 app.get('/consultas/base-estadual.html', (req, res) => {
   res.send(`
