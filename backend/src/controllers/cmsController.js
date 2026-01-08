@@ -347,13 +347,21 @@ export const getContactSubmissions = async (req, res) => {
 
 export const getLandingPageData = async (req, res) => {
   try {
+    console.log('🔄 Iniciando getLandingPageData...');
     const [config] = await db.query('SELECT * FROM site_config WHERE id = 1');
+    console.log('✅ Config carregado:', config.length);
     const [hero] = await db.query('SELECT * FROM site_hero WHERE id = 1');
+    console.log('✅ Hero carregado:', hero.length);
     const [benefits] = await db.query('SELECT * FROM site_benefits WHERE is_active = TRUE ORDER BY display_order');
+    console.log('✅ Benefits carregado:', benefits.length);
     const [statistics] = await db.query('SELECT * FROM site_statistics WHERE is_active = TRUE ORDER BY display_order');
+    console.log('✅ Statistics carregado:', statistics.length);
     const [services] = await db.query('SELECT * FROM site_services WHERE is_active = TRUE ORDER BY display_order');
+    console.log('✅ Services carregado:', services.length);
     const [steps] = await db.query('SELECT * FROM site_steps WHERE is_active = TRUE ORDER BY display_order');
+    console.log('✅ Steps carregado:', steps.length);
     const [footerLinks] = await db.query('SELECT * FROM site_footer_links WHERE is_active = TRUE ORDER BY category, display_order');
+    console.log('✅ Footer links carregado:', footerLinks.length);
 
     res.json({
       config: config[0] || {},
@@ -365,7 +373,8 @@ export const getLandingPageData = async (req, res) => {
       footerLinks
     });
   } catch (error) {
-    console.error('Erro ao buscar dados da landing page:', error);
-    res.status(500).json({ msg: 'Erro ao buscar dados da landing page' });
+    console.error('❌ Erro ao buscar dados da landing page:', error.message);
+    console.error('Stack:', error.stack);
+    res.status(500).json({ msg: 'Erro ao buscar dados da landing page', error: error.message });
   }
 };
