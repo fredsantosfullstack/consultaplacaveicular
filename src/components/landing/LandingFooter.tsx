@@ -40,7 +40,8 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
     }
   };
 
-  addIfMissing('Privacidade', '/privacidade');
+  addIfMissing('Termos de Uso', '/termos-de-uso');
+  addIfMissing('Política de Privacidade', '/politica-de-privacidade');
   addIfMissing('LGPD', '/lgpd');
 
   const scrollToSection = (url: string) => {

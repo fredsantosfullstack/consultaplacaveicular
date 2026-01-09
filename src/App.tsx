@@ -10,9 +10,9 @@ import RechargePage from '../pages/RechargePage';
 import ConsultationPage from '../pages/ConsultationPage';
 import ProfilePage from '../pages/ProfilePage';
 import ConsultationHistoryPage from '../pages/ConsultationHistoryPage';
-import TermsOfUse from '../pages/TermsOfUse';
-import LGPDPage from '../pages/LGPD';
-import PrivacyPolicy from '../pages/PrivacyPolicy';
+import TermsPage from './pages/TermsPage';
+import PrivacyPage from './pages/PrivacyPage';
+import LGPDPage from './pages/LGPDPage';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -97,8 +97,8 @@ function App() {
               </ProtectedRoute>
             )}
           />
-          <Route path="/termos-de-uso" element={<TermsOfUse />} />
-          <Route path="/privacidade" element={<PrivacyPolicy />} />
+          <Route path="/termos-de-uso" element={<TermsPage />} />
+          <Route path="/politica-de-privacidade" element={<PrivacyPage />} />
           <Route path="/lgpd" element={<LGPDPage />} />
 
           {/* Rotas de Consultas Específicas */}
