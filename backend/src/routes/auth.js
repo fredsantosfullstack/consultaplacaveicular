@@ -27,19 +27,35 @@ router.post('/login', async (req, res) => {
   const { email, password, rememberMe } = req.body;
   if (!email || !password) return res.status(400).json({ msg: 'Forneça e-mail e senha.' });
   try {
+    console.log('🔐 Tentativa de login:', email);
     const [users] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
-    if (users.length === 0) return res.status(400).json({ msg: 'Credenciais inválidas.' });
+    if (users.length === 0) {
+      console.log('❌ Usuário não encontrado:', email);
+      return res.status(400).json({ msg: 'Credenciais inválidas.' });
+    }
     const user = users[0];
+    console.log('✅ Usuário encontrado:', email);
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ msg: 'Credenciais inválidas.' });
+    if (!isMatch) {
+      console.log('❌ Senha incorreta para:', email);
+      return res.status(400).json({ msg: 'Credenciais inválidas.' });
+    }
+    console.log('✅ Senha correta para:', email);
     const payload = { user: { id: user.id, role: user.role } };
     const secret = process.env.JWT_SECRET || 'seu_segredo_jwt_temporario';
     const options = { expiresIn: rememberMe ? '7d' : '24h' };
     jwt.sign(payload, secret, options, (err, token) => {
-      if (err) throw err;
+      if (err) {
+        console.error('❌ Erro ao gerar JWT:', err);
+        throw err;
+      }
+      console.log('✅ Login bem-sucedido para:', email);
       res.json({ token });
     });
-  } catch (err) { res.status(500).send('Erro no servidor'); }
+  } catch (err) {
+    console.error('❌ Erro no login:', err.message);
+    res.status(500).json({ msg: 'Erro no servidor', error: err.message });
+  }
 });
 
 // Rota para obter perfil do usuário logado
