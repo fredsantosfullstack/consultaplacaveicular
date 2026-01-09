@@ -71,6 +71,7 @@ const LandingPage: React.FC = () => {
       try {
         const response = await publicApi.get('/cms/landing-page');
 
+        const rawBenefits = Array.isArray(response.data.benefits) ? response.data.benefits : [];
         const statistics = Array.isArray(response.data.statistics) ? response.data.statistics : [];
         const normalize = (label: string) =>
           label
@@ -78,6 +79,19 @@ const LandingPage: React.FC = () => {
             .replace(/\p{Diacritic}/gu, '')
             .toLowerCase()
             .trim();
+
+        const normalizedBenefits = rawBenefits.reduce((acc: typeof rawBenefits, benefit) => {
+          if (!benefit || !benefit.title) return acc;
+          const normalizedTitle = normalize(String(benefit.title));
+          if (normalizedTitle.includes('consultas veiculares online')) {
+            return acc;
+          }
+          if (acc.find(existing => normalize(String(existing.title)) === normalizedTitle)) {
+            return acc;
+          }
+          acc.push(benefit);
+          return acc;
+        }, [] as typeof rawBenefits);
 
         const allowedLabels = ['Clientes', 'Cidades', 'Satisfação', 'Online'];
         const normalizedStatistics = allowedLabels.reduce((acc: { number: string; label: string }[], label) => {
@@ -126,6 +140,7 @@ const LandingPage: React.FC = () => {
 
         setData({
           ...response.data,
+          benefits: normalizedBenefits,
           services: normalizedServices,
           statistics: normalizedStatistics.length > 0 ? normalizedStatistics : statistics.slice(0, 4)
         });
