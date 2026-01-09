@@ -6,7 +6,7 @@ import fs from 'fs/promises';
 import mysql from 'mysql2/promise';
 import { fileURLToPath } from 'url';
 
-// Force redeploy to refresh database connection - 2026-01-09
+// Force redeploy to refresh database connection and clear cache - 2026-01-09 23:50
 
 import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
