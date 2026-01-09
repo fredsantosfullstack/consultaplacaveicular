@@ -71,6 +71,32 @@ const LandingPage: React.FC = () => {
       try {
         const response = await publicApi.get('/cms/landing-page');
 
+        const statistics = Array.isArray(response.data.statistics) ? response.data.statistics : [];
+        const normalize = (label: string) =>
+          label
+            .normalize('NFD')
+            .replace(/\p{Diacritic}/gu, '')
+            .toLowerCase()
+            .trim();
+
+        const allowedLabels = ['Clientes', 'Cidades', 'Satisfação', 'Online'];
+        const normalizedStatistics = allowedLabels.reduce((acc: { number: string; label: string }[], label) => {
+          const target = normalize(label);
+          const match = statistics.find((stat: any) => {
+            if (!stat || !stat.label) return false;
+            return normalize(String(stat.label)).includes(target);
+          });
+
+          if (match) {
+            acc.push({
+              number: typeof match.number === 'string' ? match.number : String(match.number ?? ''),
+              label
+            });
+          }
+
+          return acc;
+        }, []);
+
         const normalizedServices = (response.data.services || []).map((service: any) => {
           let price = service.price;
           if (typeof price !== 'number') {
@@ -100,7 +126,8 @@ const LandingPage: React.FC = () => {
 
         setData({
           ...response.data,
-          services: normalizedServices
+          services: normalizedServices,
+          statistics: normalizedStatistics.length > 0 ? normalizedStatistics : statistics.slice(0, 4)
         });
 
         // Atualizar SEO
