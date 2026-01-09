@@ -18,6 +18,8 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
     secondary_color: '#4A90E2',
     whatsapp_number: '',
     whatsapp_message: '',
+    contact_email: '',
+    contact_email_cc: '',
     seo_title: '',
     seo_description: '',
     seo_keywords: ''
@@ -303,6 +305,47 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
                     placeholder="Olá! Vim pelo site..."
                   />
+                </div>
+              </div>
+
+              <div className="border-t border-gray-200 pt-6 mt-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <Mail className="w-5 h-5" />
+                  E-mail de Contato
+                </h3>
+                
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      E-mail Principal (Formulário de Contato)
+                    </label>
+                    <input
+                      type="email"
+                      value={config.contact_email}
+                      onChange={(e) => setConfig({ ...config, contact_email: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
+                      placeholder="contato@consultaplacaveicular.com.br"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Este e-mail receberá as mensagens do formulário de contato da landing page
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      E-mails em Cópia (CC)
+                    </label>
+                    <input
+                      type="text"
+                      value={config.contact_email_cc}
+                      onChange={(e) => setConfig({ ...config, contact_email_cc: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
+                      placeholder="email1@exemplo.com, email2@exemplo.com"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Adicione e-mails separados por vírgula para receber cópias das mensagens
+                    </p>
+                  </div>
                 </div>
               </div>
 
