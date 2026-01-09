@@ -161,6 +161,8 @@ app.use(express.static(publicPath)); // Serve arquivos estáticos da pasta publi
 
 // Rotas
 app.get('/', (req, res) => res.json({ message: 'API Consultaplacaveicular está no ar!' }));
+app.get('/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
+app.get('/api/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
 
 // Debug endpoint para verificar variáveis de ambiente
 app.get('/debug/env', (req, res) => {
