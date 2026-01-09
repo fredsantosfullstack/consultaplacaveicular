@@ -12,10 +12,10 @@ CREATE TABLE IF NOT EXISTS site_config (
   primary_color VARCHAR(7) DEFAULT '#076AC2',
   secondary_color VARCHAR(7) DEFAULT '#4A90E2',
   whatsapp_number VARCHAR(20) DEFAULT NULL,
-  whatsapp_message TEXT DEFAULT NULL,
+  whatsapp_message TEXT,
   seo_title VARCHAR(255) DEFAULT 'Consulta Placa Veicular',
-  seo_description TEXT DEFAULT NULL,
-  seo_keywords TEXT DEFAULT NULL,
+  seo_description TEXT,
+  seo_keywords TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS site_hero (
   id INT PRIMARY KEY AUTO_INCREMENT,
   title VARCHAR(255) DEFAULT 'Plataforma 100% Online',
   subtitle VARCHAR(255) DEFAULT 'Consultas Veiculares',
-  description TEXT DEFAULT 'Mais do que dados: entregamos confiança para você tomar a melhor decisão na compra ou venda do seu veículo.',
+  description TEXT,
   cta_primary_text VARCHAR(100) DEFAULT 'Iniciar Consulta',
   cta_primary_link VARCHAR(255) DEFAULT '/login',
   cta_whatsapp_text VARCHAR(100) DEFAULT 'Falar no WhatsApp',
@@ -107,10 +107,6 @@ CREATE TABLE IF NOT EXISTS site_services (
   INDEX idx_active (is_active),
   INDEX idx_highlighted (is_highlighted)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Garante compatibilidade para bancos já existentes
-ALTER TABLE site_services 
-  ADD COLUMN IF NOT EXISTS highlight_label VARCHAR(120) DEFAULT NULL;
 
 -- Inserir serviços padrão
 INSERT INTO site_services (name, description, price, features, highlight_label, is_highlighted, display_order) VALUES
@@ -197,7 +193,7 @@ CREATE TABLE IF NOT EXISTS contact_submissions (
   message TEXT NOT NULL,
   status ENUM('new', 'read', 'replied', 'archived') DEFAULT 'new',
   ip_address VARCHAR(45) DEFAULT NULL,
-  user_agent TEXT DEFAULT NULL,
+  user_agent TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX idx_status (status),

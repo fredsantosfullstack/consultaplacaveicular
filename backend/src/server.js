@@ -2,7 +2,10 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
+import fs from 'fs/promises';
+import mysql from 'mysql2/promise';
 import { fileURLToPath } from 'url';
+
 import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
 import settingsRoutes from './routes/settings.js';
@@ -24,6 +27,36 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+const ensureCmsTables = async () => {
+  try {
+    const [tables] = await db.query("SHOW TABLES LIKE 'site_config'");
+    if (tables.length > 0) {
+      console.log('✅ Tabelas CMS já existem. Pulando migrations automáticas.');
+      return;
+    }
+
+    console.log('⚠️ Tabelas CMS não encontradas. Executando migrations automaticamente...');
+    const sqlPath = path.join(__dirname, '../migrations/create_cms_tables.sql');
+    const sql = await fs.readFile(sqlPath, 'utf8');
+
+    const connection = await mysql.createConnection({
+      host: process.env.DB_HOST || 'localhost',
+      port: parseInt(process.env.DB_PORT) || 3306,
+      user: process.env.DB_USER || 'root',
+      password: process.env.DB_PASSWORD || '',
+      database: process.env.DB_DATABASE || 'railway',
+      multipleStatements: true
+    });
+
+    await connection.query(sql);
+    await connection.end();
+    console.log('✅ Migrations executadas automaticamente.');
+  } catch (error) {
+    console.error('❌ Erro ao executar migrations automáticas:', error);
+    throw error;
+  }
+};
 
 // WEBHOOK DO ASAAS - DEVE VIR ANTES DE TUDO!
 app.use(express.json({ limit: '10mb' })); // Necessário para ler o body
@@ -249,8 +282,10 @@ app.use('/api/cms', cmsRoutes);
 
 const startServer = async () => {
   try {
+    await ensureCmsTables();
     // Testa a conexão com o banco de dados
     const connection = await db.getConnection();
+
     console.log('✅ Conexão com o banco de dados bem-sucedida!');
     connection.release();
 
