@@ -138,8 +138,15 @@ const LandingPage: React.FC = () => {
           };
         });
 
+        const heroData = { ...(response.data.hero || {}) };
+        const heroSubtitle = typeof heroData.subtitle === 'string' ? heroData.subtitle.trim() : '';
+        if (heroSubtitle.toLowerCase() === 'consultas veiculares online') {
+          heroData.subtitle = '';
+        }
+
         setData({
           ...response.data,
+          hero: heroData,
           benefits: normalizedBenefits,
           services: normalizedServices,
           statistics: normalizedStatistics.length > 0 ? normalizedStatistics : statistics.slice(0, 4)

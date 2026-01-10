@@ -51,6 +51,9 @@ const Hero: React.FC<HeroProps> = ({
     window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
   };
 
+  const cleanedSubtitle = (subtitle || '').trim();
+  const showSubtitle = cleanedSubtitle.length > 0 && cleanedSubtitle.toLowerCase() !== 'consultas veiculares online';
+
   return (
     <section
       className="relative overflow-hidden"
@@ -70,7 +73,9 @@ const Hero: React.FC<HeroProps> = ({
             <h1 className="text-5xl sm:text-6xl xl:text-7xl font-black leading-tight drop-shadow-lg text-white">
               {title}
             </h1>
-            <p className="text-2xl text-white/80 font-semibold">{subtitle}</p>
+            {showSubtitle && (
+              <p className="text-2xl text-white/80 font-semibold">{cleanedSubtitle}</p>
+            )}
             <p className="text-lg sm:text-xl text-white/85 max-w-2xl">
               {description}
             </p>
