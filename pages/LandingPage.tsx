@@ -27,6 +27,7 @@ interface LandingData {
     cta_primary_text: string;
     cta_primary_link: string;
     cta_whatsapp_text: string;
+    cta_whatsapp_icon_url?: string | null;
     background_gradient_from: string;
     background_gradient_to: string;
     mockup_image_url?: string;
@@ -225,6 +226,7 @@ const LandingPage: React.FC = () => {
         ctaPrimaryText={data.hero.cta_primary_text}
         ctaPrimaryLink={data.hero.cta_primary_link}
         ctaWhatsappText={data.hero.cta_whatsapp_text}
+        ctaWhatsappIconUrl={data.hero.cta_whatsapp_icon_url}
         whatsappNumber={data.config.whatsapp_number || ''}
         whatsappMessage={data.config.whatsapp_message || ''}
         benefits={data.benefits}

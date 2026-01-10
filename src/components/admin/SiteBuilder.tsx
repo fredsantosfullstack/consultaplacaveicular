@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Save, Eye, Settings, Layout, Package, TrendingUp, List, Mail } from 'lucide-react';
+import { Save, Eye, Settings, Layout, Package, TrendingUp, List, Mail, MessageCircle } from 'lucide-react';
 import api from '../../services/api';
+import { buildAssetUrl } from '../../utils/assetUrl';
 
 interface SiteBuilderProps {}
 
@@ -32,6 +33,7 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
     cta_primary_text: '',
     cta_primary_link: '',
     cta_whatsapp_text: '',
+    cta_whatsapp_icon_url: '',
     background_gradient_from: '#667eea',
     background_gradient_to: '#764ba2',
     mockup_image_url: ''
@@ -41,6 +43,8 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
   const [statistics, setStatistics] = useState<any[]>([]);
   const [services, setServices] = useState<any[]>([]);
   const [steps, setSteps] = useState<any[]>([]);
+  const [isUploadingHeroIcon, setIsUploadingHeroIcon] = useState(false);
+  const [isUploadingHeroMockup, setIsUploadingHeroMockup] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -93,6 +97,86 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
       setSaveMessage('Erro ao salvar hero');
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleHeroIconUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files || event.target.files.length === 0) return;
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append('icon', file);
+    setIsUploadingHeroIcon(true);
+    setSaveMessage('');
+    try {
+      const { data } = await api.put('/cms/hero/icon', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      setHero(prev => ({ ...prev, cta_whatsapp_icon_url: data.path }));
+      setSaveMessage('Ícone do WhatsApp atualizado com sucesso!');
+      setTimeout(() => setSaveMessage(''), 3000);
+    } catch (error) {
+      console.error('Erro ao enviar ícone do WhatsApp:', error);
+      setSaveMessage('Erro ao enviar ícone do WhatsApp');
+    } finally {
+      setIsUploadingHeroIcon(false);
+      event.target.value = '';
+    }
+  };
+
+  const handleRemoveHeroIcon = async () => {
+    setIsUploadingHeroIcon(true);
+    setSaveMessage('');
+    try {
+      const payload = { ...hero, cta_whatsapp_icon_url: null };
+      await api.put('/cms/hero', payload);
+      setHero(payload);
+      setSaveMessage('Ícone do WhatsApp removido com sucesso!');
+      setTimeout(() => setSaveMessage(''), 3000);
+    } catch (error) {
+      console.error('Erro ao remover ícone do WhatsApp:', error);
+      setSaveMessage('Erro ao remover ícone do WhatsApp');
+    } finally {
+      setIsUploadingHeroIcon(false);
+    }
+  };
+
+  const handleHeroMockupUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files || event.target.files.length === 0) return;
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append('mockup', file);
+    setIsUploadingHeroMockup(true);
+    setSaveMessage('');
+    try {
+      const { data } = await api.put('/cms/hero/mockup', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      setHero(prev => ({ ...prev, mockup_image_url: data.path }));
+      setSaveMessage('Imagem do mockup atualizada com sucesso!');
+      setTimeout(() => setSaveMessage(''), 3000);
+    } catch (error) {
+      console.error('Erro ao enviar mockup:', error);
+      setSaveMessage('Erro ao enviar mockup do MacBook');
+    } finally {
+      setIsUploadingHeroMockup(false);
+      event.target.value = '';
+    }
+  };
+
+  const handleRemoveHeroMockup = async () => {
+    setIsUploadingHeroMockup(true);
+    setSaveMessage('');
+    try {
+      const payload = { ...hero, mockup_image_url: null };
+      await api.put('/cms/hero', payload);
+      setHero(payload);
+      setSaveMessage('Mockup removido com sucesso!');
+      setTimeout(() => setSaveMessage(''), 3000);
+    } catch (error) {
+      console.error('Erro ao remover mockup:', error);
+      setSaveMessage('Erro ao remover mockup');
+    } finally {
+      setIsUploadingHeroMockup(false);
     }
   };
 
@@ -493,18 +577,39 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    URL da Imagem do Mockup (MacBook)
-                  </label>
-                  <input
-                    type="text"
-                    value={hero.mockup_image_url}
-                    onChange={(e) => setHero({ ...hero, mockup_image_url: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
-                    placeholder="https://exemplo.com/mockup.png"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">Deixe em branco para usar o mockup padrão do sistema</p>
+                <div className="border-t border-gray-200 pt-6 mt-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Mockup do MacBook</h3>
+                  <div className="flex flex-col gap-4 md:flex-row md:items-center">
+                    {hero.mockup_image_url && (
+                      <img
+                        src={buildAssetUrl(hero.mockup_image_url)}
+                        alt="Mockup MacBook"
+                        className="w-32 h-20 object-contain bg-white rounded-lg border"
+                      />
+                    )}
+                    <div>
+                      <input
+                        type="file"
+                        accept=".png,.svg,.webp"
+                        onChange={handleHeroMockupUpload}
+                        disabled={isUploadingHeroMockup}
+                        className="block w-full text-sm text-gray-900 file:mr-4 file:rounded-md file:border-0 file:bg-[#076AC2] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-[#055a9f]"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Formatos permitidos: PNG, SVG, WEBP. Deixe vazio para usar o mockup padrão.
+                      </p>
+                    </div>
+                    {hero.mockup_image_url && (
+                      <button
+                        type="button"
+                        onClick={handleRemoveHeroMockup}
+                        disabled={isUploadingHeroMockup}
+                        className="px-4 py-2 text-sm font-semibold text-red-600 bg-red-50 rounded-lg hover:bg-red-100 disabled:opacity-60"
+                      >
+                        Remover mockup
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-4">
@@ -547,6 +652,44 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
                       />
                     </div>
                   </div>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-200 pt-6 mt-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <MessageCircle className="w-5 h-5 text-[#076AC2]" />
+                  Ícone do botão WhatsApp
+                </h3>
+                <div className="flex flex-col gap-4 md:flex-row md:items-center">
+                  {hero.cta_whatsapp_icon_url && (
+                    <img
+                      src={buildAssetUrl(hero.cta_whatsapp_icon_url)}
+                      alt="Ícone WhatsApp"
+                      className="w-16 h-16 object-contain bg-white rounded-lg border"
+                    />
+                  )}
+                  <div>
+                    <input
+                      type="file"
+                      accept=".png,.svg,.webp"
+                      onChange={handleHeroIconUpload}
+                      disabled={isUploadingHeroIcon}
+                      className="block w-full text-sm text-gray-900 file:mr-4 file:rounded-md file:border-0 file:bg-[#076AC2] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-[#055a9f]"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Formatos permitidos: PNG, SVG, WEBP.
+                    </p>
+                  </div>
+                  {hero.cta_whatsapp_icon_url && (
+                    <button
+                      type="button"
+                      onClick={handleRemoveHeroIcon}
+                      disabled={isUploadingHeroIcon}
+                      className="px-4 py-2 text-sm font-semibold text-red-600 bg-red-50 rounded-lg hover:bg-red-100 disabled:opacity-60"
+                    >
+                      Remover ícone
+                    </button>
+                  )}
                 </div>
               </div>
 

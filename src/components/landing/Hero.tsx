@@ -1,5 +1,6 @@
 import React from 'react';
 import { Shield, Zap, FileText, MessageCircle } from 'lucide-react';
+import { buildAssetUrl } from '../../utils/assetUrl';
 
 interface HeroProps {
   title: string;
@@ -8,6 +9,7 @@ interface HeroProps {
   ctaPrimaryText: string;
   ctaPrimaryLink: string;
   ctaWhatsappText: string;
+  ctaWhatsappIconUrl?: string | null;
   whatsappNumber: string;
   whatsappMessage: string;
   benefits: Array<{
@@ -27,6 +29,7 @@ const Hero: React.FC<HeroProps> = ({
   ctaPrimaryText,
   ctaPrimaryLink,
   ctaWhatsappText,
+  ctaWhatsappIconUrl,
   whatsappNumber,
   whatsappMessage,
   benefits,
@@ -53,6 +56,8 @@ const Hero: React.FC<HeroProps> = ({
 
   const cleanedSubtitle = (subtitle || '').trim();
   const showSubtitle = cleanedSubtitle.length > 0 && cleanedSubtitle.toLowerCase() !== 'consultas veiculares online';
+  const whatsappIconUrl = ctaWhatsappIconUrl ? buildAssetUrl(ctaWhatsappIconUrl) : '';
+  const mockupImageSrc = mockupImageUrl ? buildAssetUrl(mockupImageUrl) : '';
 
   return (
     <section
@@ -90,9 +95,17 @@ const Hero: React.FC<HeroProps> = ({
               {whatsappNumber && (
                 <button
                   onClick={handleWhatsAppClick}
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-white/60 text-white rounded-full font-semibold hover:bg-white/10 transition-all duration-300"
+                  className="inline-flex items-center justify-center gap-3 px-12 py-8 border-2 border-white text-white font-bold rounded-[10px] transition-all duration-300 hover:bg-white/10 text-xl"
                 >
-                  <MessageCircle size={20} />
+                  {whatsappIconUrl ? (
+                    <img
+                      src={whatsappIconUrl}
+                      alt="WhatsApp"
+                      className="w-6 h-6 object-contain"
+                    />
+                  ) : (
+                    <MessageCircle size={24} />
+                  )}
                   {ctaWhatsappText}
                 </button>
               )}
@@ -122,34 +135,40 @@ const Hero: React.FC<HeroProps> = ({
               <div className="bg-gradient-to-b from-gray-900 to-gray-800 rounded-2xl shadow-2xl overflow-hidden border-8 border-gray-900">
                 {/* Screen */}
                 <div className="bg-gradient-to-br from-blue-50 to-slate-50 aspect-video relative overflow-hidden">
-                  {/* Dashboard Content */}
-                  <div className="p-6 h-full flex flex-col justify-between">
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <p className="text-xs uppercase tracking-[0.2em] text-slate-500 font-semibold">Radar Inteligente</p>
-                          <p className="text-xl font-bold text-slate-900">+400 KPIs</p>
+                  {mockupImageSrc ? (
+                    <img
+                      src={mockupImageSrc}
+                      alt="Mockup do sistema"
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="p-6 h-full flex flex-col justify-between">
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <p className="text-xs uppercase tracking-[0.2em] text-slate-500 font-semibold">Radar Inteligente</p>
+                            <p className="text-xl font-bold text-slate-900">+400 KPIs</p>
+                          </div>
+                          <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
                         </div>
-                        <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
+                        <div className="grid grid-cols-2 gap-2">
+                          {benefits.slice(0, 4).map((benefit, index) => {
+                            const Icon = getIcon(benefit.icon);
+                            return (
+                              <div key={index} className="p-2 rounded-lg bg-white border border-slate-200 shadow-sm">
+                                <Icon className="w-4 h-4 text-[#076AC2] mb-1" />
+                                <p className="text-xs font-semibold text-slate-900 line-clamp-1">{benefit.title}</p>
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        {benefits.slice(0, 4).map((benefit, index) => {
-                          const Icon = getIcon(benefit.icon);
-                          return (
-                            <div key={index} className="p-2 rounded-lg bg-white border border-slate-200 shadow-sm">
-                              <Icon className="w-4 h-4 text-[#076AC2] mb-1" />
-                              <p className="text-xs font-semibold text-slate-900 line-clamp-1">{benefit.title}</p>
-                            </div>
-                          );
-                        })}
+                      <div className="flex justify-between items-center text-xs text-slate-500 border-t border-slate-200 pt-2">
+                        <span>Sistema Online</span>
+                        <span>100% Seguro</span>
                       </div>
                     </div>
-                    {/* Status Bar */}
-                    <div className="flex justify-between items-center text-xs text-slate-500 border-t border-slate-200 pt-2">
-                      <span>Sistema Online</span>
-                      <span>100% Seguro</span>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
               

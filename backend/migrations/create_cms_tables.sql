@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS site_hero (
   cta_primary_text VARCHAR(100) DEFAULT 'Iniciar Consulta',
   cta_primary_link VARCHAR(255) DEFAULT '/login',
   cta_whatsapp_text VARCHAR(100) DEFAULT 'Falar no WhatsApp',
+  cta_whatsapp_icon_url VARCHAR(500) DEFAULT NULL,
   background_gradient_from VARCHAR(7) DEFAULT '#667eea',
   background_gradient_to VARCHAR(7) DEFAULT '#764ba2',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

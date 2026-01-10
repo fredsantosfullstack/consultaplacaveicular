@@ -1,8 +1,55 @@
 import express from 'express';
+import path from 'path';
+import fs from 'fs';
+import multer from 'multer';
+import { fileURLToPath } from 'url';
 import * as cmsController from '../controllers/cmsController.js';
 import auth from '../middleware/auth.js';
 
 const router = express.Router();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const heroAssetsDir = path.join(__dirname, '../../public/assets/hero');
+if (!fs.existsSync(heroAssetsDir)) {
+  fs.mkdirSync(heroAssetsDir, { recursive: true });
+}
+
+const heroIconStorage = multer.diskStorage({
+  destination: heroAssetsDir,
+  filename: (req, file, cb) => {
+    const extension = path.extname(file.originalname).toLowerCase() || '.png';
+    cb(null, `hero-whatsapp-icon${extension}`);
+  }
+});
+
+const heroMockupStorage = multer.diskStorage({
+  destination: heroAssetsDir,
+  filename: (req, file, cb) => {
+    const extension = path.extname(file.originalname).toLowerCase() || '.png';
+    cb(null, `hero-mockup${extension}`);
+  }
+});
+
+const allowedHeroAssetExtensions = ['.png', '.svg', '.webp'];
+
+const heroAssetFileFilter = (req, file, cb) => {
+  const ext = path.extname(file.originalname).toLowerCase();
+  if (!allowedHeroAssetExtensions.includes(ext)) {
+    return cb(new Error('Formato de arquivo não suportado. Use PNG, SVG ou WEBP.'));
+  }
+  cb(null, true);
+};
+
+const heroIconUpload = multer({
+  storage: heroIconStorage,
+  fileFilter: heroAssetFileFilter
+});
+
+const heroMockupUpload = multer({
+  storage: heroMockupStorage,
+  fileFilter: heroAssetFileFilter
+});
 
 // Middleware para verificar se é admin
 const isAdmin = (req, res, next) => {
@@ -53,6 +100,8 @@ router.put('/config', auth, isAdmin, cmsController.updateConfig);
 
 // Hero section
 router.put('/hero', auth, isAdmin, cmsController.updateHero);
+router.put('/hero/icon', auth, isAdmin, heroIconUpload.single('icon'), cmsController.updateHeroIcon);
+router.put('/hero/mockup', auth, isAdmin, heroMockupUpload.single('mockup'), cmsController.updateHeroMockup);
 
 // Benefícios
 router.post('/benefits', auth, isAdmin, cmsController.createBenefit);

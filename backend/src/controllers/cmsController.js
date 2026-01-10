@@ -76,6 +76,7 @@ export const updateHero = async (req, res) => {
       cta_primary_text,
       cta_primary_link,
       cta_whatsapp_text,
+      cta_whatsapp_icon_url,
       background_gradient_from,
       background_gradient_to,
       mockup_image_url
@@ -89,12 +90,13 @@ export const updateHero = async (req, res) => {
         cta_primary_text = ?,
         cta_primary_link = ?,
         cta_whatsapp_text = ?,
+        cta_whatsapp_icon_url = ?,
         background_gradient_from = ?,
         background_gradient_to = ?,
         mockup_image_url = ?,
         updated_at = NOW()
       WHERE id = 1`,
-      [title, subtitle, description, cta_primary_text, cta_primary_link, cta_whatsapp_text, background_gradient_from, background_gradient_to, mockup_image_url]
+      [title, subtitle, description, cta_primary_text, cta_primary_link, cta_whatsapp_text, cta_whatsapp_icon_url, background_gradient_from, background_gradient_to, mockup_image_url]
     );
 
     res.json({ msg: 'Hero atualizado com sucesso' });
@@ -376,5 +378,47 @@ export const getLandingPageData = async (req, res) => {
     console.error('❌ Erro ao buscar dados da landing page:', error.message);
     console.error('Stack:', error.stack);
     res.status(500).json({ msg: 'Erro ao buscar dados da landing page', error: error.message });
+  }
+};
+
+export const updateHeroIcon = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ msg: 'Nenhum arquivo enviado.' });
+    }
+
+    const relativePath = `/assets/hero/${req.file.filename}`;
+    await db.query(
+      `UPDATE site_hero 
+       SET cta_whatsapp_icon_url = ?, updated_at = NOW()
+       WHERE id = 1`,
+      [relativePath]
+    );
+
+    res.json({ msg: 'Ícone do WhatsApp atualizado com sucesso!', path: relativePath });
+  } catch (error) {
+    console.error('Erro ao atualizar ícone do WhatsApp:', error);
+    res.status(500).json({ msg: 'Erro ao atualizar ícone do WhatsApp' });
+  }
+};
+
+export const updateHeroMockup = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ msg: 'Nenhum arquivo enviado.' });
+    }
+
+    const relativePath = `/assets/hero/${req.file.filename}`;
+    await db.query(
+      `UPDATE site_hero 
+       SET mockup_image_url = ?, updated_at = NOW()
+       WHERE id = 1`,
+      [relativePath]
+    );
+
+    res.json({ msg: 'Mockup atualizado com sucesso!', path: relativePath });
+  } catch (error) {
+    console.error('Erro ao atualizar mockup do hero:', error);
+    res.status(500).json({ msg: 'Erro ao atualizar mockup do hero' });
   }
 };
