@@ -141,9 +141,9 @@ const Login: React.FC = () => {
         
         <p className="mt-6 text-center text-xs text-gray-500">
           Ao entrar, você concorda com nossos{' '}
-          <Link to="/termos-de-uso" target="_blank" className="font-medium text-gray-600 hover:underline">Termos de Uso</Link>
+          <a href="/termos-de-uso" target="_blank" rel="noreferrer" className="font-medium text-gray-600 hover:underline">Termos de Uso</a>
           {' e '}
-          <Link to="/politica-de-privacidade" target="_blank" className="font-medium text-gray-600 hover:underline">Política de Privacidade</Link>.
+          <a href="/politica-de-privacidade" target="_blank" rel="noreferrer" className="font-medium text-gray-600 hover:underline">Política de Privacidade</a>.
         </p>
       </div>
     </div>

@@ -118,7 +118,7 @@ function App() {
         </Route>
 
         {/* Redirecionamento Padrão */}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AuthProvider>
   );
