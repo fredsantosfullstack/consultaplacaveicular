@@ -46,6 +46,10 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
 
   const scrollToSection = (url: string) => {
     if (url.startsWith('#')) {
+      if (window.location.pathname !== '/') {
+        window.location.href = `/${url}`;
+        return;
+      }
       const sectionId = url.substring(1);
       const element = document.getElementById(sectionId);
       if (element) {
@@ -66,16 +70,21 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
   return (
     <footer className="bg-slate-950 text-white">
       <div className="max-w-[1410px] mx-auto px-5 sm:px-8 lg:px-12 py-12 space-y-10">
-        <div className="grid gap-10 md:grid-cols-[2fr,1fr,1fr]">
-          <div className="space-y-3">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[2fr,1fr,1fr]">
+          <div className="space-y-4">
             {footerLogoUrl ? (
-              <img src={footerLogoUrl} alt={siteName} className="h-12 w-auto mb-2" />
+              <a href="/" className="inline-flex" aria-label="Voltar para a página inicial">
+                <img src={footerLogoUrl} alt={siteName} className="h-10 w-auto" />
+              </a>
             ) : (
-              <h3 className="text-2xl font-semibold">{siteName}</h3>
+              <a href="/" className="text-2xl font-semibold hover:text-white transition-colors">
+                {siteName}
+              </a>
             )}
-            <p className="text-sm text-gray-400 leading-relaxed">
-              Plataforma profissional de consultas veiculares. Segurança, rapidez e confiabilidade para suas decisões.
-            </p>
+            <div className="space-y-2 text-sm text-gray-400 leading-relaxed">
+              <p>Plataforma profissional de consultas veiculares.</p>
+              <p>Segurança, rapidez e confiabilidade para suas decisões.</p>
+            </div>
           </div>
 
           <div>
@@ -111,9 +120,9 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
           </div>
         </div>
 
-        <div className="border-t border-slate-800 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+        <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row justify-between items-start gap-4 text-sm text-gray-500">
           <p>© 2026 — Todos os direitos reservados.</p>
-          <div className="text-center md:text-right">
+          <div className="text-left sm:text-right">
             <p>{siteName} — CNPJ 57.352.646/0001-55</p>
           </div>
         </div>

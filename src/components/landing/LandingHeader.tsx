@@ -20,18 +20,24 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
   }, []);
 
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const offset = 80;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+    if (window.location.pathname !== '/') {
+      window.location.href = `/#${sectionId}`;
       setIsMobileMenuOpen(false);
+      return;
     }
+
+    const element = document.getElementById(sectionId);
+    if (!element) return;
+
+    const offset = 80;
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+    setIsMobileMenuOpen(false);
   };
 
   const menuItems = [
@@ -49,13 +55,13 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
       <div className="max-w-[1410px] mx-auto px-5 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <div className="flex items-center">
+          <a href="/" className="flex items-center" aria-label="Voltar para a página inicial">
             {logoUrl ? (
               <img src={logoUrl} alt={siteName} className="h-10 w-auto" />
             ) : (
               <span className="text-2xl font-bold text-[#076AC2]">{siteName}</span>
             )}
-          </div>
+          </a>
 
           {/* Menu Desktop */}
           <nav className="hidden md:flex items-center space-x-8">
