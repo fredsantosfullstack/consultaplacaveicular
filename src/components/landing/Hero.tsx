@@ -81,10 +81,6 @@ const Hero: React.FC<HeroProps> = ({
         <div className="max-w-[1250px] mx-auto px-5 sm:px-8 lg:px-12 py-12 lg:py-0 h-full flex flex-col justify-center">
           <div className="grid lg:grid-cols-[0.95fr,1.05fr] gap-10 items-center h-full">
             <div className="text-white space-y-5">
-              <p className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-sm font-medium tracking-wide">
-                <Shield className="w-4 h-4" />
-                Plataforma de inteligencia veicular
-              </p>
               <h1 className="text-4xl sm:text-[44px] xl:text-[52px] font-black leading-tight drop-shadow-lg text-white">
                 {title}
               </h1>
@@ -94,6 +90,17 @@ const Hero: React.FC<HeroProps> = ({
               <p className="text-base sm:text-lg text-white/85 max-w-2xl leading-relaxed">
                 {description}
               </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 pt-2 text-white">
+                <div className="flex-1 rounded-2xl bg-white/5 border border-white/10 px-4 py-3 backdrop-blur-sm">
+                  <p className="text-sm font-semibold">100% Seguro</p>
+                  <p className="text-xs text-white/70">Dados protegidos e criptografados</p>
+                </div>
+                <div className="flex-1 rounded-2xl bg-white/5 border border-white/10 px-4 py-3 backdrop-blur-sm">
+                  <p className="text-sm font-semibold">Ultra Rápido</p>
+                  <p className="text-xs text-white/70">Resultados em segundos</p>
+                </div>
+              </div>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-2">
                 <a
