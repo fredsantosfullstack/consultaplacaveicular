@@ -58,7 +58,7 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
           </div>
 
           {/* Menu Desktop */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-8 text-base">
             {menuItems.map((item) => (
               <button
                 key={item.id}
@@ -104,7 +104,7 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="block w-full text-left px-4 py-2 text-gray-700 hover:text-[#076AC2] hover:bg-gray-50 rounded-lg font-medium transition-colors"
+                className="block w-full text-left px-4 py-2 text-gray-700 hover:text-[#076AC2] hover:bg-gray-50 rounded-lg font-medium transition-colors text-base"
               >
                 {item.label}
               </button>
