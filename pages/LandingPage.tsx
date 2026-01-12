@@ -74,6 +74,7 @@ const LandingPage: React.FC = () => {
 
         const rawBenefits = Array.isArray(response.data.benefits) ? response.data.benefits : [];
         const statistics = Array.isArray(response.data.statistics) ? response.data.statistics : [];
+        const rawSteps = Array.isArray(response.data.steps) ? response.data.steps : [];
         const normalize = (label: string) =>
           label
             .normalize('NFD')
@@ -139,6 +140,16 @@ const LandingPage: React.FC = () => {
           };
         });
 
+        const normalizedSteps = rawSteps.reduce((acc: typeof rawSteps, step) => {
+          if (!step || !step.title) return acc;
+          const normalizedTitle = normalize(String(step.title));
+          if (acc.find(existing => normalize(String(existing.title)) === normalizedTitle)) {
+            return acc;
+          }
+          acc.push(step);
+          return acc;
+        }, [] as typeof rawSteps);
+
         const heroData = { ...(response.data.hero || {}) };
         const heroSubtitle = typeof heroData.subtitle === 'string' ? heroData.subtitle.trim() : '';
         if (heroSubtitle.toLowerCase() === 'consultas veiculares online') {
@@ -150,7 +161,8 @@ const LandingPage: React.FC = () => {
           hero: heroData,
           benefits: normalizedBenefits,
           services: normalizedServices,
-          statistics: normalizedStatistics.length > 0 ? normalizedStatistics : statistics.slice(0, 4)
+          statistics: normalizedStatistics.length > 0 ? normalizedStatistics : statistics.slice(0, 4),
+          steps: normalizedSteps.length > 0 ? normalizedSteps : rawSteps
         });
 
         // Atualizar SEO
