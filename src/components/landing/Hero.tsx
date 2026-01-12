@@ -141,8 +141,8 @@ const Hero: React.FC<HeroProps> = ({
               </div>
             </div>
 
-            <div className="relative">
-              <div className="relative mx-auto max-w-lg w-full">
+            <div className="relative flex justify-end">
+              <div className="relative max-w-lg w-full">
                 <div className="bg-gradient-to-b from-gray-900 to-gray-800 rounded-[32px] shadow-2xl overflow-hidden border-[14px] border-gray-900">
                   <div className="bg-gradient-to-br from-blue-50 to-slate-50 aspect-[5/3] relative overflow-hidden">
                     {mockupImageSrc ? (
