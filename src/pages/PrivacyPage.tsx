@@ -1,21 +1,46 @@
-import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import LandingHeader from '../components/landing/LandingHeader';
+import LandingFooter from '../components/landing/LandingFooter';
+import { publicApi } from '../services/api';
+
+interface FooterLink {
+  label: string;
+  url: string;
+  category: string;
+}
+
+const FALLBACK_SITE_NAME = 'Consulta Placa Veicular';
 
 const PrivacyPage = () => {
+  const [config, setConfig] = useState<any>(null);
+  const [footerLinks, setFooterLinks] = useState<FooterLink[]>([]);
+
+  useEffect(() => {
+    const fetchUiData = async () => {
+      try {
+        const [configRes, footerRes] = await Promise.all([
+          publicApi.get('/cms/config'),
+          publicApi.get('/cms/footer-links')
+        ]);
+        setConfig(configRes.data || {});
+        setFooterLinks(Array.isArray(footerRes.data) ? footerRes.data : []);
+      } catch (error) {
+        console.error('Erro ao carregar dados do layout:', error);
+      }
+    };
+
+    fetchUiData();
+  }, []);
+
+  const siteName = config?.seo_title || FALLBACK_SITE_NAME;
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <Link to="/" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium">
-            <ArrowLeft className="w-5 h-5 mr-2" />
-            Voltar para o início
-          </Link>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex flex-col">
+      <LandingHeader logoUrl={config?.logo_url} siteName={siteName} />
+      <div className="h-20" />
 
       {/* Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
         <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-8">Política de Privacidade</h1>
           
@@ -124,19 +149,11 @@ const PrivacyPage = () => {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8 mt-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-gray-400">
-            © {new Date().getFullYear()} Consulta Placa Veicular. Todos os direitos reservados.
-          </p>
-          <div className="mt-4 space-x-6">
-            <Link to="/termos-de-uso" className="text-gray-400 hover:text-white">Termos de Uso</Link>
-            <Link to="/politica-de-privacidade" className="text-gray-400 hover:text-white">Política de Privacidade</Link>
-            <Link to="/lgpd" className="text-gray-400 hover:text-white">LGPD</Link>
-          </div>
-        </div>
-      </footer>
+      <LandingFooter
+        links={footerLinks}
+        siteName={siteName}
+        footerLogoUrl={config?.footer_logo_url}
+      />
     </div>
   );
 };

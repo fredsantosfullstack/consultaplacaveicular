@@ -1,19 +1,46 @@
-import { Link } from 'react-router-dom';
-import { ArrowLeft, Shield } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Shield } from 'lucide-react';
+import LandingHeader from '../components/landing/LandingHeader';
+import LandingFooter from '../components/landing/LandingFooter';
+import { publicApi } from '../services/api';
+
+interface FooterLink {
+  label: string;
+  url: string;
+  category: string;
+}
+
+const FALLBACK_SITE_NAME = 'Consulta Placa Veicular';
 
 const LGPDPage = () => {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <Link to="/" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium">
-            <ArrowLeft className="w-5 h-5 mr-2" />
-            Voltar para o início
-          </Link>
-        </div>
-      </header>
+  const [config, setConfig] = useState<any>(null);
+  const [footerLinks, setFooterLinks] = useState<FooterLink[]>([]);
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  useEffect(() => {
+    const fetchUiData = async () => {
+      try {
+        const [configRes, footerRes] = await Promise.all([
+          publicApi.get('/cms/config'),
+          publicApi.get('/cms/footer-links')
+        ]);
+        setConfig(configRes.data || {});
+        setFooterLinks(Array.isArray(footerRes.data) ? footerRes.data : []);
+      } catch (error) {
+        console.error('Erro ao carregar dados do layout:', error);
+      }
+    };
+
+    fetchUiData();
+  }, []);
+
+  const siteName = config?.seo_title || FALLBACK_SITE_NAME;
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex flex-col">
+      <LandingHeader logoUrl={config?.logo_url} siteName={siteName} />
+      <div className="h-20" />
+
+      <main className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
         <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
           <div className="flex items-center mb-8">
             <Shield className="w-12 h-12 text-blue-600 mr-4" />
@@ -55,16 +82,11 @@ const LGPDPage = () => {
         </div>
       </main>
 
-      <footer className="bg-gray-900 text-white py-8 mt-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-gray-400">© {new Date().getFullYear()} Consulta Placa Veicular</p>
-          <div className="mt-4 space-x-6">
-            <Link to="/termos-de-uso" className="text-gray-400 hover:text-white">Termos</Link>
-            <Link to="/politica-de-privacidade" className="text-gray-400 hover:text-white">Privacidade</Link>
-            <Link to="/lgpd" className="text-gray-400 hover:text-white">LGPD</Link>
-          </div>
-        </div>
-      </footer>
+      <LandingFooter
+        links={footerLinks}
+        siteName={siteName}
+        footerLogoUrl={config?.footer_logo_url}
+      />
     </div>
   );
 };
