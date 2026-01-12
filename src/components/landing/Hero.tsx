@@ -91,17 +91,6 @@ const Hero: React.FC<HeroProps> = ({
                 {description}
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 pt-2 text-white">
-                <div className="flex-1 rounded-2xl bg-white/5 border border-white/10 px-4 py-3 backdrop-blur-sm">
-                  <p className="text-sm font-semibold">100% Seguro</p>
-                  <p className="text-xs text-white/70">Dados protegidos e criptografados</p>
-                </div>
-                <div className="flex-1 rounded-2xl bg-white/5 border border-white/10 px-4 py-3 backdrop-blur-sm">
-                  <p className="text-sm font-semibold">Ultra Rápido</p>
-                  <p className="text-xs text-white/70">Resultados em segundos</p>
-                </div>
-              </div>
-
               <div className="flex flex-col sm:flex-row gap-4 pt-2">
                 <a
                   href={ctaPrimaryLink}
