@@ -123,11 +123,11 @@ const Hero: React.FC<HeroProps> = ({
                   </button>
                 )}
               </div>
-              <div className="flex flex-wrap gap-6 pt-6 text-white/80">
+              <div className="flex flex-col sm:flex-row gap-6 pt-6 text-white/80">
                 {benefits.slice(0, 2).map((benefit, index) => {
                   const Icon = getIcon(benefit.icon);
                   return (
-                    <div key={index} className="flex items-center gap-3">
+                    <div key={index} className="flex items-center gap-3 sm:flex-1">
                       <span className="flex items-center justify-center w-11 h-11 rounded-full bg-white/10 border border-white/10">
                         <Icon className="w-5 h-5" />
                       </span>
