@@ -99,7 +99,7 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
                 {siteName}
               </a>
             )}
-            <div className="space-y-2 text-sm text-gray-400 leading-relaxed">
+            <div className="text-sm text-gray-400 leading-relaxed space-y-1">
               <p>Plataforma profissional de consultas veiculares.</p>
               <p>Segurança, rapidez e confiabilidade para suas decisões.</p>
             </div>
