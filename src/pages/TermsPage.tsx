@@ -1,7 +1,40 @@
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { publicApi } from '../services/api';
+
+interface ActiveTerms {
+  title: string;
+  content: string;
+  version: string;
+  updated_at: string;
+}
 
 const TermsPage = () => {
+  const [term, setTerm] = useState<ActiveTerms | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchTerms = async () => {
+      try {
+        const response = await publicApi.get('/terms/active');
+        setTerm(response.data);
+      } catch (err) {
+        console.error('Erro ao carregar termos ativos:', err);
+        setError('Não foi possível carregar os termos de uso no momento.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTerms();
+  }, []);
+
+  const lastUpdate = term?.updated_at
+    ? new Date(term.updated_at).toLocaleDateString('pt-BR')
+    : '—';
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
       {/* Header */}
@@ -17,70 +50,49 @@ const TermsPage = () => {
       {/* Content */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-8">Termos de Uso</h1>
-          
-          <div className="prose prose-lg max-w-none">
-            <section className="mb-10">
-              <h2 className="text-2xl font-bold text-blue-600 mb-4">1. Aceitação dos Termos</h2>
-              <p className="text-gray-700 leading-relaxed mb-4">
-                Bem-vindo à Consulta Placa Veicular! Ao acessar e utilizar nosso sistema, você concorda com os seguintes Termos de Uso. Caso não concorde com qualquer parte dos termos, pedimos que não utilize nossos serviços.
-              </p>
-            </section>
-
-            <section className="mb-10">
-              <h2 className="text-2xl font-bold text-blue-600 mb-4">2. Acesso ao Sistema</h2>
-              <p className="text-gray-700 leading-relaxed mb-4">
-                O sistema Consulta Placa Veicular oferece serviços de consulta de informações veiculares, como CRLV, consultas por placa, chassi, entre outros. O acesso a essas funcionalidades está sujeito a um cadastro prévio e ao pagamento de eventuais taxas conforme o tipo de serviço.
-              </p>
-            </section>
-
-            <section className="mb-10">
-              <h2 className="text-2xl font-bold text-blue-600 mb-4">3. Responsabilidade do Usuário</h2>
-              <p className="text-gray-700 leading-relaxed mb-4">
-                O usuário é responsável por fornecer informações corretas e atualizadas ao utilizar o sistema. O uso indevido de dados de terceiros para fins fraudulentos é estritamente proibido. A Consulta Placa Veicular não se responsabiliza por ações de terceiros que utilizem informações de maneira ilegal.
-              </p>
-            </section>
-
-            <section className="mb-10">
-              <h2 className="text-2xl font-bold text-blue-600 mb-4">4. Modificações e Cancelamentos</h2>
-              <p className="text-gray-700 leading-relaxed mb-4">
-                A Consulta Placa Veicular se reserva o direito de modificar, suspender ou cancelar serviços a qualquer momento, sem aviso prévio, sendo que o usuário será informado de eventuais alterações que impactem sua experiência no sistema.
-              </p>
-            </section>
-
-            <section className="mb-10">
-              <h2 className="text-2xl font-bold text-blue-600 mb-4">5. Limitação de Responsabilidade</h2>
-              <p className="text-gray-700 leading-relaxed mb-4">
-                A Consulta Placa Veicular não se responsabiliza por falhas nos sistemas de consulta que estão fora do seu controle, como falhas em APIs externas. Nosso objetivo é fornecer um serviço de qualidade, mas não podemos garantir 100% de precisão ou disponibilidade.
-              </p>
-            </section>
-
-            <section className="mb-10">
-              <h2 className="text-2xl font-bold text-blue-600 mb-4">6. Propriedade Intelectual</h2>
-              <p className="text-gray-700 leading-relaxed mb-4">
-                Todos os direitos de propriedade intelectual sobre a Consulta Placa Veicular são de titularidade exclusiva da plataforma. O usuário não pode reproduzir, modificar ou distribuir qualquer parte do sistema sem autorização prévia.
-              </p>
-            </section>
-
-            <section className="mb-10">
-              <h2 className="text-2xl font-bold text-blue-600 mb-4">7. Proibição de Uso Indevido de Dados Pessoais</h2>
-              <p className="text-gray-700 leading-relaxed mb-4">
-                O usuário não deve utilizar os serviços para o tratamento de dados pessoais de terceiros sem a devida autorização legal e sem respeitar a Lei Geral de Proteção de Dados (LGPD). A Consulta Placa Veicular não se responsabiliza por qualquer uso ilícito desses dados.
-              </p>
-            </section>
-
-            <div className="mt-12 p-6 bg-blue-50 border-l-4 border-blue-600 rounded-r-lg">
-              <p className="text-gray-700">
-                <strong>Última atualização:</strong> Janeiro de 2026
-              </p>
-              <p className="text-gray-700 mt-2">
-                📩 <strong>Dúvidas?</strong> Entre em contato conosco pelo e-mail:{' '}
+          {isLoading ? (
+            <div className="text-center py-20">
+              <div className="w-16 h-16 border-4 border-[#076AC2] border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
+              <p className="text-gray-600">Carregando termos...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center">
+              <p className="text-red-600">{error}</p>
+              <p className="text-gray-600 mt-4">
+                Tente novamente em alguns instantes ou entre em contato pelo e-mail{' '}
                 <a href="mailto:contato@consultaplacaveicular.com.br" className="text-blue-600 font-semibold hover:underline">
                   contato@consultaplacaveicular.com.br
                 </a>
               </p>
             </div>
-          </div>
+          ) : (
+            <>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+                <div>
+                  <h1 className="text-4xl font-bold text-gray-900">{term?.title || 'Termos de Uso'}</h1>
+                  {term?.version && (
+                    <p className="text-gray-500 mt-1">Versão {term.version}</p>
+                  )}
+                </div>
+                <span className="px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-sm font-medium">
+                  Última atualização: {lastUpdate}
+                </span>
+              </div>
+
+              <div className="text-gray-700 leading-relaxed whitespace-pre-line text-base">
+                {term?.content || 'Nenhum termo cadastrado no momento.'}
+              </div>
+
+              <div className="mt-12 p-6 bg-blue-50 border-l-4 border-blue-600 rounded-r-lg">
+                <p className="text-gray-700">
+                  📩 <strong>Dúvidas?</strong> Entre em contato conosco pelo e-mail{' '}
+                  <a href="mailto:contato@consultaplacaveicular.com.br" className="text-blue-600 font-semibold hover:underline">
+                    contato@consultaplacaveicular.com.br
+                  </a>
+                </p>
+              </div>
+            </>
+          )}
         </div>
       </main>
 
