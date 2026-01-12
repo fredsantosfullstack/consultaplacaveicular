@@ -1,5 +1,11 @@
 import db from '../config/db.js';
 
+const sendNoCacheHeaders = (res) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+};
+
 // ========================================
 // CONFIGURAÇÕES GERAIS
 // ========================================
@@ -7,6 +13,7 @@ import db from '../config/db.js';
 export const getConfig = async (req, res) => {
   try {
     const [config] = await db.query('SELECT * FROM site_config WHERE id = 1');
+    sendNoCacheHeaders(res);
     res.json(config[0] || {});
   } catch (error) {
     console.error('Erro ao buscar configurações:', error);
@@ -24,6 +31,8 @@ export const updateConfig = async (req, res) => {
       secondary_color,
       whatsapp_number,
       whatsapp_message,
+      contact_email,
+      contact_email_cc,
       seo_title,
       seo_description,
       seo_keywords
@@ -38,12 +47,14 @@ export const updateConfig = async (req, res) => {
         secondary_color = ?,
         whatsapp_number = ?,
         whatsapp_message = ?,
+        contact_email = ?,
+        contact_email_cc = ?,
         seo_title = ?,
         seo_description = ?,
         seo_keywords = ?,
         updated_at = NOW()
       WHERE id = 1`,
-      [logo_url, favicon_url, footer_logo_url, primary_color, secondary_color, whatsapp_number, whatsapp_message, seo_title, seo_description, seo_keywords]
+      [logo_url, favicon_url, footer_logo_url, primary_color, secondary_color, whatsapp_number, whatsapp_message, contact_email, contact_email_cc, seo_title, seo_description, seo_keywords]
     );
 
     res.json({ msg: 'Configurações atualizadas com sucesso' });
@@ -60,7 +71,13 @@ export const updateConfig = async (req, res) => {
 export const getHero = async (req, res) => {
   try {
     const [hero] = await db.query('SELECT * FROM site_hero WHERE id = 1');
-    res.json(hero[0] || {});
+    const heroData = hero[0] || {};
+    const subtitle = (heroData.subtitle || '').trim();
+    if (subtitle.toLowerCase() === 'consultas veiculares online') {
+      heroData.subtitle = '';
+    }
+    sendNoCacheHeaders(res);
+    res.json(heroData);
   } catch (error) {
     console.error('Erro ao buscar hero:', error);
     res.status(500).json({ msg: 'Erro ao buscar hero' });
@@ -115,6 +132,7 @@ export const getBenefits = async (req, res) => {
     const [benefits] = await db.query(
       'SELECT * FROM site_benefits WHERE is_active = TRUE ORDER BY display_order'
     );
+    sendNoCacheHeaders(res);
     res.json(benefits);
   } catch (error) {
     console.error('Erro ao buscar benefícios:', error);
@@ -175,6 +193,7 @@ export const getStatistics = async (req, res) => {
     const [statistics] = await db.query(
       'SELECT * FROM site_statistics WHERE is_active = TRUE ORDER BY display_order'
     );
+    sendNoCacheHeaders(res);
     res.json(statistics);
   } catch (error) {
     console.error('Erro ao buscar estatísticas:', error);
@@ -208,6 +227,7 @@ export const getServices = async (req, res) => {
     const [services] = await db.query(
       'SELECT * FROM site_services WHERE is_active = TRUE ORDER BY display_order'
     );
+    sendNoCacheHeaders(res);
     res.json(services);
   } catch (error) {
     console.error('Erro ao buscar serviços:', error);
@@ -268,6 +288,7 @@ export const getSteps = async (req, res) => {
     const [steps] = await db.query(
       'SELECT * FROM site_steps WHERE is_active = TRUE ORDER BY display_order'
     );
+    sendNoCacheHeaders(res);
     res.json(steps);
   } catch (error) {
     console.error('Erro ao buscar passos:', error);
@@ -301,6 +322,7 @@ export const getFooterLinks = async (req, res) => {
     const [links] = await db.query(
       'SELECT * FROM site_footer_links WHERE is_active = TRUE ORDER BY category, display_order'
     );
+    sendNoCacheHeaders(res);
     res.json(links);
   } catch (error) {
     console.error('Erro ao buscar links do rodapé:', error);
@@ -365,9 +387,16 @@ export const getLandingPageData = async (req, res) => {
     const [footerLinks] = await db.query('SELECT * FROM site_footer_links WHERE is_active = TRUE ORDER BY category, display_order');
     console.log('✅ Footer links carregado:', footerLinks.length);
 
+    const heroData = hero[0] || {};
+    const subtitle = (heroData.subtitle || '').trim();
+    if (subtitle.toLowerCase() === 'consultas veiculares online') {
+      heroData.subtitle = '';
+    }
+
+    sendNoCacheHeaders(res);
     res.json({
       config: config[0] || {},
-      hero: hero[0] || {},
+      hero: heroData,
       benefits,
       statistics,
       services,
