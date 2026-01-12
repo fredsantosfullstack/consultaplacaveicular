@@ -24,8 +24,26 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
     });
   };
 
+  const normalizeLegalUrl = (url: string) => {
+    const cleanUrl = url.toLowerCase().trim();
+    const mapping: Record<string, string> = {
+      '/privacidade': '/politica-de-privacidade',
+      '/privacidade.html': '/politica-de-privacidade',
+      '/politica': '/politica-de-privacidade',
+      '/politica-privacidade': '/politica-de-privacidade',
+      '/termos': '/termos-de-uso',
+      '/termos.html': '/termos-de-uso',
+      '/termo': '/termos-de-uso'
+    };
+    return mapping[cleanUrl] || cleanUrl;
+  };
+
   const menuLinks = deduplicate(links.filter((link) => link.category === 'menu'));
-  const legalLinks = deduplicate(links.filter((link) => link.category === 'legal'));
+  const legalLinks = deduplicate(
+    links
+      .filter((link) => link.category === 'legal')
+      .map(link => ({ ...link, url: normalizeLegalUrl(link.url) }))
+  );
 
   // Adicionar links manuais se não existirem
   const finalMenuLinks = [...menuLinks];
