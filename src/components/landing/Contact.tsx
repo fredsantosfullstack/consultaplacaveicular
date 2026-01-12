@@ -43,9 +43,9 @@ const Contact: React.FC = () => {
 
   return (
     <section id="contato" className="py-20 bg-slate-50 scroll-mt-20">
-      <div className="max-w-[1410px] mx-auto px-5 sm:px-8 lg:px-12">
-        <div className="grid lg:grid-cols-[0.9fr,1.1fr] gap-10">
-          <div className="bg-slate-900 text-white rounded-[10px] p-10 space-y-8 shadow-2xl">
+      <div className="max-w-[1410px] mx-auto px-4 sm:px-8 lg:px-12">
+        <div className="grid gap-6 lg:grid-cols-[0.95fr,1.05fr]">
+          <div className="bg-slate-900 text-white rounded-[10px] p-6 sm:p-10 space-y-8 shadow-2xl">
             <div>
               <h2 className="text-3xl font-bold">
                 Fale Conosco
@@ -56,7 +56,7 @@ const Contact: React.FC = () => {
             </div>
             <div className="space-y-6">
               <div className="flex items-start gap-4">
-                <span className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
+                <span className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center flex-shrink-0">
                   <Mail className="w-5 h-5 text-white" />
                 </span>
                 <div>
@@ -65,7 +65,7 @@ const Contact: React.FC = () => {
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <span className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
+                <span className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center flex-shrink-0">
                   <Phone className="w-5 h-5 text-white" />
                 </span>
                 <div>
@@ -74,7 +74,7 @@ const Contact: React.FC = () => {
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <span className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
+                <span className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center flex-shrink-0">
                   <Shield className="w-5 h-5 text-white" />
                 </span>
                 <div>
@@ -100,7 +100,7 @@ const Contact: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-[10px] p-10 shadow-xl border border-slate-100">
+          <div className="bg-white rounded-[10px] p-6 sm:p-10 shadow-xl border border-slate-100">
             {submitStatus === 'success' ? (
               <div className="text-center py-8">
                 <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
