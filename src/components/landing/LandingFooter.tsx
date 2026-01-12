@@ -89,7 +89,7 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
     <footer className="bg-slate-950 text-white">
       <div className="max-w-[1410px] mx-auto px-5 sm:px-8 lg:px-12 py-12 space-y-10">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[2fr,1fr,1fr]">
-          <div className="space-y-4">
+          <div className="space-y-4 text-center sm:text-left">
             {footerLogoUrl ? (
               <a href="/" className="inline-flex" aria-label="Voltar para a página inicial">
                 <img src={footerLogoUrl} alt={siteName} className="h-10 w-auto" />
@@ -105,7 +105,7 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
             </div>
           </div>
 
-          <div>
+          <div className="text-center sm:text-left">
             <h4 className="text-lg font-semibold mb-4">Consultas</h4>
             <ul className="space-y-2 text-sm text-gray-400">
               {finalMenuLinks.map((link, index) => (
@@ -124,7 +124,7 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
             </ul>
           </div>
 
-          <div>
+          <div className="text-center sm:text-left">
             <h4 className="text-lg font-semibold mb-4">Políticas</h4>
             <ul className="space-y-2 text-sm text-gray-400">
               {finalLegalLinks.map((link, index) => (
@@ -138,9 +138,9 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
           </div>
         </div>
 
-        <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row justify-between items-start gap-4 text-sm text-gray-500">
-          <p>© 2026 — Todos os direitos reservados.</p>
-          <div className="text-left sm:text-right">
+        <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-4 text-sm text-gray-500">
+          <p className="w-full sm:w-auto">© 2026 — Todos os direitos reservados.</p>
+          <div className="w-full sm:w-auto text-center sm:text-right">
             <p>{siteName} — CNPJ 57.352.646/0001-55</p>
           </div>
         </div>
