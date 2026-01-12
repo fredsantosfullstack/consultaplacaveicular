@@ -58,12 +58,12 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
           </div>
 
           {/* Menu Desktop */}
-          <nav className="hidden md:flex items-center space-x-8 text-base">
+          <nav className="hidden md:flex items-center space-x-8">
             {menuItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="text-gray-700 hover:text-[#076AC2] font-medium transition-colors"
+                className="text-gray-700 hover:text-[#076AC2] font-medium transition-colors text-[16px]"
               >
                 {item.label}
               </button>
@@ -104,7 +104,7 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="block w-full text-left px-4 py-2 text-gray-700 hover:text-[#076AC2] hover:bg-gray-50 rounded-lg font-medium transition-colors text-base"
+                className="block w-full text-left px-4 py-2 text-gray-700 hover:text-[#076AC2] hover:bg-gray-50 rounded-lg font-medium transition-colors text-[16px]"
               >
                 {item.label}
               </button>
