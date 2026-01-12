@@ -64,6 +64,36 @@ export const updateConfig = async (req, res) => {
   }
 };
 
+const updateConfigAssetField = async (req, res, column, successMessage, logLabel) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ msg: 'Nenhum arquivo enviado.' });
+    }
+
+    const relativePath = `/assets/config/${req.file.filename}`;
+    await db.query(
+      `UPDATE site_config 
+       SET ${column} = ?, updated_at = NOW()
+       WHERE id = 1`,
+      [relativePath]
+    );
+
+    res.json({ msg: successMessage, path: relativePath });
+  } catch (error) {
+    console.error(`Erro ao atualizar ${logLabel}:`, error);
+    res.status(500).json({ msg: `Erro ao atualizar ${logLabel}` });
+  }
+};
+
+export const updateLogoAsset = async (req, res) =>
+  updateConfigAssetField(req, res, 'logo_url', 'Logo atualizado com sucesso!', 'logo');
+
+export const updateFaviconAsset = async (req, res) =>
+  updateConfigAssetField(req, res, 'favicon_url', 'Favicon atualizado com sucesso!', 'favicon');
+
+export const updateFooterLogoAsset = async (req, res) =>
+  updateConfigAssetField(req, res, 'footer_logo_url', 'Logo do rodapé atualizado com sucesso!', 'logo do rodapé');
+
 // ========================================
 // HERO SECTION
 // ========================================

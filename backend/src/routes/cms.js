@@ -11,9 +11,13 @@ const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const heroAssetsDir = path.join(__dirname, '../../public/assets/hero');
-if (!fs.existsSync(heroAssetsDir)) {
-  fs.mkdirSync(heroAssetsDir, { recursive: true });
-}
+const configAssetsDir = path.join(__dirname, '../../public/assets/config');
+
+[heroAssetsDir, configAssetsDir].forEach((dir) => {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+});
 
 const heroIconStorage = multer.diskStorage({
   destination: heroAssetsDir,
@@ -49,6 +53,38 @@ const heroIconUpload = multer({
 const heroMockupUpload = multer({
   storage: heroMockupStorage,
   fileFilter: heroAssetFileFilter
+});
+
+const allowedConfigAssetExtensions = ['.png', '.svg', '.webp', '.jpg', '.jpeg', '.ico', '.gif'];
+const configAssetFileFilter = (req, file, cb) => {
+  const ext = path.extname(file.originalname).toLowerCase();
+  if (!allowedConfigAssetExtensions.includes(ext)) {
+    return cb(new Error('Formato de arquivo não suportado. Use PNG, SVG, WEBP, JPG, JPEG, GIF ou ICO.'));
+  }
+  cb(null, true);
+};
+
+const createConfigStorage = (fileName) => multer.diskStorage({
+  destination: configAssetsDir,
+  filename: (req, file, cb) => {
+    const extension = path.extname(file.originalname).toLowerCase() || '.png';
+    cb(null, `${fileName}${extension}`);
+  }
+});
+
+const configLogoUpload = multer({
+  storage: createConfigStorage('site-logo'),
+  fileFilter: configAssetFileFilter
+});
+
+const configFaviconUpload = multer({
+  storage: createConfigStorage('site-favicon'),
+  fileFilter: configAssetFileFilter
+});
+
+const configFooterLogoUpload = multer({
+  storage: createConfigStorage('site-footer-logo'),
+  fileFilter: configAssetFileFilter
 });
 
 // Middleware para verificar se é admin
@@ -97,6 +133,9 @@ router.post('/contact', cmsController.submitContact);
 
 // Configurações gerais
 router.put('/config', auth, isAdmin, cmsController.updateConfig);
+router.put('/config/logo', auth, isAdmin, configLogoUpload.single('asset'), cmsController.updateLogoAsset);
+router.put('/config/favicon', auth, isAdmin, configFaviconUpload.single('asset'), cmsController.updateFaviconAsset);
+router.put('/config/footer-logo', auth, isAdmin, configFooterLogoUpload.single('asset'), cmsController.updateFooterLogoAsset);
 
 // Hero section
 router.put('/hero', auth, isAdmin, cmsController.updateHero);

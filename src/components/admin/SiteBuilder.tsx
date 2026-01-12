@@ -45,6 +45,9 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
   const [steps, setSteps] = useState<any[]>([]);
   const [isUploadingHeroIcon, setIsUploadingHeroIcon] = useState(false);
   const [isUploadingHeroMockup, setIsUploadingHeroMockup] = useState(false);
+  const [isUploadingLogo, setIsUploadingLogo] = useState(false);
+  const [isUploadingFavicon, setIsUploadingFavicon] = useState(false);
+  const [isUploadingFooterLogo, setIsUploadingFooterLogo] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -71,6 +74,66 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
       console.error('Erro ao carregar dados:', error);
     }
   };
+
+  const handleConfigAssetUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+    endpoint: string,
+    field: 'logo_url' | 'favicon_url' | 'footer_logo_url',
+    setLoading: (value: boolean) => void,
+    successMessage: string,
+    errorMessage: string
+  ) => {
+    if (!event.target.files || event.target.files.length === 0) return;
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append('asset', file);
+    setLoading(true);
+    setSaveMessage('');
+    try {
+      const { data } = await api.put(endpoint, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      setConfig(prev => ({ ...prev, [field]: data.path }));
+      setSaveMessage(successMessage);
+      setTimeout(() => setSaveMessage(''), 3000);
+    } catch (error) {
+      console.error(errorMessage, error);
+      setSaveMessage(errorMessage);
+    } finally {
+      setLoading(false);
+      event.target.value = '';
+    }
+  };
+
+  const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) =>
+    handleConfigAssetUpload(
+      event,
+      '/cms/config/logo',
+      'logo_url',
+      setIsUploadingLogo,
+      'Logo atualizado com sucesso!',
+      'Erro ao enviar logo'
+    );
+
+  const handleFaviconUpload = (event: React.ChangeEvent<HTMLInputElement>) =>
+    handleConfigAssetUpload(
+      event,
+      '/cms/config/favicon',
+      'favicon_url',
+      setIsUploadingFavicon,
+      'Favicon atualizado com sucesso!',
+      'Erro ao enviar favicon'
+    );
+
+  const handleFooterLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) =>
+    handleConfigAssetUpload(
+      event,
+      '/cms/config/footer-logo',
+      'footer_logo_url',
+      setIsUploadingFooterLogo,
+      'Logo do rodapé atualizado com sucesso!',
+      'Erro ao enviar logo do rodapé'
+    );
 
   const handleSaveConfig = async () => {
     setIsSaving(true);
@@ -286,43 +349,85 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
               <h2 className="text-xl font-bold text-gray-900 mb-4">Configurações Gerais</h2>
 
               <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    URL do Logo
+                <div className="space-y-3">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Logo Principal
                   </label>
-                  <input
-                    type="text"
-                    value={config.logo_url}
-                    onChange={(e) => setConfig({ ...config, logo_url: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
-                    placeholder="https://exemplo.com/logo.png"
-                  />
+                  <div className="flex flex-col sm:flex-row items-start gap-4">
+                    {config.logo_url && (
+                      <img
+                        src={buildAssetUrl(config.logo_url)}
+                        alt="Logo atual"
+                        className="w-32 h-16 object-contain bg-white rounded-lg border"
+                      />
+                    )}
+                    <div className="w-full">
+                      <input
+                        type="file"
+                        accept=".png,.svg,.webp,.jpg,.jpeg,.ico,.gif"
+                        onChange={handleLogoUpload}
+                        disabled={isUploadingLogo}
+                        className="block w-full text-sm text-gray-900 file:mr-4 file:rounded-md file:border-0 file:bg-[#076AC2] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-[#055a9f]"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Envie o logo principal em PNG, SVG, WEBP, JPG, JPEG, GIF ou ICO.
+                      </p>
+                    </div>
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    URL do Favicon
+                <div className="space-y-3">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Favicon
                   </label>
-                  <input
-                    type="text"
-                    value={config.favicon_url}
-                    onChange={(e) => setConfig({ ...config, favicon_url: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
-                    placeholder="https://exemplo.com/favicon.ico"
-                  />
+                  <div className="flex flex-col sm:flex-row items-start gap-4">
+                    {config.favicon_url && (
+                      <img
+                        src={buildAssetUrl(config.favicon_url)}
+                        alt="Favicon atual"
+                        className="w-12 h-12 object-contain bg-white rounded-lg border"
+                      />
+                    )}
+                    <div className="w-full">
+                      <input
+                        type="file"
+                        accept=".png,.svg,.webp,.jpg,.jpeg,.ico,.gif"
+                        onChange={handleFaviconUpload}
+                        disabled={isUploadingFavicon}
+                        className="block w-full text-sm text-gray-900 file:mr-4 file:rounded-md file:border-0 file:bg-[#076AC2] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-[#055a9f]"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Utilize um arquivo quadrado (recomendado 512x512) nos formatos suportados.
+                      </p>
+                    </div>
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    URL do Logo Footer
+                <div className="space-y-3 md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Logo do Rodapé
                   </label>
-                  <input
-                    type="text"
-                    value={config.footer_logo_url}
-                    onChange={(e) => setConfig({ ...config, footer_logo_url: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent"
-                    placeholder="https://exemplo.com/logo-footer.png"
-                  />
+                  <div className="flex flex-col sm:flex-row items-start gap-4">
+                    {config.footer_logo_url && (
+                      <img
+                        src={buildAssetUrl(config.footer_logo_url)}
+                        alt="Logo do rodapé atual"
+                        className="w-32 h-16 object-contain bg-white rounded-lg border"
+                      />
+                    )}
+                    <div className="w-full">
+                      <input
+                        type="file"
+                        accept=".png,.svg,.webp,.jpg,.jpeg,.ico,.gif"
+                        onChange={handleFooterLogoUpload}
+                        disabled={isUploadingFooterLogo}
+                        className="block w-full text-sm text-gray-900 file:mr-4 file:rounded-md file:border-0 file:bg-[#076AC2] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-[#055a9f]"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Ideal para a versão branca do logo utilizada no rodapé do site.
+                      </p>
+                    </div>
+                  </div>
                 </div>
 
                 <div>
