@@ -11,7 +11,9 @@ import PriceTable from './pages/PriceTable';
 import PublicPriceTable from './pages/PublicPriceTable';
 import CreditRecharge from './pages/CreditRecharge';
 import ApiDocs from './pages/ApiDocs';
-import TermsOfUse from './pages/TermsOfUse';
+import TermsPage from './src/pages/TermsPage';
+import PrivacyPage from './src/pages/PrivacyPage';
+import LGPDPage from './src/pages/LGPDPage';
 import SignUp from './pages/SignUp';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
@@ -79,6 +81,9 @@ function App() {
         <Route path="/recuperar-senha" element={<ForgotPassword />} />
         <Route path="/resetar-senha" element={<ResetPassword />} />
         <Route path="/tabela-precos-publica" element={<PublicPriceTable />} />
+        <Route path="/termos-de-uso" element={<TermsPage />} />
+        <Route path="/politica-de-privacidade" element={<PrivacyPage />} />
+        <Route path="/lgpd" element={<LGPDPage />} />
 
         {/* Rotas Protegidas para Usuários Logados */}
         <Route element={<ProtectedRoute />}>
@@ -89,7 +94,6 @@ function App() {
           <Route path="/tabela-precos" element={<PriceTable />} />
           <Route path="/recarga-creditos" element={<CreditRecharge />} />
           <Route path="/docs-api" element={<ApiDocs />} />
-          <Route path="/termos-de-uso" element={<TermsOfUse />} />
 
           {/* Consultas */}
           <Route path="/consulta/base-nacional" element={<BaseNacional />} />
