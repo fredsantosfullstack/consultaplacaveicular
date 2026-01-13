@@ -140,8 +140,8 @@ const PrivacyPage = () => {
               </p>
               <p className="text-gray-700 mt-2">
                 📩 <strong>Dúvidas sobre privacidade?</strong> Entre em contato com nosso DPO (Encarregado de Proteção de Dados):{' '}
-                <a href="mailto:privacidade@consultaplacaveicular.com.br" className="text-blue-600 font-semibold hover:underline">
-                  privacidade@consultaplacaveicular.com.br
+                <a href="mailto:contato@consultaplacaveicular.com.br" className="text-blue-600 font-semibold hover:underline">
+                  contato@consultaplacaveicular.com.br
                 </a>
               </p>
             </div>

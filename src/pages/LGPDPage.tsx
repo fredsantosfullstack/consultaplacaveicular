@@ -75,7 +75,7 @@ const LGPDPage = () => {
 
             <div className="mt-12 p-6 bg-blue-50 border-l-4 border-blue-600 rounded-r-lg">
               <p className="text-gray-700">
-                <strong>DPO:</strong> <a href="mailto:privacidade@consultaplacaveicular.com.br" className="text-blue-600 font-semibold hover:underline">privacidade@consultaplacaveicular.com.br</a>
+                <strong>DPO:</strong> <a href="mailto:contato@consultaplacaveicular.com.br" className="text-blue-600 font-semibold hover:underline">contato@consultaplacaveicular.com.br</a>
               </p>
             </div>
           </div>

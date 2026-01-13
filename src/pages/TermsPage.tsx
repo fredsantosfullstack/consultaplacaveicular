@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 import LandingHeader from '../components/landing/LandingHeader';
 import LandingFooter from '../components/landing/LandingFooter';
 import { publicApi } from '../services/api';
@@ -70,11 +71,27 @@ const TermsPage = () => {
       setIsTermLoading(true);
       try {
         const response = await publicApi.get('/terms/active');
-        setTerm(response.data);
+        const payload = response.data || {};
+        const normalizedContent = (payload.content || '').toString().trim();
+
+        if (!normalizedContent) {
+          setTerm(DEFAULT_TERMS);
+        } else {
+          setTerm({
+            title: payload.title || DEFAULT_TERMS.title,
+            content: normalizedContent,
+            version: payload.version || DEFAULT_TERMS.version,
+            updated_at: payload.updated_at || payload.created_at || DEFAULT_TERMS.updated_at
+          });
+        }
         setTermError(null);
       } catch (err) {
         console.error('Erro ao carregar termos ativos:', err);
-        setTermError('Exibindo versão padrão dos termos. Tente novamente mais tarde para ver a versão mais recente do CMS.');
+        if (axios.isAxiosError(err) && err.response?.status === 404) {
+          setTermError(null);
+        } else {
+          setTermError('Exibindo versão padrão dos termos. Tente novamente mais tarde para ver a versão mais recente do CMS.');
+        }
         setTerm(DEFAULT_TERMS);
       } finally {
         setIsTermLoading(false);
@@ -88,7 +105,7 @@ const TermsPage = () => {
   const siteName = config?.seo_title || FALLBACK_SITE_NAME;
   const lastUpdate = term?.updated_at
     ? new Date(term.updated_at).toLocaleDateString('pt-BR')
-    : '—';
+    : '--';
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex flex-col">
