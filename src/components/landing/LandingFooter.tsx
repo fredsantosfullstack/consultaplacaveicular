@@ -38,12 +38,13 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
     return mapping[cleanUrl] || cleanUrl;
   };
 
-  const normalizeString = (value: string) =>
-    value
+  const normalizeString = (value: string) => {
+    return value
       .normalize('NFD')
-      .replace(/\p{Diacritic}/gu, '')
+      .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase()
       .trim();
+  };
 
   const normalizeMenuTarget = (url: string, label?: string) => {
     const baseValue = (url || '').trim();
