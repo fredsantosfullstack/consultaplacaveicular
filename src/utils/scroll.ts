@@ -5,12 +5,20 @@ const formatHash = (target: string) => {
   return target.startsWith('#') ? target : `#${target.replace(/^#/, '').replace(/^\/+/, '')}`;
 };
 
+const SCROLL_OFFSET = 88;
 const scrollElementIntoView = (elementId: string) => {
   const element = document.getElementById(elementId);
   if (!element) {
     return false;
   }
-  element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  const elementTop = element.getBoundingClientRect().top + window.pageYOffset;
+  const targetPosition = elementTop - SCROLL_OFFSET;
+
+  window.scrollTo({
+    top: targetPosition,
+    behavior: 'smooth'
+  });
   return true;
 };
 
