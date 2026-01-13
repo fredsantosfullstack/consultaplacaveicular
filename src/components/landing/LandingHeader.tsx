@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import { navigateToSection } from '../../utils/navigation';
+import { goToSection } from '../../utils/scroll';
 
 interface LandingHeaderProps {
   logoUrl?: string;
@@ -21,10 +21,8 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
   }, []);
 
   const handleSectionNavigation = (sectionId: string, event?: React.MouseEvent<HTMLAnchorElement>) => {
-    if (event) {
-      event.preventDefault();
-    }
-    navigateToSection(`#${sectionId}`);
+    event?.preventDefault();
+    goToSection(sectionId);
     setIsMobileMenuOpen(false);
   };
 

@@ -7,7 +7,7 @@ import Steps from '../src/components/landing/Steps';
 import Contact from '../src/components/landing/Contact';
 import LandingFooter from '../src/components/landing/LandingFooter';
 import { publicApi } from '../src/services/api';
-import { scrollToHash } from '../src/utils/navigation';
+import { scrollToCurrentHash } from '../src/utils/scroll';
 
 interface LandingData {
   config: {
@@ -197,9 +197,7 @@ const LandingPage: React.FC = () => {
     if (!data) return;
 
     const handleHashNavigation = () => {
-      if (window.location.hash) {
-        scrollToHash(window.location.hash);
-      }
+      scrollToCurrentHash();
     };
 
     handleHashNavigation();

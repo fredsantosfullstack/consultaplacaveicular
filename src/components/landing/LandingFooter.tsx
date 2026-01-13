@@ -1,5 +1,5 @@
 import React from 'react';
-import { navigateToSection } from '../../utils/navigation';
+import { goToSection } from '../../utils/scroll';
 
 interface FooterLink {
   label: string;
@@ -107,13 +107,12 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
 
   const handleMenuNavigation = (url: string, label?: string, event?: React.MouseEvent<HTMLAnchorElement>) => {
     const target = normalizeMenuTarget(url, label);
-    if (event) {
-      event.preventDefault();
-    }
 
     if (target.startsWith('#')) {
-      navigateToSection(target);
-    } else {
+      event?.preventDefault();
+      goToSection(target);
+    } else if (event) {
+      event.preventDefault();
       window.location.href = target;
     }
   };
