@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import { goToSection } from '../../utils/scroll';
 
 interface LandingHeaderProps {
   logoUrl?: string;
@@ -20,11 +19,7 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleSectionNavigation = (sectionId: string, event?: React.MouseEvent<HTMLAnchorElement>) => {
-    event?.preventDefault();
-    goToSection(sectionId);
-    setIsMobileMenuOpen(false);
-  };
+  const handleMobileLinkClick = () => setIsMobileMenuOpen(false);
 
   const menuItems = [
     { label: 'Serviços', id: 'servicos' },
@@ -55,7 +50,6 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
               <a
                 key={item.id}
                 href={`/#${item.id}`}
-                onClick={(event) => handleSectionNavigation(item.id, event)}
                 className="text-gray-700 hover:text-[#076AC2] font-medium transition-colors text-[16px]"
               >
                 {item.label}
@@ -97,7 +91,7 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
               <a
                 key={item.id}
                 href={`/#${item.id}`}
-                onClick={(event) => handleSectionNavigation(item.id, event)}
+                onClick={handleMobileLinkClick}
                 className="block w-full text-left px-4 py-2 text-gray-700 hover:text-[#076AC2] hover:bg-gray-50 rounded-lg font-medium transition-colors text-[16px]"
               >
                 {item.label}

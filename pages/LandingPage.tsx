@@ -7,7 +7,6 @@ import Steps from '../src/components/landing/Steps';
 import Contact from '../src/components/landing/Contact';
 import LandingFooter from '../src/components/landing/LandingFooter';
 import { publicApi } from '../src/services/api';
-import { scrollToCurrentHash } from '../src/utils/scroll';
 
 interface LandingData {
   config: {
@@ -196,15 +195,10 @@ const LandingPage: React.FC = () => {
   useEffect(() => {
     if (!data) return;
 
-    const handleHashNavigation = () => {
-      scrollToCurrentHash();
-    };
-
-    handleHashNavigation();
-    window.addEventListener('hashchange', handleHashNavigation);
-    return () => {
-      window.removeEventListener('hashchange', handleHashNavigation);
-    };
+    if (window.location.hash) {
+      const element = document.getElementById(window.location.hash.replace('#', ''));
+      element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }, [data]);
 
   if (isLoading) {

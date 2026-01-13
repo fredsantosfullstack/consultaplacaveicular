@@ -1,5 +1,4 @@
 import React from 'react';
-import { goToSection } from '../../utils/scroll';
 
 interface FooterLink {
   label: string;
@@ -105,16 +104,12 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
   addIfMissing('Política de Privacidade', '/politica-de-privacidade');
   addIfMissing('LGPD', '/lgpd');
 
-  const handleMenuNavigation = (url: string, label?: string, event?: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleMenuNavigation = (url: string, label?: string) => {
     const target = normalizeMenuTarget(url, label);
-
     if (target.startsWith('#')) {
-      event?.preventDefault();
-      goToSection(target);
-    } else if (event) {
-      event.preventDefault();
-      window.location.href = target;
+      return `/${target}`;
     }
+    return target;
   };
 
   return (
@@ -143,8 +138,7 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
               {finalMenuLinks.map((link, index) => (
                 <li key={`${link.url}-${index}`}>
                   <a
-                    href={normalizeMenuTarget(link.url, link.label)}
-                    onClick={(event) => handleMenuNavigation(link.url, link.label, event)}
+                    href={handleMenuNavigation(link.url, link.label)}
                     className="hover:text-white transition-colors cursor-pointer"
                   >
                     {link.label}
