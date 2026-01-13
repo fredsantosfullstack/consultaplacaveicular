@@ -1,4 +1,5 @@
 import React from 'react';
+import { navigateToSection } from '../../utils/navigation';
 
 interface FooterLink {
   label: string;
@@ -104,26 +105,14 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
   addIfMissing('Política de Privacidade', '/politica-de-privacidade');
   addIfMissing('LGPD', '/lgpd');
 
-  const handleMenuNavigation = (url: string, label?: string) => {
+  const handleMenuNavigation = (url: string, label?: string, event?: React.MouseEvent<HTMLAnchorElement>) => {
     const target = normalizeMenuTarget(url, label);
+    if (event) {
+      event.preventDefault();
+    }
 
     if (target.startsWith('#')) {
-      if (window.location.pathname !== '/') {
-        window.location.href = `/${target}`;
-        return;
-      }
-      const sectionId = target.substring(1);
-      const element = document.getElementById(sectionId);
-      if (element) {
-        const offset = 80;
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-      }
+      navigateToSection(target);
     } else {
       window.location.href = target;
     }
@@ -154,13 +143,13 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
             <ul className="space-y-2 text-sm text-gray-400">
               {finalMenuLinks.map((link, index) => (
                 <li key={`${link.url}-${index}`}>
-                  <button
-                    onClick={() => handleMenuNavigation(link.url, link.label)}
-                    className="hover:text-white transition-colors"
-                    type="button"
+                  <a
+                    href={normalizeMenuTarget(link.url, link.label)}
+                    onClick={(event) => handleMenuNavigation(link.url, link.label, event)}
+                    className="hover:text-white transition-colors cursor-pointer"
                   >
                     {link.label}
-                  </button>
+                  </a>
                 </li>
               ))}
             </ul>

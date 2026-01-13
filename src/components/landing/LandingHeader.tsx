@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import { navigateToSection } from '../../utils/navigation';
 
 interface LandingHeaderProps {
   logoUrl?: string;
@@ -19,24 +20,11 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (sectionId: string) => {
-    if (window.location.pathname !== '/') {
-      window.location.href = `/#${sectionId}`;
-      setIsMobileMenuOpen(false);
-      return;
+  const handleSectionNavigation = (sectionId: string, event?: React.MouseEvent<HTMLAnchorElement>) => {
+    if (event) {
+      event.preventDefault();
     }
-
-    const element = document.getElementById(sectionId);
-    if (!element) return;
-
-    const offset = 80;
-    const elementPosition = element.getBoundingClientRect().top;
-    const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: 'smooth'
-    });
+    navigateToSection(`#${sectionId}`);
     setIsMobileMenuOpen(false);
   };
 
@@ -66,13 +54,14 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
           {/* Menu Desktop */}
           <nav className="hidden md:flex items-center space-x-8">
             {menuItems.map((item) => (
-              <button
+              <a
                 key={item.id}
-                onClick={() => scrollToSection(item.id)}
+                href={`/#${item.id}`}
+                onClick={(event) => handleSectionNavigation(item.id, event)}
                 className="text-gray-700 hover:text-[#076AC2] font-medium transition-colors text-[16px]"
               >
                 {item.label}
-              </button>
+              </a>
             ))}
           </nav>
 
@@ -107,13 +96,14 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
         <div className="md:hidden bg-white border-t border-gray-200 shadow-lg">
           <nav className="max-w-[1410px] mx-auto px-5 py-4 space-y-4">
             {menuItems.map((item) => (
-              <button
+              <a
                 key={item.id}
-                onClick={() => scrollToSection(item.id)}
+                href={`/#${item.id}`}
+                onClick={(event) => handleSectionNavigation(item.id, event)}
                 className="block w-full text-left px-4 py-2 text-gray-700 hover:text-[#076AC2] hover:bg-gray-50 rounded-lg font-medium transition-colors text-[16px]"
               >
                 {item.label}
-              </button>
+              </a>
             ))}
             <div className="pt-4 space-y-2">
               <a
