@@ -31,6 +31,30 @@ const SiteSettingsContext = createContext<SiteSettingsContextValue>({
   getAssetUrl: (relativePath?: string | null) => buildAssetUrl(relativePath)
 });
 
+const sanitizeAssetPath = (value?: string | null) => {
+  if (!value) return null;
+  const normalized = value.toLowerCase();
+  if (
+    normalized.includes('golden') ||
+    normalized.includes('logo-golden') ||
+    normalized.includes('goldenveicular')
+  ) {
+    return null;
+  }
+  return value;
+};
+
+const sanitizeSettings = (rawSettings: SiteSettings | null | undefined): SiteSettings => {
+  if (!rawSettings) return {};
+
+  return {
+    ...rawSettings,
+    logo_menu_url: sanitizeAssetPath(rawSettings.logo_menu_url),
+    logo_login_url: sanitizeAssetPath(rawSettings.logo_login_url),
+    favicon_url: sanitizeAssetPath(rawSettings.favicon_url)
+  };
+};
+
 export const SiteSettingsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -42,7 +66,7 @@ export const SiteSettingsProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
     try {
       const response = await publicApi.get('/settings');
-      setSettings(response.data || {});
+      setSettings(sanitizeSettings(response.data));
     } catch (error) {
       console.error('Erro ao carregar configurações do site:', error);
       setSettings({});

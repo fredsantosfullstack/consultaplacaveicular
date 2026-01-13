@@ -179,7 +179,7 @@ const UserProfile: React.FC = () => {
 
   const getAvatarUrl = () => {
     if (profile?.avatar) {
-      const baseUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'https://golden-veicular-production.up.railway.app';
+      const baseUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'https://consultaplacaveicular-production.up.railway.app';
       return `${baseUrl}${profile.avatar}`;
     }
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(profile?.name || 'User')}&background=076AC2&color=fff&size=128`;
