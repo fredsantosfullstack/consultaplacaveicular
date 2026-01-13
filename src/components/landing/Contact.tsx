@@ -44,7 +44,7 @@ const Contact: React.FC = () => {
   return (
     <section id="contato" className="py-20 bg-slate-50 scroll-mt-20">
       <div className="max-w-[1350px] mx-auto px-4 sm:px-6 lg:px-12">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[0.95fr,1.05fr]">
+        <div className="grid grid-cols-1 gap-6 justify-items-center lg:justify-items-stretch lg:grid-cols-[0.95fr,1.05fr]">
           <div className="w-full max-w-[620px] lg:max-w-none mx-auto lg:mx-0 bg-slate-900 text-white rounded-[10px] p-5 sm:p-8 space-y-8 shadow-2xl h-full">
             <div>
               <h2 className="text-2xl font-bold sm:text-3xl">
@@ -114,7 +114,7 @@ const Contact: React.FC = () => {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-semibold text-slate-700 mb-2">
+                  <label htmlFor="name" className="block text-sm sm:text-base font-semibold text-slate-700 mb-2">
                     Seu nome *
                   </label>
                   <input
@@ -124,13 +124,13 @@ const Contact: React.FC = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-slate-200 rounded-[10px] focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 border border-slate-200 rounded-[10px] focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all text-base"
                     placeholder="Ex: Marina Costa"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-2">
+                  <label htmlFor="email" className="block text-sm sm:text-base font-semibold text-slate-700 mb-2">
                     E-mail *
                   </label>
                   <input
@@ -140,13 +140,13 @@ const Contact: React.FC = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-slate-200 rounded-[10px] focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 border border-slate-200 rounded-[10px] focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all text-base"
                     placeholder="seu@email.com"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-semibold text-slate-700 mb-2">
+                  <label htmlFor="message" className="block text-sm sm:text-base font-semibold text-slate-700 mb-2">
                     Mensagem *
                   </label>
                   <textarea
@@ -156,7 +156,7 @@ const Contact: React.FC = () => {
                     onChange={handleChange}
                     required
                     rows={4}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-[10px] focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all resize-none"
+                    className="w-full px-4 py-3 border border-slate-200 rounded-[10px] focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all resize-none text-base"
                     placeholder="Ex: preciso gerar 5K consultas/dia com antifraude integrado"
                   />
                 </div>
