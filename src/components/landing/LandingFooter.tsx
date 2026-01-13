@@ -38,6 +38,47 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
     return mapping[cleanUrl] || cleanUrl;
   };
 
+  const normalizeString = (value: string) =>
+    value
+      .normalize('NFD')
+      .replace(/\p{Diacritic}/gu, '')
+      .toLowerCase()
+      .trim();
+
+  const normalizeMenuTarget = (url: string, label?: string) => {
+    const baseValue = (url || '').trim();
+
+    if (baseValue.includes('#')) {
+      const hash = baseValue.slice(baseValue.indexOf('#'));
+      return hash.startsWith('#') ? hash : `#${hash}`;
+    }
+
+    const fallbackLabel = label ? label : '';
+    const valueToCheck = baseValue || fallbackLabel;
+    const cleaned = normalizeString(
+      valueToCheck
+        .replace(/^https?:\/\/[^/]+/, '')
+        .replace(/^\//, '')
+        .replace(/\/$/, '')
+        .replace(/\s+/g, '')
+    );
+
+    const sectionsMap: Record<string, string> = {
+      servicos: '#servicos',
+      servico: '#servicos',
+      comofunciona: '#como-funciona',
+      'como-funciona': '#como-funciona',
+      contato: '#contato',
+      contatos: '#contato'
+    };
+
+    if (sectionsMap[cleaned]) {
+      return sectionsMap[cleaned];
+    }
+
+    return baseValue || fallbackLabel || '/';
+  };
+
   const menuLinks = deduplicate(links.filter((link) => link.category === 'menu'));
   const legalLinks = deduplicate(
     links
@@ -62,13 +103,15 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
   addIfMissing('Política de Privacidade', '/politica-de-privacidade');
   addIfMissing('LGPD', '/lgpd');
 
-  const scrollToSection = (url: string) => {
-    if (url.startsWith('#')) {
+  const handleMenuNavigation = (url: string, label?: string) => {
+    const target = normalizeMenuTarget(url, label);
+
+    if (target.startsWith('#')) {
       if (window.location.pathname !== '/') {
-        window.location.href = `/${url}`;
+        window.location.href = `/${target}`;
         return;
       }
-      const sectionId = url.substring(1);
+      const sectionId = target.substring(1);
       const element = document.getElementById(sectionId);
       if (element) {
         const offset = 80;
@@ -81,7 +124,7 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
         });
       }
     } else {
-      window.location.href = url;
+      window.location.href = target;
     }
   };
 
@@ -110,15 +153,13 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
             <ul className="space-y-2 text-sm text-gray-400">
               {finalMenuLinks.map((link, index) => (
                 <li key={`${link.url}-${index}`}>
-                  {link.url.startsWith('#') ? (
-                    <button onClick={() => scrollToSection(link.url)} className="hover:text-white transition-colors">
-                      {link.label}
-                    </button>
-                  ) : (
-                    <a href={link.url} className="hover:text-white transition-colors">
-                      {link.label}
-                    </a>
-                  )}
+                  <button
+                    onClick={() => handleMenuNavigation(link.url, link.label)}
+                    className="hover:text-white transition-colors"
+                    type="button"
+                  >
+                    {link.label}
+                  </button>
                 </li>
               ))}
             </ul>
