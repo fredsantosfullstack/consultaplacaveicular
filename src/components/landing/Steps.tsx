@@ -1,5 +1,6 @@
 import React from 'react';
 import { UserPlus, Search, Download } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface Step {
   icon: string;
@@ -69,12 +70,12 @@ const Steps: React.FC<StepsProps> = ({ steps }) => {
               Nossa equipe configura fluxos, integrações e dashboards para você focar no cliente final.
             </h3>
           </div>
-          <button
-            onClick={() => (window.location.href = '/cadastro')}
+          <Link
+            to="/cadastro"
             className="inline-flex items-center justify-center px-10 py-4 rounded-[10px] bg-[#52c41a] text-white font-semibold shadow-xl hover:-translate-y-0.5 transition-transform text-lg hover:bg-[#3fa813]"
           >
             Quero ativar minha operação agora
-          </button>
+          </Link>
         </div>
       </div>
     </section>

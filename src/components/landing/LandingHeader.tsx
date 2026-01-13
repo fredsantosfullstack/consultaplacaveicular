@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface LandingHeaderProps {
   logoUrl?: string;
@@ -59,18 +60,18 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
 
           {/* Botões de Ação */}
           <div className="hidden md:flex items-center space-x-4">
-            <a
-              href="/login"
+            <Link
+              to="/login"
               className="px-6 py-2 text-[#076AC2] font-semibold border-2 border-[#076AC2] rounded-lg hover:bg-[#076AC2] hover:text-white transition-all"
             >
               Entrar
-            </a>
-            <a
-              href="/cadastro"
+            </Link>
+            <Link
+              to="/cadastro"
               className="px-6 py-2 bg-[#52c41a] text-white font-semibold rounded-lg hover:bg-[#3fa813] transition-all shadow-md hover:shadow-lg"
             >
               Cadastrar Grátis
-            </a>
+            </Link>
           </div>
 
           {/* Botão Mobile Menu */}
@@ -98,18 +99,20 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
               </a>
             ))}
             <div className="pt-4 space-y-2">
-              <a
-                href="/login"
+              <Link
+                to="/login"
+                onClick={handleMobileLinkClick}
                 className="block w-full text-center px-6 py-3 text-[#076AC2] font-semibold border-2 border-[#076AC2] rounded-lg hover:bg-[#076AC2] hover:text-white transition-all"
               >
                 Entrar
-              </a>
-              <a
-                href="/cadastro"
+              </Link>
+              <Link
+                to="/cadastro"
+                onClick={handleMobileLinkClick}
                 className="block w-full text-center px-6 py-3 bg-[#52c41a] text-white font-semibold rounded-lg hover:bg-[#3fa813] transition-all"
               >
                 Cadastrar Grátis
-              </a>
+              </Link>
             </div>
           </nav>
         </div>
