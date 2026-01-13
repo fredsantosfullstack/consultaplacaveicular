@@ -45,7 +45,7 @@ const Contact: React.FC = () => {
     <section id="contato" className="py-20 bg-slate-50 scroll-mt-20">
       <div className="max-w-[1350px] mx-auto px-4 sm:px-6 lg:px-12">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[0.95fr,1.05fr]">
-          <div className="w-full bg-slate-900 text-white rounded-[10px] p-5 sm:p-8 space-y-8 shadow-2xl h-full">
+          <div className="w-full max-w-[620px] lg:max-w-none mx-auto lg:mx-0 bg-slate-900 text-white rounded-[10px] p-5 sm:p-8 space-y-8 shadow-2xl h-full">
             <div>
               <h2 className="text-2xl font-bold sm:text-3xl">
                 Fale Conosco
@@ -100,7 +100,7 @@ const Contact: React.FC = () => {
             </div>
           </div>
 
-          <div className="w-full bg-white rounded-[10px] p-5 sm:p-8 shadow-xl border border-slate-100 h-full">
+          <div className="w-full max-w-[620px] lg:max-w-none mx-auto lg:mx-0 bg-white rounded-[10px] p-5 sm:p-8 shadow-xl border border-slate-100 h-full">
             {submitStatus === 'success' ? (
               <div className="text-center py-8">
                 <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
