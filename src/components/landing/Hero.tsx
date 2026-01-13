@@ -61,6 +61,9 @@ const Hero: React.FC<HeroProps> = ({
   const showSubtitle =
     cleanedSubtitle.length > 0 &&
     cleanedSubtitle.toLowerCase() !== "consultas veiculares online";
+  const showWhatsAppButton =
+    Boolean(whatsappNumber && whatsappNumber.trim()) &&
+    Boolean(ctaWhatsappText && ctaWhatsappText.trim());
   const whatsappIconUrl = ctaWhatsappIconUrl ? buildAssetUrl(ctaWhatsappIconUrl) : "";
   const mockupImageSrc = mockupImageUrl ? buildAssetUrl(mockupImageUrl) : "";
 
@@ -91,14 +94,14 @@ const Hero: React.FC<HeroProps> = ({
                 {description}
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 pt-2">
+              <div className="flex flex-col sm:flex-row gap-4 pt-2 w-full max-w-xl">
                 <a
                   href={ctaPrimaryLink}
-                  className="inline-flex w-full sm:w-auto items-center justify-center gap-3 px-8 h-14 bg-[#52c41a] text-white font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-2xl hover:bg-[#3fa813] text-lg"
+                  className={`inline-flex w-full sm:w-auto items-center justify-center gap-3 h-14 bg-[#52c41a] text-white font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-2xl hover:bg-[#3fa813] text-lg ${showWhatsAppButton ? 'px-8 sm:px-10' : 'px-8 sm:px-14 lg:px-20'}`}
                 >
                   {ctaPrimaryText}
                 </a>
-                {whatsappNumber && (
+                {showWhatsAppButton && (
                   <button
                     onClick={handleWhatsAppClick}
                     className="inline-flex w-full sm:w-auto items-center justify-center gap-3 px-8 h-14 border border-white/80 text-white font-semibold rounded-full transition-all duration-300 hover:bg-white/10 text-lg"
