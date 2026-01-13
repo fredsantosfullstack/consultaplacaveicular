@@ -6,6 +6,31 @@ import { isAdmin } from './settings.js';
 const router = express.Router();
 
 /**
+ * Garante que colunas opcionais existam na tabela de planos.
+ * Evita falhas em ambientes onde os scripts de migração ainda não foram executados.
+ */
+const ensureRechargePlanSchema = async () => {
+  const ensureColumn = async (columnName, definition) => {
+    try {
+      const [columns] = await db.query('SHOW COLUMNS FROM recharge_plans LIKE ?', [columnName]);
+      if (columns.length === 0) {
+        await db.query(`ALTER TABLE recharge_plans ADD COLUMN ${definition}`);
+        console.log(`Coluna ${columnName} adicionada em recharge_plans.`);
+      }
+    } catch (error) {
+      console.error(`Falha ao garantir coluna ${columnName} em recharge_plans:`, error);
+    }
+  };
+
+  await ensureColumn('description', 'TEXT NULL AFTER name');
+  await ensureColumn('is_popular', 'BOOLEAN DEFAULT FALSE AFTER is_active');
+};
+
+ensureRechargePlanSchema().catch((error) => {
+  console.error('Erro ao garantir estrutura de recharge_plans:', error);
+});
+
+/**
  * Normaliza um valor decimal recebido do painel para o formato aceito pelo MySQL.
  * Aceita strings com vírgula/ponto e números.
  */

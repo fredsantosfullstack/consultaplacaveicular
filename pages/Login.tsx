@@ -21,6 +21,23 @@ const Login: React.FC = () => {
     }
   }, [profile, navigate]);
 
+  // Recupera o e-mail salvo anteriormente
+  useEffect(() => {
+    const savedCredentials = localStorage.getItem('cpv:remember');
+    if (savedCredentials) {
+      try {
+        const { email: savedEmail } = JSON.parse(savedCredentials);
+        if (savedEmail) {
+          setEmail(savedEmail);
+          setRememberMe(true);
+        }
+      } catch (error) {
+        console.warn('Falha ao ler preferências de login', error);
+        localStorage.removeItem('cpv:remember');
+      }
+    }
+  }, []);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -29,6 +46,12 @@ const Login: React.FC = () => {
       const response = await api.post('/auth/login', { email, password, rememberMe });
       if (response.data.token) {
         await login(response.data.token, rememberMe);
+
+        if (rememberMe) {
+          localStorage.setItem('cpv:remember', JSON.stringify({ email }));
+        } else {
+          localStorage.removeItem('cpv:remember');
+        }
       }
     } catch (err: any) {
       setError(err.response?.data?.msg || 'Erro ao fazer login.');
