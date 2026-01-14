@@ -56,6 +56,31 @@ const stripUnsupportedFields = (payload, error) => {
   return { payload: sanitized, changed };
 };
 
+const executeWithSchemaRecovery = async (operation, initialPayload) => {
+  let payload = initialPayload;
+
+  while (true) {
+    try {
+      const data = await operation(payload);
+      return { payload, data };
+    } catch (error) {
+      const { payload: sanitizedPayload, changed } = stripUnsupportedFields(payload, error);
+
+      if (changed) {
+        payload = sanitizedPayload;
+        continue;
+      }
+
+      if (shouldRetrySchema(error)) {
+        await ensureRechargePlanSchema();
+        continue;
+      }
+
+      throw error;
+    }
+  }
+};
+
 /**
  * Normaliza um valor decimal recebido do painel para o formato aceito pelo MySQL.
  * Aceita strings com vírgula/ponto e números.
@@ -139,41 +164,17 @@ router.post('/', authenticateToken, isAdmin, async (req, res) => {
     return res.status(400).json({ msg: 'Nome, preço e créditos válidos são obrigatórios.' });
   }
 
-  const insertPlan = async () => {
-    const [result] = await db.query('INSERT INTO recharge_plans SET ?', planPayload);
-    return result;
-  };
-
   try {
-    const result = await insertPlan();
-    res.status(201).json({ id: result.insertId, ...planPayload });
+    const { payload: finalPayload, data } = await executeWithSchemaRecovery(
+      async (payload) => {
+        const [result] = await db.query('INSERT INTO recharge_plans SET ?', payload);
+        return result;
+      },
+      planPayload
+    );
+
+    res.status(201).json({ id: data.insertId, ...finalPayload });
   } catch (error) {
-    const { payload: sanitizedPayload, changed } = stripUnsupportedFields(planPayload, error);
-    const executeInsert = async (payload) => {
-      const [result] = await db.query('INSERT INTO recharge_plans SET ?', payload);
-      return result;
-    };
-
-    if (changed) {
-      try {
-        const result = await executeInsert(sanitizedPayload);
-        return res.status(201).json({ id: result.insertId, ...sanitizedPayload });
-      } catch (stripError) {
-        console.error('Erro ao criar plano após remover campos não suportados:', stripError);
-      }
-    }
-
-    if (shouldRetrySchema(error)) {
-      await ensureRechargePlanSchema();
-      try {
-        const result = await executeInsert(sanitizedPayload);
-        return res.status(201).json({ id: result.insertId, ...sanitizedPayload });
-      } catch (retryError) {
-        console.error('Erro ao criar plano de recarga após ajustar schema:', retryError);
-        return res.status(500).json({ msg: 'Erro no servidor ao criar plano.' });
-      }
-    }
-
     console.error('Erro ao criar plano de recarga:', error);
     res.status(500).json({ msg: 'Erro no servidor ao criar plano.' });
   }
@@ -188,39 +189,17 @@ router.put('/:id', authenticateToken, isAdmin, async (req, res) => {
     return res.status(400).json({ msg: 'Nome, preço e créditos válidos são obrigatórios.' });
   }
 
-  const updatePlan = async () => {
-    await db.query('UPDATE recharge_plans SET ? WHERE id = ?', [planPayload, id]);
-  };
-
   try {
-    await updatePlan();
-    res.json({ id, ...planPayload });
+    const { payload: finalPayload } = await executeWithSchemaRecovery(
+      async (payload) => {
+        await db.query('UPDATE recharge_plans SET ? WHERE id = ?', [payload, id]);
+        return null;
+      },
+      planPayload
+    );
+
+    res.json({ id, ...finalPayload });
   } catch (error) {
-    const { payload: sanitizedPayload, changed } = stripUnsupportedFields(planPayload, error);
-    const executeUpdate = async (payload) => {
-      await db.query('UPDATE recharge_plans SET ? WHERE id = ?', [payload, id]);
-    };
-
-    if (changed) {
-      try {
-        await executeUpdate(sanitizedPayload);
-        return res.json({ id, ...sanitizedPayload });
-      } catch (stripError) {
-        console.error(`Erro ao atualizar plano ${id} após remover campos não suportados:`, stripError);
-      }
-    }
-
-    if (shouldRetrySchema(error)) {
-      await ensureRechargePlanSchema();
-      try {
-        await executeUpdate(sanitizedPayload);
-        return res.json({ id, ...sanitizedPayload });
-      } catch (retryError) {
-        console.error(`Erro ao atualizar plano ${id} após ajustar schema:`, retryError);
-        return res.status(500).json({ msg: 'Erro no servidor ao atualizar plano.' });
-      }
-    }
-
     console.error(`Erro ao atualizar plano ${id}:`, error);
     res.status(500).json({ msg: 'Erro no servidor ao atualizar plano.' });
   }
