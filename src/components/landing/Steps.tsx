@@ -1,6 +1,6 @@
 import React from 'react';
 import { UserPlus, Search, Download } from 'lucide-react';
-import { Link } from 'react-router-dom';
+const SIGNUP_URL = 'https://www.consultaplacaveicular.com.br/cadastre-se';
 
 interface Step {
   icon: string;
@@ -70,12 +70,12 @@ const Steps: React.FC<StepsProps> = ({ steps }) => {
               Nossa equipe configura fluxos, integrações e dashboards para você focar no cliente final.
             </h3>
           </div>
-          <Link
-            to="/cadastre-se"
+          <a
+            href={SIGNUP_URL}
             className="inline-flex items-center justify-center px-10 py-4 rounded-[10px] bg-[#52c41a] text-white font-semibold shadow-xl hover:-translate-y-0.5 transition-transform text-lg hover:bg-[#3fa813]"
           >
             Começar agora com a minha operação
-          </Link>
+          </a>
         </div>
       </div>
     </section>

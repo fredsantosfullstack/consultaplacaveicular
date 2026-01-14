@@ -7,6 +7,8 @@ interface LandingHeaderProps {
   siteName: string;
 }
 
+const SIGNUP_URL = 'https://www.consultaplacaveicular.com.br/cadastre-se';
+
 const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -66,12 +68,12 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
             >
               Entrar
             </Link>
-            <Link
-              to="/cadastre-se"
+            <a
+              href={SIGNUP_URL}
               className="px-6 py-2 bg-[#52c41a] text-white font-semibold rounded-lg hover:bg-[#3fa813] transition-all shadow-md hover:shadow-lg"
             >
               Criar conta gratuita
-            </Link>
+            </a>
           </div>
 
           {/* Botão Mobile Menu */}
@@ -106,13 +108,13 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
               >
                 Entrar
               </Link>
-              <Link
-                to="/cadastre-se"
+              <a
+                href={SIGNUP_URL}
                 onClick={handleMobileLinkClick}
                 className="block w-full text-center px-6 py-3 bg-[#52c41a] text-white font-semibold rounded-lg hover:bg-[#3fa813] transition-all"
               >
                 Criar conta gratuita
-              </Link>
+              </a>
             </div>
           </nav>
         </div>
