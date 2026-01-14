@@ -1,10 +1,30 @@
 import db from '../config/db.js';
 
+const DEFAULT_PIX_WARNING_MESSAGE = 'Atenção: pagamentos via Pix não possuem estorno. Confira o valor antes de gerar o QR Code. Em caso de dúvidas, fale com o suporte.';
+
 const sendNoCacheHeaders = (res) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.set('Pragma', 'no-cache');
   res.set('Expires', '0');
 };
+
+const ensureSiteConfigColumns = async () => {
+  try {
+    const [columns] = await db.query("SHOW COLUMNS FROM site_config LIKE 'pix_warning_message'");
+    if (columns.length === 0) {
+      await db.query('ALTER TABLE site_config ADD COLUMN pix_warning_message TEXT AFTER seo_keywords');
+      console.log('Coluna pix_warning_message adicionada em site_config.');
+    }
+    await db.query(
+      'UPDATE site_config SET pix_warning_message = COALESCE(pix_warning_message, ?) WHERE id = 1',
+      [DEFAULT_PIX_WARNING_MESSAGE]
+    );
+  } catch (error) {
+    console.error('Erro ao garantir coluna pix_warning_message:', error);
+  }
+};
+
+ensureSiteConfigColumns();
 
 // ========================================
 // CONFIGURAÇÕES GERAIS
@@ -35,7 +55,8 @@ export const updateConfig = async (req, res) => {
       contact_email_cc,
       seo_title,
       seo_description,
-      seo_keywords
+      seo_keywords,
+      pix_warning_message
     } = req.body;
 
     await db.query(
@@ -52,9 +73,24 @@ export const updateConfig = async (req, res) => {
         seo_title = ?,
         seo_description = ?,
         seo_keywords = ?,
+        pix_warning_message = ?,
         updated_at = NOW()
       WHERE id = 1`,
-      [logo_url, favicon_url, footer_logo_url, primary_color, secondary_color, whatsapp_number, whatsapp_message, contact_email, contact_email_cc, seo_title, seo_description, seo_keywords]
+      [
+        logo_url,
+        favicon_url,
+        footer_logo_url,
+        primary_color,
+        secondary_color,
+        whatsapp_number,
+        whatsapp_message,
+        contact_email,
+        contact_email_cc,
+        seo_title,
+        seo_description,
+        seo_keywords,
+        pix_warning_message
+      ]
     );
 
     res.json({ msg: 'Configurações atualizadas com sucesso' });

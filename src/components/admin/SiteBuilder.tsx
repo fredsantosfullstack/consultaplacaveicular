@@ -23,7 +23,8 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
     contact_email_cc: '',
     seo_title: '',
     seo_description: '',
-    seo_keywords: ''
+    seo_keywords: '',
+    pix_warning_message: ''
   });
 
   const [hero, setHero] = useState({
@@ -64,7 +65,7 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
         api.get('/cms/steps')
       ]);
 
-      setConfig(configRes.data);
+      setConfig(prev => ({ ...prev, ...configRes.data }));
       setHero(heroRes.data);
       setBenefits(benefitsRes.data);
       setStatistics(statsRes.data);
@@ -580,6 +581,25 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
                       placeholder="consulta veicular, placa, chassi, renavam"
                     />
                   </div>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-200 pt-6 mt-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Aviso de Pagamentos Pix</h3>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Mensagem exibida na recarga de créditos
+                  </label>
+                  <textarea
+                    value={config.pix_warning_message}
+                    onChange={(e) => setConfig({ ...config, pix_warning_message: e.target.value })}
+                    rows={3}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#076AC2] focus:border-transparent resize-none"
+                    placeholder="Atenção: pagamentos via Pix não possuem estorno..."
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Este aviso aparece acima do botão de gerar QR Code no painel de recarga. Utilize quebras de linha para destacar instruções.
+                  </p>
                 </div>
               </div>
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { QrCode, Loader2, AlertTriangle, Star, Copy, CheckCircle, XCircle } from 'lucide-react';
-import api from '../src/services/api';
+import { QrCode, Loader2, AlertTriangle, Copy, CheckCircle, XCircle, X } from 'lucide-react';
+import api, { publicApi } from '../src/services/api';
 import { useAuth } from '../src/contexts/AuthContext';
 
 interface Plan {
@@ -21,6 +21,9 @@ interface PaymentData {
   expiresAt: string;
 }
 
+const DEFAULT_PIX_WARNING_MESSAGE =
+  'Atenção: pagamentos via Pix não possuem estorno. Confira o valor antes de gerar o QR Code. Em caso de dúvidas, fale com o suporte.';
+
 const CreditRecharge: React.FC = () => {
     const { profile, refreshProfile } = useAuth();
     const [plans, setPlans] = useState<Plan[]>([]);
@@ -31,18 +34,24 @@ const CreditRecharge: React.FC = () => {
     const [isProcessing, setIsProcessing] = useState(false);
     const [paymentStatus, setPaymentStatus] = useState<'pending' | 'confirmed' | 'error'>('pending');
     const [copied, setCopied] = useState(false);
+    const [pixWarningMessage, setPixWarningMessage] = useState(DEFAULT_PIX_WARNING_MESSAGE);
+    const [showPixWarning, setShowPixWarning] = useState(true);
 
     useEffect(() => {
         const fetchPlans = async () => {
             setIsLoading(true);
             try {
-                const response = await api.get('/recharge-plans');
-                setPlans(response.data);
-                console.log('Dados recebidos da API:', response.data);
-                // Pré-seleciona o plano popular
-                const popularPlan = response.data.find(p => p.is_popular);
+                const [plansResponse, configResponse] = await Promise.all([
+                  api.get('/recharge-plans'),
+                  publicApi.get('/cms/config')
+                ]);
+                setPlans(plansResponse.data);
+                console.log('Dados recebidos da API:', plansResponse.data);
+                const popularPlan = plansResponse.data.find(p => p.is_popular);
                 if (popularPlan) setSelectedPlan(popularPlan);
-
+                const warningText = (configResponse.data?.pix_warning_message || '').trim();
+                setPixWarningMessage(warningText || DEFAULT_PIX_WARNING_MESSAGE);
+                setShowPixWarning(true);
             } catch (err) {
                 setError('Não foi possível carregar as opções de recarga.');
             } finally {
@@ -160,6 +169,26 @@ const CreditRecharge: React.FC = () => {
 
         {!paymentData ? (
           <div className="pt-4">
+            {showPixWarning && pixWarningMessage && (
+              <div className="mb-6 flex items-start gap-3 rounded-2xl border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-900 shadow-[0_10px_25px_rgba(251,191,36,0.25)]">
+                <AlertTriangle className="mt-0.5 h-5 w-5 text-yellow-600" />
+                <div className="flex-1 space-y-1">
+                  {pixWarningMessage.split('\n').map((line, idx) => (
+                    <p key={idx} className={idx === 0 ? 'font-semibold' : ''}>
+                      {line}
+                    </p>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowPixWarning(false)}
+                  className="text-yellow-600 transition hover:text-yellow-800"
+                  aria-label="Fechar aviso"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            )}
             <button 
               onClick={handleGeneratePayment}
               className="w-full flex items-center justify-center gap-2 bg-[#076AC2] text-white text-base font-bold py-3 rounded-lg hover:bg-[#055a9f] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 disabled:bg-gray-400 disabled:cursor-not-allowed" 
@@ -173,7 +202,7 @@ const CreditRecharge: React.FC = () => {
               ) : (
                 <>
                   <QrCode className="w-5 h-5" />
-                  <span>Pagar {selectedPlan ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(selectedPlan.price) : ''} com Pix</span>
+                  <span>Gerar QR Code Pix</span>
                 </>
               )}
             </button>
