@@ -67,10 +67,10 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
               Entrar
             </Link>
             <Link
-              to="/cadastro"
+              to="/cadastre-se"
               className="px-6 py-2 bg-[#52c41a] text-white font-semibold rounded-lg hover:bg-[#3fa813] transition-all shadow-md hover:shadow-lg"
             >
-              Cadastrar Grátis
+              Criar conta gratuita
             </Link>
           </div>
 
@@ -107,11 +107,11 @@ const LandingHeader: React.FC<LandingHeaderProps> = ({ logoUrl, siteName }) => {
                 Entrar
               </Link>
               <Link
-                to="/cadastro"
+                to="/cadastre-se"
                 onClick={handleMobileLinkClick}
                 className="block w-full text-center px-6 py-3 bg-[#52c41a] text-white font-semibold rounded-lg hover:bg-[#3fa813] transition-all"
               >
-                Cadastrar Grátis
+                Criar conta gratuita
               </Link>
             </div>
           </nav>

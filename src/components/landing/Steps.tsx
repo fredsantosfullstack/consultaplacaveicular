@@ -71,10 +71,10 @@ const Steps: React.FC<StepsProps> = ({ steps }) => {
             </h3>
           </div>
           <Link
-            to="/cadastro"
+            to="/cadastre-se"
             className="inline-flex items-center justify-center px-10 py-4 rounded-[10px] bg-[#52c41a] text-white font-semibold shadow-xl hover:-translate-y-0.5 transition-transform text-lg hover:bg-[#3fa813]"
           >
-            Quero ativar minha operação agora
+            Começar agora com a minha operação
           </Link>
         </div>
       </div>
