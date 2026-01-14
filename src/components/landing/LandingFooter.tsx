@@ -98,7 +98,6 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
   const finalMenuLinks = [...menuLinks];
   if (!finalMenuLinks.some(l => l.url === '/login' || l.url === '/cadastro')) {
     finalMenuLinks.push({ label: 'Entrar', url: '/login', category: 'menu' });
-    finalMenuLinks.push({ label: 'Criar conta', url: SIGNUP_URL, category: 'menu' });
   }
 
   const finalLegalLinks = [...legalLinks];
