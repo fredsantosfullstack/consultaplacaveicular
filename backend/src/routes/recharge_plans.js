@@ -30,13 +30,30 @@ ensureRechargePlanSchema().catch((error) => {
   console.error('Erro ao garantir estrutura de recharge_plans:', error);
 });
 
-const shouldRetrySchema = (error) => {
-  return (
-    error &&
-    error.code === 'ER_BAD_FIELD_ERROR' &&
-    typeof error.sqlMessage === 'string' &&
-    (error.sqlMessage.includes('description') || error.sqlMessage.includes('is_popular'))
-  );
+const shouldRetrySchema = (error) =>
+  error &&
+  error.code === 'ER_BAD_FIELD_ERROR' &&
+  typeof error.sqlMessage === 'string' &&
+  (error.sqlMessage.includes('description') || error.sqlMessage.includes('is_popular'));
+
+const stripUnsupportedFields = (payload, error) => {
+  if (!shouldRetrySchema(error)) {
+    return { payload, changed: false };
+  }
+
+  const sanitized = { ...payload };
+  let changed = false;
+
+  if (error.sqlMessage.includes('description') && 'description' in sanitized) {
+    delete sanitized.description;
+    changed = true;
+  }
+  if (error.sqlMessage.includes('is_popular') && 'is_popular' in sanitized) {
+    delete sanitized.is_popular;
+    changed = true;
+  }
+
+  return { payload: sanitized, changed };
 };
 
 /**
@@ -131,16 +148,32 @@ router.post('/', authenticateToken, isAdmin, async (req, res) => {
     const result = await insertPlan();
     res.status(201).json({ id: result.insertId, ...planPayload });
   } catch (error) {
+    const { payload: sanitizedPayload, changed } = stripUnsupportedFields(planPayload, error);
+    const executeInsert = async (payload) => {
+      const [result] = await db.query('INSERT INTO recharge_plans SET ?', payload);
+      return result;
+    };
+
+    if (changed) {
+      try {
+        const result = await executeInsert(sanitizedPayload);
+        return res.status(201).json({ id: result.insertId, ...sanitizedPayload });
+      } catch (stripError) {
+        console.error('Erro ao criar plano após remover campos não suportados:', stripError);
+      }
+    }
+
     if (shouldRetrySchema(error)) {
       await ensureRechargePlanSchema();
       try {
-        const result = await insertPlan();
-        return res.status(201).json({ id: result.insertId, ...planPayload });
+        const result = await executeInsert(sanitizedPayload);
+        return res.status(201).json({ id: result.insertId, ...sanitizedPayload });
       } catch (retryError) {
         console.error('Erro ao criar plano de recarga após ajustar schema:', retryError);
         return res.status(500).json({ msg: 'Erro no servidor ao criar plano.' });
       }
     }
+
     console.error('Erro ao criar plano de recarga:', error);
     res.status(500).json({ msg: 'Erro no servidor ao criar plano.' });
   }
@@ -163,16 +196,31 @@ router.put('/:id', authenticateToken, isAdmin, async (req, res) => {
     await updatePlan();
     res.json({ id, ...planPayload });
   } catch (error) {
+    const { payload: sanitizedPayload, changed } = stripUnsupportedFields(planPayload, error);
+    const executeUpdate = async (payload) => {
+      await db.query('UPDATE recharge_plans SET ? WHERE id = ?', [payload, id]);
+    };
+
+    if (changed) {
+      try {
+        await executeUpdate(sanitizedPayload);
+        return res.json({ id, ...sanitizedPayload });
+      } catch (stripError) {
+        console.error(`Erro ao atualizar plano ${id} após remover campos não suportados:`, stripError);
+      }
+    }
+
     if (shouldRetrySchema(error)) {
       await ensureRechargePlanSchema();
       try {
-        await updatePlan();
-        return res.json({ id, ...planPayload });
+        await executeUpdate(sanitizedPayload);
+        return res.json({ id, ...sanitizedPayload });
       } catch (retryError) {
         console.error(`Erro ao atualizar plano ${id} após ajustar schema:`, retryError);
         return res.status(500).json({ msg: 'Erro no servidor ao atualizar plano.' });
       }
     }
+
     console.error(`Erro ao atualizar plano ${id}:`, error);
     res.status(500).json({ msg: 'Erro no servidor ao atualizar plano.' });
   }
