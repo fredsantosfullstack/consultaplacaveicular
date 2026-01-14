@@ -30,6 +30,15 @@ ensureRechargePlanSchema().catch((error) => {
   console.error('Erro ao garantir estrutura de recharge_plans:', error);
 });
 
+const shouldRetrySchema = (error) => {
+  return (
+    error &&
+    error.code === 'ER_BAD_FIELD_ERROR' &&
+    typeof error.sqlMessage === 'string' &&
+    (error.sqlMessage.includes('description') || error.sqlMessage.includes('is_popular'))
+  );
+};
+
 /**
  * Normaliza um valor decimal recebido do painel para o formato aceito pelo MySQL.
  * Aceita strings com vírgula/ponto e números.
@@ -113,10 +122,25 @@ router.post('/', authenticateToken, isAdmin, async (req, res) => {
     return res.status(400).json({ msg: 'Nome, preço e créditos válidos são obrigatórios.' });
   }
 
-  try {
+  const insertPlan = async () => {
     const [result] = await db.query('INSERT INTO recharge_plans SET ?', planPayload);
+    return result;
+  };
+
+  try {
+    const result = await insertPlan();
     res.status(201).json({ id: result.insertId, ...planPayload });
   } catch (error) {
+    if (shouldRetrySchema(error)) {
+      await ensureRechargePlanSchema();
+      try {
+        const result = await insertPlan();
+        return res.status(201).json({ id: result.insertId, ...planPayload });
+      } catch (retryError) {
+        console.error('Erro ao criar plano de recarga após ajustar schema:', retryError);
+        return res.status(500).json({ msg: 'Erro no servidor ao criar plano.' });
+      }
+    }
     console.error('Erro ao criar plano de recarga:', error);
     res.status(500).json({ msg: 'Erro no servidor ao criar plano.' });
   }
@@ -131,10 +155,24 @@ router.put('/:id', authenticateToken, isAdmin, async (req, res) => {
     return res.status(400).json({ msg: 'Nome, preço e créditos válidos são obrigatórios.' });
   }
 
-  try {
+  const updatePlan = async () => {
     await db.query('UPDATE recharge_plans SET ? WHERE id = ?', [planPayload, id]);
+  };
+
+  try {
+    await updatePlan();
     res.json({ id, ...planPayload });
   } catch (error) {
+    if (shouldRetrySchema(error)) {
+      await ensureRechargePlanSchema();
+      try {
+        await updatePlan();
+        return res.json({ id, ...planPayload });
+      } catch (retryError) {
+        console.error(`Erro ao atualizar plano ${id} após ajustar schema:`, retryError);
+        return res.status(500).json({ msg: 'Erro no servidor ao atualizar plano.' });
+      }
+    }
     console.error(`Erro ao atualizar plano ${id}:`, error);
     res.status(500).json({ msg: 'Erro no servidor ao atualizar plano.' });
   }
