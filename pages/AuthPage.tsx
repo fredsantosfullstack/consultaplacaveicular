@@ -1,9 +1,19 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import LoginForm from '../src/components/auth/LoginForm';
 import SignUpForm from '../src/components/auth/SignUpForm';
 
 const AuthPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('signin');
+  const location = useLocation();
+  const defaultTab = useMemo(() => {
+    const path = location.pathname.toLowerCase();
+    return path.includes('cadastro') ? 'signup' : 'signin';
+  }, [location.pathname]);
+  const [activeTab, setActiveTab] = useState<'signin' | 'signup'>(defaultTab);
+
+  useEffect(() => {
+    setActiveTab(defaultTab);
+  }, [defaultTab]);
 
   return (
     <div 
