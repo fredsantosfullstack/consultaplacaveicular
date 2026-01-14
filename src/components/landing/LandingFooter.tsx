@@ -1,5 +1,7 @@
 import React from 'react';
 
+const SIGNUP_URL = 'https://www.consultaplacaveicular.com.br/cadastre-se';
+
 interface FooterLink {
   label: string;
   url: string;
@@ -48,6 +50,11 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
 
   const normalizeMenuTarget = (url: string, label?: string) => {
     const baseValue = (url || '').trim();
+    const normalizedBase = baseValue.toLowerCase();
+
+    if (normalizedBase === '/cadastro' || normalizedBase === '/cadastre-se') {
+      return SIGNUP_URL;
+    }
 
     if (baseValue.includes('#')) {
       const hash = baseValue.slice(baseValue.indexOf('#'));
@@ -91,6 +98,7 @@ const LandingFooter: React.FC<LandingFooterProps> = ({ links, siteName, footerLo
   const finalMenuLinks = [...menuLinks];
   if (!finalMenuLinks.some(l => l.url === '/login' || l.url === '/cadastro')) {
     finalMenuLinks.push({ label: 'Entrar', url: '/login', category: 'menu' });
+    finalMenuLinks.push({ label: 'Criar conta', url: SIGNUP_URL, category: 'menu' });
   }
 
   const finalLegalLinks = [...legalLinks];

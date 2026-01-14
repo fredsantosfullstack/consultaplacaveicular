@@ -2,6 +2,8 @@ import React from "react";
 import { Shield, Zap, FileText, MessageCircle } from "lucide-react";
 import { buildAssetUrl } from "../../utils/assetUrl";
 
+const SIGNUP_URL = "https://www.consultaplacaveicular.com.br/cadastre-se";
+
 interface HeroProps {
   title: string;
   subtitle: string;
@@ -21,6 +23,16 @@ interface HeroProps {
   gradientTo: string;
   mockupImageUrl?: string;
 }
+
+const normalizePrimaryLink = (link?: string) => {
+  const trimmed = (link || "").trim();
+  if (!trimmed) return SIGNUP_URL;
+  const lower = trimmed.toLowerCase();
+  if (lower === "/cadastro" || lower === "/cadastre-se") {
+    return SIGNUP_URL;
+  }
+  return trimmed;
+};
 
 const Hero: React.FC<HeroProps> = ({
   title,
@@ -96,7 +108,7 @@ const Hero: React.FC<HeroProps> = ({
 
               <div className="flex flex-col sm:flex-row gap-4 pt-2 w-full max-w-xl">
                 <a
-                  href={ctaPrimaryLink}
+                  href={normalizePrimaryLink(ctaPrimaryLink)}
                   className={`inline-flex w-full sm:w-auto items-center justify-center gap-3 h-14 bg-[#52c41a] text-white font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-2xl hover:bg-[#3fa813] text-lg ${showWhatsAppButton ? 'px-8 sm:px-10' : 'px-8 sm:px-14 lg:px-20'}`}
                 >
                   {ctaPrimaryText}
