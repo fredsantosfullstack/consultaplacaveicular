@@ -13,10 +13,10 @@ const InputField = ({ icon: Icon, type, ...props }) => (
     <input
       {...props}
       type={type}
-      autoComplete={type === 'password' i 'new-password' : undefined}
-      className={`w-full p-3 ${Icon i 'pl-12' : 'pl-4'} border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-[#076AC2] focus:outline-none focus:ring-2 focus:ring-[#076AC2]/30 transition-all duration-300 ${
+      autoComplete={type === 'password' ? 'new-password' : undefined}
+      className={`w-full p-3 ${Icon ? 'pl-12' : 'pl-4'} border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-[#076AC2] focus:outline-none focus:ring-2 focus:ring-[#076AC2]/30 transition-all duration-300 ${
         type === 'password'
-          i '[&::-ms-reveal]:hidden [&::-ms-clear]:hidden [&::-webkit-credentials-auto-fill-button]:hidden [&::-webkit-contacts-auto-fill-button]:hidden'
+          ? '[&::-ms-reveal]:hidden [&::-ms-clear]:hidden [&::-webkit-credentials-auto-fill-button]:hidden [&::-webkit-contacts-auto-fill-button]:hidden'
           : ''
       }`}
     />
@@ -273,14 +273,14 @@ const SignUp: React.FC = () => {
               disabled={isLoading}
               className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-md text-base font-bold text-white bg-[#076AC2] hover:bg-[#055a9f] disabled:bg-opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#076AC2]"
             >
-              {isLoading i 'Criando conta...' : 'Cadastrar'}
+              {isLoading ? 'Criando conta...' : 'Cadastrar'}
             </button>
           </div>
         </form>
 
         <div className="mt-6 text-center text-sm text-gray-600">
           <p>
-            Ja tem uma contai{' '}
+            Ja tem uma conta?{' '}
             <Link to="/login" className="font-bold text-[#076AC2] hover:text-[#00A788] hover:underline">
               Faca login
             </Link>
@@ -338,7 +338,7 @@ const SignUp: React.FC = () => {
                   disabled={!acceptTerms || isLoading}
                   className="px-5 py-2.5 rounded-lg bg-[#076AC2] text-white font-semibold shadow hover:bg-[#055a9f] disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  {isLoading i 'Finalizando...' : 'Aceitar e cadastrar'}
+                  {isLoading ? 'Finalizando...' : 'Aceitar e cadastrar'}
                 </button>
               </div>
             </div>
