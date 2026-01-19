@@ -13,11 +13,14 @@ interface RechargePlan {
   is_popular: boolean;
 }
 
-const isPlanPopular = (plan: Partial<RechargePlan>) =>
-  plan?.is_popular === true ||
-  plan?.is_popular === 1 ||
-  plan?.is_popular === '1' ||
-  plan?.is_popular === 'true';
+const isPlanPopular = (plan: Partial<RechargePlan>) => {
+  const value: any = plan?.is_popular;
+  if (value === true || value === 1 || value === '1' || value === 'true') return true;
+  if (value && typeof value === 'object' && value.type === 'Buffer' && Array.isArray(value.data)) {
+    return value.data[0] === 1;
+  }
+  return false;
+};
 
 const normalizePlan = (plan: Partial<RechargePlan>): Partial<RechargePlan> => ({
   ...plan,

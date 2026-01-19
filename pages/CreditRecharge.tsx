@@ -24,11 +24,14 @@ interface PaymentData {
 const DEFAULT_PIX_WARNING_MESSAGE =
   'Atenção: pagamentos via Pix não possuem estorno. Confira o valor antes de gerar o QR Code. Em caso de dúvidas, fale com o suporte.';
 
-const isPlanPopular = (plan: Plan) =>
-  plan.is_popular === true ||
-  plan.is_popular === 1 ||
-  plan.is_popular === '1' ||
-  plan.is_popular === 'true';
+const isPlanPopular = (plan: Plan) => {
+  const value: any = plan.is_popular;
+  if (value === true || value === 1 || value === '1' || value === 'true') return true;
+  if (value && typeof value === 'object' && value.type === 'Buffer' && Array.isArray(value.data)) {
+    return value.data[0] === 1;
+  }
+  return false;
+};
 
 const CreditRecharge: React.FC = () => {
     const { profile, refreshProfile } = useAuth();

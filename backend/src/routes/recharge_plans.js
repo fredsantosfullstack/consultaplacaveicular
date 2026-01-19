@@ -41,6 +41,7 @@ const normalizeBoolean = (value, defaultValue = false) => {
 
   if (typeof value === 'boolean') return value;
   if (typeof value === 'number') return value === 1;
+  if (Buffer.isBuffer(value)) return value[0] === 1;
 
   if (typeof value === 'string') {
     const normalized = value.trim().toLowerCase();
@@ -50,6 +51,12 @@ const normalizeBoolean = (value, defaultValue = false) => {
 
   return defaultValue;
 };
+
+const mapPlanRow = (row) => ({
+  ...row,
+  is_active: normalizeBoolean(row.is_active, true),
+  is_popular: normalizeBoolean(row.is_popular, false)
+});
 
 const stripUnsupportedFields = (payload, error) => {
   if (!shouldRetrySchema(error)) {
@@ -185,7 +192,7 @@ router.get('/', async (req, res) => {
   try {
     await ensureRechargePlanSchema();
     const [plans] = await db.query('SELECT * FROM recharge_plans WHERE is_active = TRUE ORDER BY price ASC');
-    res.json(plans);
+    res.json(plans.map(mapPlanRow));
   } catch (error) {
     console.error('Erro ao buscar planos de recarga:', error);
     res.status(500).json({ msg: 'Erro no servidor ao buscar planos de recarga.' });
@@ -197,7 +204,7 @@ router.get('/all', authenticateToken, isAdmin, async (req, res) => {
   try {
     await ensureRechargePlanSchema();
     const [plans] = await db.query('SELECT * FROM recharge_plans ORDER BY price ASC');
-    res.json(plans);
+    res.json(plans.map(mapPlanRow));
   } catch (error) {
     console.error('Erro ao buscar todos os planos de recarga:', error);
     res.status(500).json({ msg: 'Erro no servidor ao buscar planos.' });
