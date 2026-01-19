@@ -24,6 +24,12 @@ interface PaymentData {
 const DEFAULT_PIX_WARNING_MESSAGE =
   'Atenção: pagamentos via Pix não possuem estorno. Confira o valor antes de gerar o QR Code. Em caso de dúvidas, fale com o suporte.';
 
+const isPlanPopular = (plan: Plan) =>
+  plan.is_popular === true ||
+  plan.is_popular === 1 ||
+  plan.is_popular === '1' ||
+  plan.is_popular === 'true';
+
 const CreditRecharge: React.FC = () => {
     const { profile, refreshProfile } = useAuth();
     const [plans, setPlans] = useState<Plan[]>([]);
@@ -47,7 +53,7 @@ const CreditRecharge: React.FC = () => {
                 ]);
                 setPlans(plansResponse.data);
                 console.log('Dados recebidos da API:', plansResponse.data);
-                const popularPlan = plansResponse.data.find(p => p.is_popular);
+                const popularPlan = plansResponse.data.find((plan) => isPlanPopular(plan));
                 if (popularPlan) setSelectedPlan(popularPlan);
                 const warningText = (configResponse.data?.pix_warning_message || '').trim();
                 setPixWarningMessage(warningText || DEFAULT_PIX_WARNING_MESSAGE);
@@ -150,10 +156,10 @@ const CreditRecharge: React.FC = () => {
               <div 
                 key={plan.id} 
                 onClick={() => handlePlanClick(plan)}
-                className={`relative border-2 rounded-xl text-center cursor-pointer transition-all duration-300 overflow-hidden ${selectedPlan?.id === plan.id ? 'border-[#076AC2] bg-blue-50 scale-105 shadow-lg' : 'border-gray-200 bg-white hover:border-gray-300'}`}>
+                className={`relative border-2 rounded-xl text-center cursor-pointer transition-all duration-300 ${selectedPlan?.id === plan.id ? 'border-[#076AC2] bg-blue-50 scale-105 shadow-lg' : 'border-gray-200 bg-white hover:border-gray-300'}`}>
 
-                {Boolean(plan.is_popular) && (
-                  <div className="absolute top-2.5 -right-9 bg-yellow-400 text-black text-[10px] font-bold px-8 py-0.5 transform rotate-45 z-10">
+                {isPlanPopular(plan) && (
+                  <div className="absolute top-0 -right-2 bg-yellow-400 text-black text-[10px] font-bold px-3 py-1 rounded-full transform rotate-12 z-10 shadow-sm">
                     <span>POPULAR</span>
                   </div>
                 )}

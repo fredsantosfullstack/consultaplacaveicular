@@ -137,6 +137,7 @@ const buildPlanPayload = (body) => {
 // Public route: returns only active plans
 router.get('/', async (req, res) => {
   try {
+    await ensureRechargePlanSchema();
     const [plans] = await db.query('SELECT * FROM recharge_plans WHERE is_active = TRUE ORDER BY price ASC');
     res.json(plans);
   } catch (error) {
@@ -148,6 +149,7 @@ router.get('/', async (req, res) => {
 // Admin route: returns all plans
 router.get('/all', authenticateToken, isAdmin, async (req, res) => {
   try {
+    await ensureRechargePlanSchema();
     const [plans] = await db.query('SELECT * FROM recharge_plans ORDER BY price ASC');
     res.json(plans);
   } catch (error) {

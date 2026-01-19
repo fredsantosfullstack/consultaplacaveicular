@@ -12,6 +12,12 @@ interface Plan {
   is_popular: boolean;
 }
 
+const isPlanPopular = (plan: Plan) =>
+  plan.is_popular === true ||
+  plan.is_popular === 1 ||
+  plan.is_popular === '1' ||
+  plan.is_popular === 'true';
+
 const RechargePage: React.FC = () => {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -82,8 +88,8 @@ const RechargePage: React.FC = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {plans.map(plan => (
-          <div key={plan.id} className={`relative bg-white rounded-lg shadow-lg p-6 flex flex-col text-center transition-transform transform hover:-translate-y-2 ${plan.is_popular ? 'border-4 border-[#076AC2] shadow-xl' : 'border-4 border-transparent'}`}>
-            {plan.is_popular && <div className="absolute top-0 -right-2 bg-[#076AC2] text-white text-xs font-bold px-3 py-1 rounded-full transform rotate-12">POPULAR</div>}
+          <div key={plan.id} className={`relative bg-white rounded-lg shadow-lg p-6 flex flex-col text-center transition-transform transform hover:-translate-y-2 ${isPlanPopular(plan) ? 'border-4 border-[#076AC2] shadow-xl' : 'border-4 border-transparent'}`}>
+            {isPlanPopular(plan) && <div className="absolute top-0 -right-2 bg-[#076AC2] text-white text-xs font-bold px-3 py-1 rounded-full transform rotate-12">POPULAR</div>}
             <h2 className="text-2xl font-bold text-gray-800">{plan.name}</h2>
             <p className="text-5xl font-extrabold text-[#076AC2] my-4">{plan.credits}<span className="text-xl font-medium"> créditos</span></p>
             <p className="text-gray-500 mb-6 h-10">{plan.description}</p>
