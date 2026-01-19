@@ -13,6 +13,17 @@ interface RechargePlan {
   is_popular: boolean;
 }
 
+const isPlanPopular = (plan: Partial<RechargePlan>) =>
+  plan?.is_popular === true ||
+  plan?.is_popular === 1 ||
+  plan?.is_popular === '1' ||
+  plan?.is_popular === 'true';
+
+const normalizePlan = (plan: Partial<RechargePlan>): Partial<RechargePlan> => ({
+  ...plan,
+  is_popular: isPlanPopular(plan)
+});
+
 const RechargePlanManagement: React.FC = () => {
   const [plans, setPlans] = useState<RechargePlan[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,7 +37,7 @@ const RechargePlanManagement: React.FC = () => {
     setIsLoading(true);
     try {
       const response = await api.get('/recharge-plans/all');
-      setPlans(response.data);
+      setPlans(response.data.map((plan: RechargePlan) => normalizePlan(plan) as RechargePlan));
     } catch (err: any) {
       setError('Falha ao buscar os planos de recarga.');
       console.error(err);
@@ -41,7 +52,8 @@ const RechargePlanManagement: React.FC = () => {
 
   const handleOpenModal = (mode: 'add' | 'edit', plan: RechargePlan | null = null) => {
     setModalMode(mode);
-    setCurrentPlan(plan || { name: '', price: 0, credits: 0, is_active: true, is_popular: false });
+    const normalizedPlan = plan ? normalizePlan(plan) : { name: '', price: 0, credits: 0, is_active: true, is_popular: false };
+    setCurrentPlan(normalizedPlan);
     setIsModalOpen(true);
   };
 
@@ -56,7 +68,7 @@ const RechargePlanManagement: React.FC = () => {
     const url = modalMode === 'add' ? '/recharge-plans' : `/recharge-plans/${currentPlan.id}`;
 
     try {
-      await api[method](url, currentPlan);
+      await api[method](url, { ...currentPlan, is_popular: isPlanPopular(currentPlan) });
       handleCloseModal();
       fetchPlans();
     } catch (error) {
@@ -76,7 +88,7 @@ const RechargePlanManagement: React.FC = () => {
 
   const handleToggleActive = async (plan: RechargePlan) => {
     try {
-      await api.put(`/recharge-plans/${plan.id}`, { ...plan, is_active: !plan.is_active });
+      await api.put(`/recharge-plans/${plan.id}`, { ...plan, is_active: !plan.is_active, is_popular: isPlanPopular(plan) });
       fetchPlans();
     } catch (error) {
       console.error('Falha ao alterar status do plano', error);
@@ -135,7 +147,7 @@ const RechargePlanManagement: React.FC = () => {
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-700">Marcar como 'Popular'?</span>
                 <label className="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" checked={currentPlan.is_popular || false} onChange={(e) => setCurrentPlan(prev => ({ ...prev, is_popular: e.target.checked }))} className="sr-only peer" />
+                  <input type="checkbox" checked={isPlanPopular(currentPlan)} onChange={(e) => setCurrentPlan(prev => ({ ...prev, is_popular: e.target.checked }))} className="sr-only peer" />
                   <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-[#076AC2]/50 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#076AC2]"></div>
                 </label>
               </div>
@@ -163,7 +175,7 @@ const RechargePlanManagement: React.FC = () => {
                   <td className="py-3 px-4 font-medium">{plan.name}</td>
                   <td className="py-3 px-4">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(plan.price)}</td>
                   <td className="py-3 px-4">{plan.credits}</td>
-                  <td className="py-3 px-4 text-center">{plan.is_popular ? 'Sim' : 'Não'}</td>
+                  <td className="py-3 px-4 text-center">{isPlanPopular(plan) ? 'Sim' : 'Não'}</td>
                   <td className="py-3 px-4 text-center">
                     <span className={`px-2 py-1 text-xs font-semibold rounded-full ${plan.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                       {plan.is_active ? 'Ativo' : 'Inativo'}

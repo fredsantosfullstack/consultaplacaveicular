@@ -36,6 +36,21 @@ const shouldRetrySchema = (error) =>
   typeof error.sqlMessage === 'string' &&
   (error.sqlMessage.includes('description') || error.sqlMessage.includes('is_popular'));
 
+const normalizeBoolean = (value, defaultValue = false) => {
+  if (value === undefined || value === null) return defaultValue;
+
+  if (typeof value === 'boolean') return value;
+  if (typeof value === 'number') return value === 1;
+
+  if (typeof value === 'string') {
+    const normalized = value.trim().toLowerCase();
+    if (['1', 'true', 'on', 'yes', 'sim'].includes(normalized)) return true;
+    if (['0', 'false', 'off', 'no', 'nao'].includes(normalized)) return false;
+  }
+
+  return defaultValue;
+};
+
 const stripUnsupportedFields = (payload, error) => {
   if (!shouldRetrySchema(error)) {
     return { payload, changed: false };
@@ -58,12 +73,19 @@ const stripUnsupportedFields = (payload, error) => {
 
 const executeWithSchemaRecovery = async (operation, initialPayload) => {
   let payload = initialPayload;
+  let attemptedSchemaRecovery = false;
 
   while (true) {
     try {
       const data = await operation(payload);
       return { payload, data };
     } catch (error) {
+      if (shouldRetrySchema(error) && !attemptedSchemaRecovery) {
+        attemptedSchemaRecovery = true;
+        await ensureRechargePlanSchema();
+        continue;
+      }
+
       const { payload: sanitizedPayload, changed } = stripUnsupportedFields(payload, error);
 
       if (changed) {
@@ -87,8 +109,27 @@ const executeWithSchemaRecovery = async (operation, initialPayload) => {
  */
 const normalizeDecimal = (value) => {
   if (typeof value === 'string') {
-    const sanitized = value.replace(/\./g, '').replace(',', '.');
-    const parsed = Number.parseFloat(sanitized);
+    const sanitized = value.trim();
+
+    if (!sanitized) return null;
+
+    const hasComma = sanitized.includes(',');
+    const hasDot = sanitized.includes('.');
+
+    let normalized = sanitized;
+
+    // Se tiver ponto e virgula, assume que o ponto e separador de milhar e a virgula e decimal
+    if (hasComma && hasDot) {
+      normalized = sanitized.replace(/\./g, '').replace(',', '.');
+    } else if (hasComma) {
+      // Apenas virgula => trata como decimal
+      normalized = sanitized.replace(',', '.');
+    } else {
+      // Apenas ponto ou sem separador => usa diretamente
+      normalized = sanitized;
+    }
+
+    const parsed = Number.parseFloat(normalized);
     return Number.isNaN(parsed) ? null : Number(parsed.toFixed(2));
   }
 
@@ -104,9 +145,14 @@ const normalizeDecimal = (value) => {
  */
 const normalizeInteger = (value) => {
   if (typeof value === 'string') {
-    const sanitized = value.replace(/[^\d-]/g, '');
+    const sanitized = value.replace(/[^\d,.\-]/g, '');
     if (!sanitized) return null;
-    return Number.parseInt(sanitized, 10);
+
+    // Remove parte decimal, se houver
+    const integerPart = sanitized.replace(',', '.').split('.')[0];
+    if (!integerPart) return null;
+
+    return Number.parseInt(integerPart, 10);
   }
 
   if (typeof value === 'number') {
@@ -129,8 +175,8 @@ const buildPlanPayload = (body) => {
     description: body.description || null,
     price,
     credits,
-    is_active: body.is_active !== undefined ? !!body.is_active : true,
-    is_popular: !!body.is_popular
+    is_active: normalizeBoolean(body.is_active, true),
+    is_popular: normalizeBoolean(body.is_popular, false)
   };
 };
 
@@ -160,6 +206,7 @@ router.get('/all', authenticateToken, isAdmin, async (req, res) => {
 
 // Admin route: create plan
 router.post('/', authenticateToken, isAdmin, async (req, res) => {
+  await ensureRechargePlanSchema();
   const planPayload = buildPlanPayload(req.body);
 
   if (!planPayload) {
@@ -185,6 +232,7 @@ router.post('/', authenticateToken, isAdmin, async (req, res) => {
 // Admin route: update plan
 router.put('/:id', authenticateToken, isAdmin, async (req, res) => {
   const { id } = req.params;
+  await ensureRechargePlanSchema();
   const planPayload = buildPlanPayload(req.body);
 
   if (!planPayload) {
