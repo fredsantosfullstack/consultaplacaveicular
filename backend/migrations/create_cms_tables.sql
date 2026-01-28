@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS site_hero (
   cta_whatsapp_icon_url VARCHAR(500) DEFAULT NULL,
   background_gradient_from VARCHAR(7) DEFAULT '#667eea',
   background_gradient_to VARCHAR(7) DEFAULT '#764ba2',
+  mockup_image_url VARCHAR(500) DEFAULT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

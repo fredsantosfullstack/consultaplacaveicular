@@ -35,7 +35,7 @@ const ensureCmsTables = async () => {
     const [tables] = await db.query("SHOW TABLES LIKE 'site_config'");
     if (tables.length > 0) {
       console.log('✅ Tabelas CMS já existem. Pulando migrations automáticas.');
-      await ensureHeroIconColumn();
+      await ensureHeroColumns();
       return;
     }
 
@@ -55,22 +55,28 @@ const ensureCmsTables = async () => {
     await connection.query(sql);
     await connection.end();
     console.log('✅ Migrations executadas automaticamente.');
-    await ensureHeroIconColumn();
+    await ensureHeroColumns();
   } catch (error) {
     console.error('❌ Erro ao executar migrations automáticas:', error);
     throw error;
   }
 };
 
-const ensureHeroIconColumn = async () => {
+const ensureHeroColumns = async () => {
   try {
     const [columns] = await db.query("SHOW COLUMNS FROM site_hero LIKE 'cta_whatsapp_icon_url'");
     if (columns.length === 0) {
       await db.query("ALTER TABLE site_hero ADD COLUMN cta_whatsapp_icon_url VARCHAR(500) DEFAULT NULL");
       console.log('✅ Coluna cta_whatsapp_icon_url adicionada em site_hero.');
     }
+
+    const [mockupColumns] = await db.query("SHOW COLUMNS FROM site_hero LIKE 'mockup_image_url'");
+    if (mockupColumns.length === 0) {
+      await db.query("ALTER TABLE site_hero ADD COLUMN mockup_image_url VARCHAR(500) DEFAULT NULL AFTER background_gradient_to");
+      console.log('✅ Coluna mockup_image_url adicionada em site_hero.');
+    }
   } catch (error) {
-    console.error('❌ Erro ao garantir coluna cta_whatsapp_icon_url:', error);
+    console.error('❌ Erro ao garantir colunas extras do hero:', error);
     throw error;
   }
 };
