@@ -78,6 +78,7 @@ const Hero: React.FC<HeroProps> = ({
     Boolean(ctaWhatsappText && ctaWhatsappText.trim());
   const whatsappIconUrl = ctaWhatsappIconUrl ? buildAssetUrl(ctaWhatsappIconUrl) : "";
   const mockupImageSrc = mockupImageUrl ? buildAssetUrl(mockupImageUrl) : "";
+  const hasCustomMockup = Boolean(mockupImageSrc);
 
   return (
     <section
@@ -147,47 +148,57 @@ const Hero: React.FC<HeroProps> = ({
 
             <div className="relative flex justify-end">
               <div className="relative max-w-lg w-full">
-                <div className="bg-gradient-to-b from-gray-900 to-gray-800 rounded-[32px] shadow-2xl overflow-hidden border-[14px] border-gray-900">
-                  <div className="bg-gradient-to-br from-blue-50 to-slate-50 aspect-[5/3] relative overflow-hidden">
-                    {mockupImageSrc ? (
-                      <img src={mockupImageSrc} alt="Mockup do sistema" className="absolute inset-0 w-full h-full object-cover" />
-                    ) : (
-                      <div className="p-6 h-full flex flex-col justify-between">
-                        <div className="space-y-4">
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <p className="text-xs uppercase tracking-[0.2em] text-slate-500 font-semibold">Radar Inteligente</p>
-                              <p className="text-2xl font-bold text-slate-900">+400 KPIs monitorados</p>
+                {hasCustomMockup ? (
+                  <div className="rounded-3xl shadow-2xl overflow-hidden bg-white border border-slate-200">
+                    <div className="aspect-[5/3] bg-slate-50 flex items-center justify-center">
+                      <img
+                        src={mockupImageSrc}
+                        alt="Mockup do sistema"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="bg-gradient-to-b from-gray-900 to-gray-800 rounded-[32px] shadow-2xl overflow-hidden border-[14px] border-gray-900">
+                      <div className="bg-gradient-to-br from-blue-50 to-slate-50 aspect-[5/3] relative overflow-hidden">
+                        <div className="p-6 h-full flex flex-col justify-between">
+                          <div className="space-y-4">
+                            <div className="flex justify-between items-center">
+                              <div>
+                                <p className="text-xs uppercase tracking-[0.2em] text-slate-500 font-semibold">Radar Inteligente</p>
+                                <p className="text-2xl font-bold text-slate-900">+400 KPIs monitorados</p>
+                              </div>
+                              <div className="flex items-center gap-1 text-xs font-semibold text-emerald-600">
+                                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                Tempo real
+                              </div>
                             </div>
-                            <div className="flex items-center gap-1 text-xs font-semibold text-emerald-600">
-                              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                              Tempo real
+                            <div className="grid grid-cols-2 gap-3">
+                              {benefits.slice(0, 4).map((benefit, index) => {
+                                const Icon = getIcon(benefit.icon);
+                                return (
+                                  <div key={index} className="p-3 rounded-xl bg-white border border-slate-200 shadow-sm">
+                                    <Icon className="w-5 h-5 text-[#076AC2] mb-2" />
+                                    <p className="text-sm font-semibold text-slate-900 line-clamp-1">{benefit.title}</p>
+                                    <p className="text-xs text-slate-500 line-clamp-1">{benefit.description}</p>
+                                  </div>
+                                );
+                              })}
                             </div>
                           </div>
-                          <div className="grid grid-cols-2 gap-3">
-                            {benefits.slice(0, 4).map((benefit, index) => {
-                              const Icon = getIcon(benefit.icon);
-                              return (
-                                <div key={index} className="p-3 rounded-xl bg-white border border-slate-200 shadow-sm">
-                                  <Icon className="w-5 h-5 text-[#076AC2] mb-2" />
-                                  <p className="text-sm font-semibold text-slate-900 line-clamp-1">{benefit.title}</p>
-                                  <p className="text-xs text-slate-500 line-clamp-1">{benefit.description}</p>
-                                </div>
-                              );
-                            })}
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs text-slate-500 border-t border-slate-200 pt-3 gap-2">
+                            <span>100% online e ilimitado</span>
+                            <span>Integracoes oficiais</span>
                           </div>
-                        </div>
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs text-slate-500 border-t border-slate-200 pt-3 gap-2">
-                          <span>100% online e ilimitado</span>
-                          <span>Integracoes oficiais</span>
                         </div>
                       </div>
-                    )}
-                  </div>
-                </div>
-                <div className="bg-gradient-to-b from-gray-800 to-gray-900 h-6 rounded-b-[32px] shadow-2xl border-[14px] border-t-0 border-gray-900 flex items-center justify-center">
-                  <div className="w-24 h-1 bg-gray-700 rounded-full"></div>
-                </div>
+                    </div>
+                    <div className="bg-gradient-to-b from-gray-800 to-gray-900 h-6 rounded-b-[32px] shadow-2xl border-[14px] border-t-0 border-gray-900 flex items-center justify-center">
+                      <div className="w-24 h-1 bg-gray-700 rounded-full"></div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
