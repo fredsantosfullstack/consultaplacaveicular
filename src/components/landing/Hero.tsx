@@ -147,17 +147,13 @@ const Hero: React.FC<HeroProps> = ({
             </div>
 
             <div className="relative flex justify-end">
-              <div className="relative max-w-lg w-full">
+              <div className="relative w-full max-w-2xl">
                 {hasCustomMockup ? (
-                  <div className="rounded-3xl shadow-2xl overflow-hidden bg-white border border-slate-200">
-                    <div className="aspect-[5/3] bg-slate-50 flex items-center justify-center">
-                      <img
-                        src={mockupImageSrc}
-                        alt="Mockup do sistema"
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                  </div>
+                  <img
+                    src={mockupImageSrc}
+                    alt="Mockup do sistema"
+                    className="w-full h-auto rounded-3xl shadow-2xl"
+                  />
                 ) : (
                   <>
                     <div className="bg-gradient-to-b from-gray-900 to-gray-800 rounded-[32px] shadow-2xl overflow-hidden border-[14px] border-gray-900">
