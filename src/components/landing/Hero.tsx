@@ -152,7 +152,7 @@ const Hero: React.FC<HeroProps> = ({
                   <img
                     src={mockupImageSrc}
                     alt="Mockup do sistema"
-                    className="w-full h-auto rounded-3xl shadow-2xl"
+                    className="w-full h-auto rounded-3xl"
                   />
                 ) : (
                   <>
