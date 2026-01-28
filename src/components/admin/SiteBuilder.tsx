@@ -49,6 +49,7 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
   const [isUploadingLogo, setIsUploadingLogo] = useState(false);
   const [isUploadingFavicon, setIsUploadingFavicon] = useState(false);
   const [isUploadingFooterLogo, setIsUploadingFooterLogo] = useState(false);
+  const [heroSaveStatus, setHeroSaveStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   useEffect(() => {
     loadData();
@@ -156,9 +157,15 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
     try {
       await api.put('/cms/hero', hero);
       setSaveMessage('Hero atualizado com sucesso!');
-      setTimeout(() => setSaveMessage(''), 3000);
+      setHeroSaveStatus('success');
+      setTimeout(() => {
+        setSaveMessage('');
+        setHeroSaveStatus('idle');
+      }, 2500);
     } catch (error) {
       setSaveMessage('Erro ao salvar hero');
+      setHeroSaveStatus('error');
+      setTimeout(() => setHeroSaveStatus('idle'), 3000);
     } finally {
       setIsSaving(false);
     }
@@ -281,6 +288,13 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
         setSaveMessage('Erro ao deletar serviço');
       }
     }
+  };
+
+  const heroButtonClasses = () => {
+    const base = 'flex items-center gap-2 px-6 py-3 font-semibold rounded-lg transition-colors disabled:opacity-50';
+    if (heroSaveStatus === 'success') return `${base} bg-emerald-600 hover:bg-emerald-700 text-white`;
+    if (heroSaveStatus === 'error') return `${base} bg-red-600 hover:bg-red-700 text-white`;
+    return `${base} bg-[#076AC2] hover:bg-[#055a9f] text-white`;
   };
 
   const tabs = [
@@ -822,10 +836,16 @@ const SiteBuilder: React.FC<SiteBuilderProps> = () => {
                 <button
                   onClick={handleSaveHero}
                   disabled={isSaving}
-                  className="flex items-center gap-2 px-6 py-3 bg-[#076AC2] hover:bg-[#055a9f] text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
+                  className={heroButtonClasses()}
                 >
                   <Save size={18} />
-                  {isSaving ? 'Salvando...' : 'Salvar Hero'}
+                  {isSaving
+                    ? 'Salvando...'
+                    : heroSaveStatus === 'success'
+                      ? 'Salvo!'
+                      : heroSaveStatus === 'error'
+                        ? 'Tentar novamente'
+                        : 'Salvar Hero'}
                 </button>
               </div>
             </div>
