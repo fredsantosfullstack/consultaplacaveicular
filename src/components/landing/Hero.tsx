@@ -78,7 +78,13 @@ const Hero: React.FC<HeroProps> = ({
     Boolean(ctaWhatsappText && ctaWhatsappText.trim());
   const whatsappIconUrl = ctaWhatsappIconUrl ? buildAssetUrl(ctaWhatsappIconUrl) : "";
   const mockupImageSrc = mockupImageUrl ? buildAssetUrl(mockupImageUrl) : "";
-  const hasCustomMockup = Boolean(mockupImageSrc);
+  const [mockupLoadFailed, setMockupLoadFailed] = React.useState(false);
+
+  React.useEffect(() => {
+    setMockupLoadFailed(false);
+  }, [mockupImageSrc]);
+
+  const hasCustomMockup = Boolean(mockupImageSrc) && !mockupLoadFailed;
 
   return (
     <section
@@ -153,6 +159,7 @@ const Hero: React.FC<HeroProps> = ({
                     src={mockupImageSrc}
                     alt="Mockup do sistema"
                     className="w-full h-auto rounded-3xl"
+                    onError={() => setMockupLoadFailed(true)}
                   />
                 ) : (
                   <>
