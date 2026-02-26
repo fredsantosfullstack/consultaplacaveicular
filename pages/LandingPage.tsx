@@ -62,10 +62,35 @@ interface LandingData {
   }>;
 }
 
+const FALLBACK_LANDING_DATA: LandingData = {
+  config: {
+    seo_title: 'Consulta Placa Veicular',
+    primary_color: '#076AC2',
+    secondary_color: '#0f43aa',
+    seo_description: 'Plataforma de consultas veiculares.',
+    seo_keywords: 'consulta placa, consulta veicular'
+  },
+  hero: {
+    title: 'Consulta Placa Veicular',
+    subtitle: '',
+    description: 'Servico temporariamente indisponivel. Tente novamente em alguns minutos.',
+    cta_primary_text: 'Falar no WhatsApp',
+    cta_primary_link: '#contato',
+    cta_whatsapp_text: 'Falar no WhatsApp',
+    background_gradient_from: '#076AC2',
+    background_gradient_to: '#0f43aa'
+  },
+  benefits: [],
+  statistics: [],
+  services: [],
+  steps: [],
+  footerLinks: []
+};
+
 const LandingPage: React.FC = () => {
   const [data, setData] = useState<LandingData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [isFallbackMode, setIsFallbackMode] = useState(false);
 
   useEffect(() => {
     const fetchLandingData = async () => {
@@ -183,7 +208,8 @@ const LandingPage: React.FC = () => {
         }
       } catch (err) {
         console.error('Erro ao carregar dados da landing page:', err);
-        setError('Erro ao carregar página. Tente novamente mais tarde.');
+        setData(FALLBACK_LANDING_DATA);
+        setIsFallbackMode(true);
       } finally {
         setIsLoading(false);
       }
@@ -212,11 +238,11 @@ const LandingPage: React.FC = () => {
     );
   }
 
-  if (error || !data) {
+  if (!data) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <p className="text-red-600 mb-4">{error || 'Erro ao carregar página'}</p>
+          <p className="text-red-600 mb-4">Erro ao carregar página</p>
           <button
             onClick={() => window.location.reload()}
             className="px-6 py-2 bg-[#076AC2] text-white rounded-lg hover:bg-[#055a9f]"
@@ -230,6 +256,11 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      {isFallbackMode && (
+        <div className="bg-amber-50 border-b border-amber-200 text-amber-900 text-center px-4 py-3">
+          Estamos em manutencao. Alguns recursos podem estar indisponiveis no momento.
+        </div>
+      )}
       {/* Header */}
       <LandingHeader
         logoUrl={data.config.logo_url}
