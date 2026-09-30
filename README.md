@@ -252,7 +252,7 @@ npm run migrate      # Executar migrations
 
 Este é um projeto proprietário. Para contribuir, entre em contato com a equipe.
 
-## 📄 Licença
+## License
 
 Projeto proprietário - Consulta Placa Veicular © 2025
 
